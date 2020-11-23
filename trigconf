@@ -1,0 +1,1024 @@
+./NGMModuleCore/NGMHitIO.cc:                    _gatelength[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[chan])
+./NGMModuleCore/NGMSIS3316RawReader.cc:        numberOfSamples=vcard->databuffer[chan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:        ULong64_t rawclock = vcard->databuffer[chan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3316RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[chan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        if(card->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3316RawReader.cc:        card->AllocateBuffers(0);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        card->ResetRunScalars();
+./NGMModuleCore/NGMSIS3316RawReader.cc:        bytesread+=card->ReadSpillFromFile(_inputfile);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            card->GetScalars(s1,s2,s3,s4);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                        if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3316RawReader.cc:                                if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                        if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3316RawReader.cc:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3316RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    packet->setSlotId((vcard->adcheaderid[block])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if( ParseClock(&(vcard->databuffer[ichan][evtPointer[0]])) > ParseClock(&(vcard->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./NGMModuleCore/NGMSIS3316RawReader.cc:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3316RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3316RawReader.cc:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3316RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[iblock];
+./NGMModuleCore/NGMSIS3316RawReader.cc:            LOG<<vcard->databufferread[iblock*4+ipmt]<<" ";
+./NGMModuleCore/NGMSIS3316RawReader.cc:                LOG<<vcard->triggerstatspill[iblock*4+ipmt][istat]<<"\t";
+./NGMModuleCore/NGMSIS3316RawReader.cc:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int minWords = vcard->databufferread[iblock*4];
+./NGMModuleCore/NGMSIS3316RawReader.cc:        if(vcard->databufferread[iblock*4] != vcard->databufferread[iblock*4+ipmt])
+./NGMModuleCore/NGMSIS3316RawReader.cc:        if(minWords>vcard->databufferread[iblock*4+ipmt])
+./NGMModuleCore/NGMSIS3316RawReader.cc:            minWords=vcard->databufferread[iblock*4+ipmt];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3316RawReader.cc:    packet->setSlotId((vcard->adcheaderid[iblock])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        numberOfSampleWords=vcard->databuffer[iblock*4][evtPointer[0][ievent]+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:            rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][evtPointer[ic][ievent]]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+nomEventSize]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFFFF);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFF000000)>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                    mawmax += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                    maw1 +=  vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                    maw2 += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                double baseline = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                psdsum+= (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset] & 0xFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+1] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+2] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+3] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+4] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./NGMModuleCore/NGMSIS3316RawReader.cc:                psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                LOG<<" ("<<evtPointer[ic][ievent]-vcard->databufferread[iblock*4+ic]<<")";
+./NGMModuleCore/NGMSIS3316RawReader.cc:    cName.Form("cWaveSlot%d_%d",vcard->modid,ichan);
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[iblock];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->databufferread[ichan] < nomEventSize ) return;
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int numberOfSampleWords=vcard->databuffer[ichan][nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->databufferread[ichan] < nomEventSize +numberOfSampleWords ) return;
+./NGMModuleCore/NGMSIS3316RawReader.cc:    unsigned short* wf =(unsigned short*)(&(vcard->databuffer[ichan][nomEventSize]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3316RawReader.cc:        numberOfSamplesWords=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:        hit->SetSlot((vcard->adcheaderid[block])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        ULong64_t rawclock = ParseClock(&(vcard->databuffer[ichan][indexOfNextEvent]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                hit->SetGate(iqdc,(vcard->databuffer[ichan][indexOfNextEvent+qdcoffset+iqdc] & 0xFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:    int dataformat = vcard->dataformat_block[iblock];
+./NGMModuleCore/NGMSIS3316RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3316RawReader.cc:    hit->SetSlot((vcard->adcheaderid[iblock])>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:    numberOfSampleWords=vcard->databuffer[iblock*4][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3316RawReader.cc:        rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][indexOfNextEvent]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:        wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+nomEventSize]));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFFFF);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFF000000)>>24);
+./NGMModuleCore/NGMSIS3316RawReader.cc:                mawmax += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw1 +=  vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:                maw2 += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3316RawReader.cc:            double baseline = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            psdsum+= (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset] & 0xFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+1] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+2] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+3] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+4] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3316RawReader.cc:            pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./NGMModuleCore/NGMSIS3316RawReader.cc:            psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[chan])
+./NGMModuleCore/NGMSIS3302RawReader.cc:        numberOfSamples=vcard->databuffer[chan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:        ULong64_t rawclock = vcard->databuffer[chan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3302RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[chan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        if(card->clock_source_choice==6)
+./NGMModuleCore/NGMSIS3302RawReader.cc:        card->AllocateBuffers(0);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        card->ResetRunScalars();
+./NGMModuleCore/NGMSIS3302RawReader.cc:        bytesread+=card->ReadSpillFromFile(_inputfile);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                    if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3302RawReader.cc:                            if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                            if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]])))
+./NGMModuleCore/NGMSIS3302RawReader.cc:                                printf("Bad clock sort %d %d %lld %lld \n",icard,ic,ParseClock(&(card->databuffer[ichan][evtPointer[0]])),ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]])));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                    if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3302RawReader.cc:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3302RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            printf("First Event Header 0x%04x %f \n",vcard->databuffer[ichan][indexOfNextEvent]&0xFFFF,vcard->databufferread[ichan]/512.0);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        if(_verbosity>0&&(indexOfNextEvent==0 || (indexOfNextEvent+nomEventSize+numberOfSamples/2)==vcard->databufferread[ichan]))
+./NGMModuleCore/NGMSIS3302RawReader.cc:            printf("Raw Clock: %d %lld 0x%08x 0x%08x %f %d\n",nevents,rawclock,vcard->databuffer[ichan][indexOfNextEvent+1], vcard->databuffer[ichan][indexOfNextEvent],
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    hit->SetSlot((vcard->adcheaderid[block]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3302RawReader.cc:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3302RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        unsigned int puc = (((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF)<<16;
+./NGMModuleCore/NGMSIS3302RawReader.cc:        puc = puc | ((vcard->databuffer[ichan][indexOfNextEvent+2]) & 0xFFFF);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        hit->SetGate(0,(vcard->databuffer[ichan][indexOfNextEvent+3])&0xFFFFFF);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            hit->SetGate(igate,(vcard->databuffer[ichan][indexOfNextEvent+3+igate])&0xFFFFFFF );
+./NGMModuleCore/NGMSIS3302RawReader.cc:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[block];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    packet->setSlotId((vcard->adcheaderid[block]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if( ParseClock(&(vcard->databuffer[ichan][evtPointer[0]])) > ParseClock(&(vcard->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./NGMModuleCore/NGMSIS3302RawReader.cc:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3302RawReader.cc:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./NGMModuleCore/NGMSIS3302RawReader.cc:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./NGMModuleCore/NGMSIS3302RawReader.cc:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[iblock];
+./NGMModuleCore/NGMSIS3302RawReader.cc:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3302_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3302_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int minWords = vcard->databufferread[iblock*4];
+./NGMModuleCore/NGMSIS3302RawReader.cc:        if(vcard->databufferread[iblock*4] != vcard->databufferread[iblock*4+ipmt])
+./NGMModuleCore/NGMSIS3302RawReader.cc:        if(minWords>vcard->databufferread[iblock*4+ipmt])
+./NGMModuleCore/NGMSIS3302RawReader.cc:            minWords=vcard->databufferread[iblock*4+ipmt];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(vcard->clock_source_choice==0)
+./NGMModuleCore/NGMSIS3302RawReader.cc:    packet->setSlotId((vcard->adcheaderid[iblock])>>24);
+./NGMModuleCore/NGMSIS3302RawReader.cc:        numberOfSampleWords=vcard->databuffer[iblock*4][evtPointer[0][ievent]+nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:            rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][evtPointer[ic][ievent]]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:            wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+nomEventSize]));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFFFF);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFF000000)>>24);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                    mawmax += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                    maw1 +=  vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+1]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                    maw2 += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+2]-0x8000000;
+./NGMModuleCore/NGMSIS3302RawReader.cc:                double baseline = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                psdsum+= (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset] & 0xFFFFFF));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+1] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+2] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+3] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+4] & 0xFFFFFFF));
+./NGMModuleCore/NGMSIS3302RawReader.cc:                pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./NGMModuleCore/NGMSIS3302RawReader.cc:                psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./NGMModuleCore/NGMSIS3302RawReader.cc:                LOG<<" ("<<evtPointer[ic][ievent]-vcard->databufferread[iblock*4+ic]<<")";
+./NGMModuleCore/NGMSIS3302RawReader.cc:    cName.Form("cWaveSlot%d_%d",vcard->modid,ichan);
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int dataformat = vcard->dataformat_block[iblock];
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(vcard->databufferread[ichan] < nomEventSize ) return;
+./NGMModuleCore/NGMSIS3302RawReader.cc:    int numberOfSampleWords=vcard->databuffer[ichan][nomEventSize-1]&0x03FFFFFF;
+./NGMModuleCore/NGMSIS3302RawReader.cc:    if(vcard->databufferread[ichan] < nomEventSize +numberOfSampleWords ) return;
+./NGMModuleCore/NGMSIS3302RawReader.cc:    unsigned short* wf =(unsigned short*)(&(vcard->databuffer[ichan][nomEventSize]));
+./NGMModuleCore/NGMPacketMergeSort.cc:                  if(card->IsBlockReadout(iadc))
+./NGMModuleCore/NGMHitProcess.cc:            _waveformlength = card->sample_length_block[iblock];
+./NGMModuleCore/NGMHitProcess.cc:            _waveformstart = card->sample_start_block[iblock];
+./NGMModuleCore/NGMHitProcess.cc:                _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMModuleCore/NGMHitProcess.cc:                _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMModuleCore/NGMHitProcess.cc:                _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMModuleCore/NGMHitProcess.cc:                _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
+./NCACommon/BlockFlood.cc:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/aa/aaea81bd4b7553e10fdf46e949c559673f7712c1.svn-base:                  if(card->IsBlockReadout(iadc))
+./.svn/pristine/d5/d5dc1b596b7e86ce1d78797822042cb3aef5a18d.svn-base:////    card->vmei = vmei;
+./.svn/pristine/d5/d5dc1b596b7e86ce1d78797822042cb3aef5a18d.svn-base:////    card->baseaddress = baseAddress;
+./.svn/pristine/d5/d5dc1b596b7e86ce1d78797822042cb3aef5a18d.svn-base://    return_code = card->vmei->vme_A32D32_read(SIS3316_MODID, &data );
+./.svn/pristine/d5/d5dc1b596b7e86ce1d78797822042cb3aef5a18d.svn-base:////    return_code = card->vmei->vme_A32D32_read(baseAddress+0x4,&data);
+./.svn/pristine/d5/d5dc1b596b7e86ce1d78797822042cb3aef5a18d.svn-base://    card->SetClockChoice(0,0);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[chan])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        numberOfSamples=vcard->databuffer[chan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        ULong64_t rawclock = vcard->databuffer[chan][indexOfNextEvent+1];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[chan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        if(card->clock_source_choice==6)
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        card->AllocateBuffers(0);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        card->ResetRunScalars();
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        bytesread+=card->ReadSpillFromFile(_inputfile);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                    if(card->IsBlockReadout(iadc))
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                            if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                            if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]])))
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                                printf("Bad clock sort %d %d %lld %lld \n",icard,ic,ParseClock(&(card->databuffer[ichan][evtPointer[0]])),ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]])));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                    if(card->IsBlockReadout(iadc))
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(card->IsBlockReadout(iadc))
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            printf("First Event Header 0x%04x %f \n",vcard->databuffer[ichan][indexOfNextEvent]&0xFFFF,vcard->databufferread[ichan]/512.0);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        if(_verbosity>0&&(indexOfNextEvent==0 || (indexOfNextEvent+nomEventSize+numberOfSamples/2)==vcard->databufferread[ichan]))
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            printf("Raw Clock: %d %lld 0x%08x 0x%08x %f %d\n",nevents,rawclock,vcard->databuffer[ichan][indexOfNextEvent+1], vcard->databuffer[ichan][indexOfNextEvent],
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    hit->SetSlot((vcard->adcheaderid[block]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        unsigned int puc = (((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF)<<16;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        puc = puc | ((vcard->databuffer[ichan][indexOfNextEvent+2]) & 0xFFFF);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        hit->SetGate(0,(vcard->databuffer[ichan][indexOfNextEvent+3])&0xFFFFFF);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            hit->SetGate(igate,(vcard->databuffer[ichan][indexOfNextEvent+3+igate])&0xFFFFFFF );
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    packet->setSlotId((vcard->adcheaderid[block]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if( ParseClock(&(vcard->databuffer[ichan][evtPointer[0]])) > ParseClock(&(vcard->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x0000FFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3302_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3302_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int minWords = vcard->databufferread[iblock*4];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        if(vcard->databufferread[iblock*4] != vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        if(minWords>vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            minWords=vcard->databufferread[iblock*4+ipmt];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    packet->setSlotId((vcard->adcheaderid[iblock])>>24);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:        numberOfSampleWords=vcard->databuffer[iblock*4][evtPointer[0][ievent]+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][evtPointer[ic][ievent]]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:            wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+nomEventSize]));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFFFF);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFF000000)>>24);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                    mawmax += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                    maw1 +=  vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+1]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                    maw2 += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+2]-0x8000000;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                double baseline = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                psdsum+= (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset] & 0xFFFFFF));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+1] & 0xFFFFFFF));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+2] & 0xFFFFFFF));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+3] & 0xFFFFFFF));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+4] & 0xFFFFFFF));
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:                LOG<<" ("<<evtPointer[ic][ievent]-vcard->databufferread[iblock*4+ic]<<")";
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    cName.Form("cWaveSlot%d_%d",vcard->modid,ichan);
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(vcard->databufferread[ichan] < nomEventSize ) return;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    int numberOfSampleWords=vcard->databuffer[ichan][nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    if(vcard->databufferread[ichan] < nomEventSize +numberOfSampleWords ) return;
+./.svn/pristine/7d/7de0794d2243949d9d9a25b79f1d46c1cd1e5cc0.svn-base:    unsigned short* wf =(unsigned short*)(&(vcard->databuffer[ichan][nomEventSize]));
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:      //card->baseaddress = 0;
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:      card->vmei=vmei_eth;
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    else card->vmei=vmei;
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    card->initcard();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    card->AllocateBuffers();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->SetClockChoice(0,2);  //default is (0,2); changed into (1,2) since card 0 with SN 205 could only sample at 125 MS/s
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:      // card->SetClockChoice(0,2);  
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:         card->SetClockChoice(0,1);  //default is (0,1); changed into (1,1) so that card 0 and 1 could sample at the same frequency
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:      // card->SetClockChoice(0,1); 
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:     // card->SetClockChoice(1,0);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:      card->SetClockChoice(0,0);   // default is (0,0);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    card->SetCardHeader(icard);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->ConfigureFIR();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        if(getDebug()) card->PrintRegisters();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->ResetRunScalars();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:    firstcard->Disarm();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->FetchScalars();
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:                card->FetchDataOnlyForChannel(ichan);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        card->LogScalars(_sisreadlog);
+./.svn/pristine/04/04a36e823f1250b30d8d7d0fe5976e79550124c7.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[chan])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        numberOfSamples=vcard->databuffer[chan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        ULong64_t rawclock = vcard->databuffer[chan][indexOfNextEvent+1];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[chan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        if(card->clock_source_choice==0)
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        card->AllocateBuffers(0);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        card->ResetRunScalars();
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        bytesread+=card->ReadSpillFromFile(_inputfile);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            card->GetScalars(s1,s2,s3,s4);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                        if(card->IsBlockReadout(iadc))
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                                if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                        if(card->IsBlockReadout(iadc))
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(card->IsBlockReadout(iadc))
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    packet->setSlotId((vcard->adcheaderid[block])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if( ParseClock(&(vcard->databuffer[ichan][evtPointer[0]])) > ParseClock(&(vcard->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            LOG<<vcard->databufferread[iblock*4+ipmt]<<" ";
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                LOG<<vcard->triggerstatspill[iblock*4+ipmt][istat]<<"\t";
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int minWords = vcard->databufferread[iblock*4];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        if(vcard->databufferread[iblock*4] != vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        if(minWords>vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            minWords=vcard->databufferread[iblock*4+ipmt];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    packet->setSlotId((vcard->adcheaderid[iblock])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        numberOfSampleWords=vcard->databuffer[iblock*4][evtPointer[0][ievent]+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][evtPointer[ic][ievent]]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+nomEventSize]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFFFF);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFF000000)>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                    mawmax += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                    maw1 +=  vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+1]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                    maw2 += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+2]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                double baseline = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                psdsum+= (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset] & 0xFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+1] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+2] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+3] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+4] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                LOG<<" ("<<evtPointer[ic][ievent]-vcard->databufferread[iblock*4+ic]<<")";
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    cName.Form("cWaveSlot%d_%d",vcard->modid,ichan);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->databufferread[ichan] < nomEventSize ) return;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int numberOfSampleWords=vcard->databuffer[ichan][nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->databufferread[ichan] < nomEventSize +numberOfSampleWords ) return;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    unsigned short* wf =(unsigned short*)(&(vcard->databuffer[ichan][nomEventSize]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        numberOfSamplesWords=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        hit->SetSlot((vcard->adcheaderid[block])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        ULong64_t rawclock = ParseClock(&(vcard->databuffer[ichan][indexOfNextEvent]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                hit->SetGate(iqdc,(vcard->databuffer[ichan][indexOfNextEvent+qdcoffset+iqdc] & 0xFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    hit->SetSlot((vcard->adcheaderid[iblock])>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:    numberOfSampleWords=vcard->databuffer[iblock*4][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][indexOfNextEvent]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:        wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFFFF);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFF000000)>>24);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                mawmax += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw1 +=  vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:                maw2 += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            double baseline = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            psdsum+= (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset] & 0xFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+1] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+2] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+3] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+4] & 0xFFFFFFF));
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./.svn/pristine/ce/ce9b763db7f3f90bb9239c79e9ebabe542015662.svn-base:            psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./.svn/pristine/29/2941b4b5cad12d79b5fb0d31d546e0f571aeebb1.svn-base:    hvcard->initcard();
+./.svn/pristine/29/2941b4b5cad12d79b5fb0d31d546e0f571aeebb1.svn-base:    hvcard->SetVoltage(0,0.0);
+./.svn/pristine/29/2941b4b5cad12d79b5fb0d31d546e0f571aeebb1.svn-base:    hvcard->EnableChannel(0,false);
+./.svn/pristine/e7/e780c7c98d78e8f2bc86f58ca1750deb7efc1e13.svn-base:                    _gatelength[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:      //card->baseaddress = 0;
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:      card->vmei=vmei_eth;
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    else card->vmei=vmei;
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    card->initcard();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    card->AllocateBuffers();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->SetClockChoice(0,2);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->SetClockChoice(0,1);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:      card->SetClockChoice(0,0);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    card->SetCardHeader(icard);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->ConfigureFIR();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        if(getDebug()) card->PrintRegisters();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->ResetRunScalars();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:    firstcard->Disarm();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->FetchScalars();
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:                card->FetchDataOnlyForChannel(ichan);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        card->LogScalars(_sisreadlog);
+./.svn/pristine/eb/eb27f2bf81eba460ea8390feb5d30aa8499de207.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/b7/b73ac00797c2de780d10ae32864420b371700e20.svn-base:                    _gatelength[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/8b/8ba9a12154b582d6c09504e7ed2e5ea2c8af6f09.svn-base:////    card->vmei = vmei;
+./.svn/pristine/8b/8ba9a12154b582d6c09504e7ed2e5ea2c8af6f09.svn-base:////    card->baseaddress = baseAddress;
+./.svn/pristine/8b/8ba9a12154b582d6c09504e7ed2e5ea2c8af6f09.svn-base://    return_code = card->vmei->vme_A32D32_read(SIS3316_MODID, &data );
+./.svn/pristine/8b/8ba9a12154b582d6c09504e7ed2e5ea2c8af6f09.svn-base:////    return_code = card->vmei->vme_A32D32_read(baseAddress+0x4,&data);
+./.svn/pristine/8b/8ba9a12154b582d6c09504e7ed2e5ea2c8af6f09.svn-base://    card->SetClockChoice(0,0);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[chan])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        numberOfSamples=vcard->databuffer[chan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        ULong64_t rawclock = vcard->databuffer[chan][indexOfNextEvent+1];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[chan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        if(card->clock_source_choice==0)
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        card->AllocateBuffers(0);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        card->ResetRunScalars();
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        bytesread+=card->ReadSpillFromFile(_inputfile);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            card->GetScalars(s1,s2,s3,s4);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                        if(card->IsBlockReadout(iadc))
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                                if( ParseClock(&(card->databuffer[ichan][evtPointer[0]])) > ParseClock(&(card->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                        if(card->IsBlockReadout(iadc))
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(card->IsBlockReadout(iadc))
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    packet->setSlotId((vcard->adcheaderid[block])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if( ParseClock(&(vcard->databuffer[ichan][evtPointer[0]])) > ParseClock(&(vcard->databuffer[ichan][evtPointer[parsedEvents-1]]))) goodData=false;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            LOG<<" "<<ParseClock(&(vcard->databuffer[ichan][evtPointer[ievt]]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    while(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        numberOfSamples=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        ULong64_t rawclock = vcard->databuffer[ichan][indexOfNextEvent+1];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        rawclock=rawclock | ((((ULong64_t)(vcard->databuffer[ichan][indexOfNextEvent])) & 0xFFFF0000)<<16);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            LOG<<vcard->databufferread[iblock*4+ipmt]<<" ";
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                LOG<<vcard->triggerstatspill[iblock*4+ipmt][istat]<<"\t";
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                LOG<<" "<<ParseClock(&(vcard->databuffer[iblock*SIS3316_CHANNELS_PER_ADCGROUP+ic][evtPointer[ic][ievt]]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int minWords = vcard->databufferread[iblock*4];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        if(vcard->databufferread[iblock*4] != vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        if(minWords>vcard->databufferread[iblock*4+ipmt])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            minWords=vcard->databufferread[iblock*4+ipmt];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    packet->setSlotId((vcard->adcheaderid[iblock])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        numberOfSampleWords=vcard->databuffer[iblock*4][evtPointer[0][ievent]+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][evtPointer[ic][ievent]]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+nomEventSize]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFFFF);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+2] & 0xFF000000)>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                    mawmax += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                    maw1 +=  vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+1]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                    maw2 += vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+mawoffset+2]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                double baseline = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                psdsum+= (vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset] & 0xFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+1] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+2] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+3] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][evtPointer[ipmt][ievent]+qdcoffset+4] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                LOG<<" ("<<evtPointer[ic][ievent]-vcard->databufferread[iblock*4+ic]<<")";
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    cName.Form("cWaveSlot%d_%d",vcard->modid,ichan);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->databufferread[ichan] < nomEventSize ) return;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int numberOfSampleWords=vcard->databuffer[ichan][nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->databufferread[ichan] < nomEventSize +numberOfSampleWords ) return;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    unsigned short* wf =(unsigned short*)(&(vcard->databuffer[ichan][nomEventSize]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[block];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(indexOfNextEvent+nomEventSize<vcard->databufferread[ichan])
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        numberOfSamplesWords=vcard->databuffer[ichan][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        hit->SetSlot((vcard->adcheaderid[block])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        ULong64_t rawclock = ParseClock(&(vcard->databuffer[ichan][indexOfNextEvent]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        hit->SetPileUpCounter( ((vcard->databuffer[ichan][indexOfNextEvent+3])>>24) & 0xFF);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                hit->SetGate(iqdc,(vcard->databuffer[ichan][indexOfNextEvent+qdcoffset+iqdc] & 0xFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                mawmax = vcard->databuffer[ichan][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw1 =  vcard->databuffer[ichan][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw2 = vcard->databuffer[ichan][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            double baseline = (vcard->databuffer[ichan][indexOfNextEvent+nomEventSize] & 0xFFFFFF)/(double)(vcard->qdclength[block][0]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            sum = (vcard->databuffer[ichan][indexOfNextEvent+igate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][igate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            psdsum= (vcard->databuffer[ichan][indexOfNextEvent+psdgate+nomEventSize]& 0xFFFFFFF) - baseline*(vcard->qdclength[block][psdgate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetPileUpCounter((vcard->databuffer[ichan][indexOfNextEvent+3])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        unsigned short* wf=(unsigned short*)(&(vcard->databuffer[ichan][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    int dataformat = vcard->dataformat_block[iblock];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    if(vcard->clock_source_choice==0)
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    hit->SetSlot((vcard->adcheaderid[iblock])>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:    numberOfSampleWords=vcard->databuffer[iblock*4][indexOfNextEvent+nomEventSize-1]&0x03FFFFFF;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        rawclockC[ic] = ParseClock(&(vcard->databuffer[iblock*4][indexOfNextEvent]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:        wf[ipmt]=(unsigned short*)(&(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+nomEventSize]));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            unsigned int peakHighValue = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFFFF);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            evtInfo=evtInfo|((vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+2] & 0xFF000000)>>24);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                mawmax += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw1 +=  vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+1]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:                maw2 += vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+mawoffset+2]-0x8000000;
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            double baseline = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+3] & 0xFFFFFF)/(double)(vcard->qdclength[iblock][0]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            pmt[ipmt] = (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+igate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][igate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            psdsum+= (vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+psdgate+3]& 0xFFFFFFF) - baseline*(vcard->qdclength[iblock][psdgate]);
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetGate(5*ipmt+0,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset] & 0xFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetGate(5*ipmt+1,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+1] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetGate(5*ipmt+2,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+2] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetGate(5*ipmt+3,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+3] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            hit->SetGate(5*ipmt+4,(vcard->databuffer[iblock*4+ipmt][indexOfNextEvent+qdcoffset+4] & 0xFFFFFFF));
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            pmt[ipmt] = hit->GetGate(5*ipmt+3)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+4)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0];
+./.svn/pristine/49/49966100d385cc2dafc807bdb3d8c0607c04484a.svn-base:            psdsum+= (hit->GetGate(5*ipmt+1)*(1.0-hit->GetCFD()) + hit->GetGate(5*ipmt+2)*hit->GetCFD() - hit->GetGate(5*ipmt+0)/(double)vcard->qdclength[iblock][0]);
+./.svn/pristine/f7/f795f29f5448cbcb86645baed9afb7d52404309a.svn-base:                    _gatelength[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/9c/9c80020e353c90c2b1c7ec57d7e523bb62b4a5c8.svn-base:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:      //card->baseaddress = 0;
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:      card->vmei=vmei_eth;
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    else card->vmei=vmei;
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    card->initcard();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    card->AllocateBuffers();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->SetClockChoice(0,2);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->SetClockChoice(0,1);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:      card->SetClockChoice(0,0);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    card->SetCardHeader(icard);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->ConfigureFIR();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        if(getDebug()) card->PrintRegisters();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->ResetRunScalars();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:    firstcard->Disarm();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->FetchScalars();
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:                card->FetchDataOnlyForChannel(ichan);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        card->LogScalars(_sisreadlog);
+./.svn/pristine/55/559be74040e43ea9ea3e4b5de4ebcf56cdd3abe6.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:            _waveformlength = card->sample_length_block[iblock];
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:            _waveformstart = card->sample_start_block[iblock];
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:                _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:                _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:                _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/65/65d50df44ff5d4cab903b857fb938f297c85a0af.svn-base:                _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/65/65f4b2199f6ad64440694f1a6dc4313f134cc07a.svn-base:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->vmei=vmei;
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->initcard();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->AllocateBuffers();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                card->SetClockChoice(0,2);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                card->SetClockChoice(0,1);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:            card->SetClockChoice(0,0);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:	  card->SetCardHeader(icard);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->ConfigureFIR();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONFIG,&irqconfig);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG,&actualAddress);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ACQUISITION_CONTROL_STATUS,&ctlstatus);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONTROL,&irqstatus);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    float thisTemp = firstcard->ReadTemp();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:    firstcard->Disarm();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->FetchScalars();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        card->FetchAllData();
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                if(card->IsBlockReadout(iadc))
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                    card->FetchDataForBlock(iadc);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:                        card->FetchDataForChannel(ichan);
+./.svn/pristine/25/25d680e33133c2e4a2a6a877973624f5642b3e4e.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:      //card->baseaddress = 0;
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:      card->vmei=vmei_eth;
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    else card->vmei=vmei;
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    card->initcard();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    card->AllocateBuffers();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->SetClockChoice(0,2);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->SetClockChoice(0,1);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:      card->SetClockChoice(0,0);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    card->SetCardHeader(icard);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->ConfigureFIR();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        if(getDebug()) card->PrintRegisters();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->ResetRunScalars();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:    firstcard->Disarm();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->FetchScalars();
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:                card->FetchDataOnlyForChannel(ichan);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        card->LogScalars(_sisreadlog);
+./.svn/pristine/2a/2a46339871c3636040c610d9d923c1e66016cd10.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/72/72a545ef8d1ced88ae05981616a999b3192077f2.svn-base:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->vmei=vmei;
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->initcard();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->AllocateBuffers();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                card->SetClockChoice(0,2);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                card->SetClockChoice(0,1);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:            card->SetClockChoice(0,0);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:	  card->SetCardHeader(icard);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->ConfigureFIR();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONFIG,&irqconfig);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG,&actualAddress);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ACQUISITION_CONTROL_STATUS,&ctlstatus);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONTROL,&irqstatus);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    float thisTemp = firstcard->ReadTemp();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:    firstcard->Disarm();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->FetchScalars();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        card->FetchAllData();
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                if(card->IsBlockReadout(iadc))
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                    card->FetchDataForBlock(iadc);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:                        card->FetchDataForChannel(ichan);
+./.svn/pristine/8d/8d28bb4d87af81b025355bf33f647814eb69e42e.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->vmei=vmei;
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->initcard();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->AllocateBuffers();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:            card->SetClockChoice(6,0); //6 is external lemo clock
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:            card->SetClockChoice(2,0); //1 is internal 50MHz
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->SetCardHeader(icard);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:	card->ReadActualSampleValues();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->ConfigureFIR();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        firstcard->ClearTimeStamp();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:    return_code = firstcard->ArmBank();  //
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:                    float thisTemp = firstcard->ReadTemp();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:    firstcard->Disarm();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->FetchScalars();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        card->FetchAllData();
+./.svn/pristine/6f/6f65ca57e5753954cc4ad6c066f2af03bdf96052.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:      //card->baseaddress = 0;
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:      card->vmei=vmei_eth;
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    else card->vmei=vmei;
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    card->initcard();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    card->AllocateBuffers();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->SetClockChoice(0,2);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->SetClockChoice(0,1);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:      card->SetClockChoice(0,0);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    card->SetCardHeader(icard);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        //card->SetClockChoice(0,1);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->ConfigureEventRegisters();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->ConfigureAnalogRegisters();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->ConfigureFIR();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->EnableThresholdInterrupt();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        if(getDebug()) card->PrintRegisters();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->ResetRunScalars();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:	return_code = firstcard->ClearTimeStamp();  //
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    return_code = firstcard->DisarmAndArmBank();  //
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        firstcard->DisarmAndArmBank();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:    firstcard->Disarm();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->FetchScalars();
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:                card->FetchDataOnlyForChannel(ichan);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        card->LogScalars(_sisreadlog);
+./.svn/pristine/81/813e4e961e1490d69ca3a4817b9105826ff7cfea.svn-base:        written = card->WriteSpillToFile(_rawFilePointer);
+./.svn/pristine/7f/7fe0a0425b8f7168e7bbd69592454ba1fbf0c84e.svn-base:                    _gatelength[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./VMECards/sis3316ethB_tests.cc:////    card->vmei = vmei;
+./VMECards/sis3316ethB_tests.cc:////    card->baseaddress = baseAddress;
+./VMECards/sis3316ethB_tests.cc://    return_code = card->vmei->vme_A32D32_read(SIS3316_MODID, &data );
+./VMECards/sis3316ethB_tests.cc:////    return_code = card->vmei->vme_A32D32_read(baseAddress+0x4,&data);
+./VMECards/sis3316ethB_tests.cc://    card->SetClockChoice(0,0);
+./VMECards/SIS3316SimpleTest.cc:    hvcard->initcard();
+./VMECards/SIS3316SimpleTest.cc:    hvcard->SetVoltage(0,0.0);
+./VMECards/SIS3316SimpleTest.cc:    hvcard->EnableChannel(0,false);
+./NGMBlockDetector/NGMBlockAliveMonitor.cc:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMBlockDetector/NGMBlockFlood.cc:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./NGMBlockDetector/NGMBlockDetectorCalibrator.cc:                    _gatewidth[SIS3316_CHANNELS_PER_CARD*islot+ichan][iqdc] = card->qdclength[ichan/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
+./Systems/SIS3316System/SIS3316System.cc:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./Systems/SIS3316System/SIS3316System.cc:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./Systems/SIS3316System/SIS3316System.cc:        card->vmei=vmei;
+./Systems/SIS3316System/SIS3316System.cc:        card->initcard();
+./Systems/SIS3316System/SIS3316System.cc:        card->AllocateBuffers();
+./Systems/SIS3316System/SIS3316System.cc:                card->SetClockChoice(0,2);
+./Systems/SIS3316System/SIS3316System.cc:                card->SetClockChoice(0,1);
+./Systems/SIS3316System/SIS3316System.cc:            card->SetClockChoice(0,0);
+./Systems/SIS3316System/SIS3316System.cc:        card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316System/SIS3316System.cc:	  card->SetCardHeader(icard);
+./Systems/SIS3316System/SIS3316System.cc:        //card->SetClockChoice(0,1);
+./Systems/SIS3316System/SIS3316System.cc:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316System/SIS3316System.cc:        card->ConfigureEventRegisters();
+./Systems/SIS3316System/SIS3316System.cc:        card->ConfigureAnalogRegisters();
+./Systems/SIS3316System/SIS3316System.cc:        card->ConfigureFIR();
+./Systems/SIS3316System/SIS3316System.cc:        card->EnableThresholdInterrupt();
+./Systems/SIS3316System/SIS3316System.cc:	return_code = firstcard->ClearTimeStamp();  //
+./Systems/SIS3316System/SIS3316System.cc:    return_code = firstcard->DisarmAndArmBank();  //
+./Systems/SIS3316System/SIS3316System.cc:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./Systems/SIS3316System/SIS3316System.cc:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONFIG,&irqconfig);
+./Systems/SIS3316System/SIS3316System.cc:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG,&actualAddress);
+./Systems/SIS3316System/SIS3316System.cc:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_ACQUISITION_CONTROL_STATUS,&ctlstatus);
+./Systems/SIS3316System/SIS3316System.cc:                    return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3316_IRQ_CONTROL,&irqstatus);
+./Systems/SIS3316System/SIS3316System.cc:                    float thisTemp = firstcard->ReadTemp();
+./Systems/SIS3316System/SIS3316System.cc:        firstcard->DisarmAndArmBank();
+./Systems/SIS3316System/SIS3316System.cc:    firstcard->Disarm();
+./Systems/SIS3316System/SIS3316System.cc:        card->FetchScalars();
+./Systems/SIS3316System/SIS3316System.cc:        card->FetchAllData();
+./Systems/SIS3316System/SIS3316System.cc:                if(card->IsBlockReadout(iadc))
+./Systems/SIS3316System/SIS3316System.cc:                    card->FetchDataForBlock(iadc);
+./Systems/SIS3316System/SIS3316System.cc:                        card->FetchDataForChannel(ichan);
+./Systems/SIS3316System/SIS3316System.cc:        written = card->WriteSpillToFile(_rawFilePointer);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:      //card->baseaddress = 0;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:      card->vmei=vmei_eth;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    else card->vmei=vmei;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    card->initcard();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    card->AllocateBuffers();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->SetClockChoice(0,2);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->SetClockChoice(0,1);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:      card->SetClockChoice(0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    card->SetCardHeader(icard);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        //card->SetClockChoice(0,1);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->ConfigureEventRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->ConfigureAnalogRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->ConfigureFIR();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->EnableThresholdInterrupt();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        if(getDebug()) card->PrintRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->ResetRunScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:	return_code = firstcard->ClearTimeStamp();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    return_code = firstcard->DisarmAndArmBank();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        firstcard->DisarmAndArmBank();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:    firstcard->Disarm();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->FetchScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:                card->FetchDataOnlyForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        card->LogScalars(_sisreadlog);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc~:        written = card->WriteSpillToFile(_rawFilePointer);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:      //card->baseaddress = 0;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:      card->vmei=vmei_eth;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    else card->vmei=vmei;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    card->initcard();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    card->AllocateBuffers();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->SetClockChoice(0,2);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->SetClockChoice(0,1);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:      card->SetClockChoice(0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    card->SetCardHeader(icard);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        //card->SetClockChoice(0,1);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->ConfigureEventRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->ConfigureAnalogRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->ConfigureFIR();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->EnableThresholdInterrupt();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        if(getDebug()) card->PrintRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->ResetRunScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:	return_code = firstcard->ClearTimeStamp();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    return_code = firstcard->DisarmAndArmBank();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        firstcard->DisarmAndArmBank();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:    firstcard->Disarm();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->FetchScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:                card->FetchDataOnlyForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        card->LogScalars(_sisreadlog);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc_version_with_only_one_card_setting:        written = card->WriteSpillToFile(_rawFilePointer);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:      //card->baseaddress = 0;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:      card->vmei=vmei_eth;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    else card->vmei=vmei;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    card->initcard();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    card->AllocateBuffers();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->SetClockChoice(0,2);  //default is (0,2); changed into (1,2) since card 0 with SN 205 could only sample at 125 MS/s
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:      // card->SetClockChoice(0,2);  
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:         card->SetClockChoice(0,1);  //default is (0,1); changed into (1,1) so that card 0 and 1 could sample at the same frequency
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:      // card->SetClockChoice(0,1); 
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:     // card->SetClockChoice(1,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:      card->SetClockChoice(0,0);   // default is (0,0);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    card->SetCardHeader(icard);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        //card->SetClockChoice(0,1);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->ConfigureEventRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->ConfigureAnalogRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->ConfigureFIR();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->EnableThresholdInterrupt();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        if(getDebug()) card->PrintRegisters();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->ResetRunScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:	return_code = firstcard->ClearTimeStamp();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    return_code = firstcard->DisarmAndArmBank();  //
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:                    unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        firstcard->DisarmAndArmBank();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:    firstcard->Disarm();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->FetchScalars();
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:            double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:                card->FetchDataOnlyForChannel(ichan);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        card->LogScalars(_sisreadlog);
+./Systems/SIS3316SystemMT/SIS3316SystemMT.cc:        written = card->WriteSpillToFile(_rawFilePointer);
+./Systems/SIS3302System/SIS3302System.cc:        card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
+./Systems/SIS3302System/SIS3302System.cc:        printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
+./Systems/SIS3302System/SIS3302System.cc:        card->vmei=vmei;
+./Systems/SIS3302System/SIS3302System.cc:        card->initcard();
+./Systems/SIS3302System/SIS3302System.cc:        card->AllocateBuffers();
+./Systems/SIS3302System/SIS3302System.cc:            card->SetClockChoice(6,0); //6 is external lemo clock
+./Systems/SIS3302System/SIS3302System.cc:            card->SetClockChoice(2,0); //1 is internal 50MHz
+./Systems/SIS3302System/SIS3302System.cc:        card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3302System/SIS3302System.cc:        card->SetCardHeader(icard);
+./Systems/SIS3302System/SIS3302System.cc:	card->ReadActualSampleValues();
+./Systems/SIS3302System/SIS3302System.cc:        //card->SetClockChoice(0,1);
+./Systems/SIS3302System/SIS3302System.cc:        //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
+./Systems/SIS3302System/SIS3302System.cc:        card->ConfigureEventRegisters();
+./Systems/SIS3302System/SIS3302System.cc:        card->ConfigureAnalogRegisters();
+./Systems/SIS3302System/SIS3302System.cc:        card->ConfigureFIR();
+./Systems/SIS3302System/SIS3302System.cc:        card->EnableThresholdInterrupt();
+./Systems/SIS3302System/SIS3302System.cc:        firstcard->ClearTimeStamp();
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./Systems/SIS3302System/SIS3302System.cc:    return_code = firstcard->ArmBank();  //
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./Systems/SIS3302System/SIS3302System.cc:      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./Systems/SIS3302System/SIS3302System.cc:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONFIG,&irqconfig);
+./Systems/SIS3302System/SIS3302System.cc:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACTUAL_SAMPLE_ADDRESS_ADC1,&actualAddress);
+./Systems/SIS3302System/SIS3302System.cc:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_ACQUISITION_CONTROL,&ctlstatus);
+./Systems/SIS3302System/SIS3302System.cc:	      return_code = vmei->vme_A32D32_read(firstcard->baseaddress + SIS3302_IRQ_CONTROL,&irqstatus);
+./Systems/SIS3302System/SIS3302System.cc:                    float thisTemp = firstcard->ReadTemp();
+./Systems/SIS3302System/SIS3302System.cc:        firstcard->DisarmAndArmBank();
+./Systems/SIS3302System/SIS3302System.cc:    firstcard->Disarm();
+./Systems/SIS3302System/SIS3302System.cc:        card->FetchScalars();
+./Systems/SIS3302System/SIS3302System.cc:        card->FetchAllData();
+./Systems/SIS3302System/SIS3302System.cc:        written = card->WriteSpillToFile(_rawFilePointer);

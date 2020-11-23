@@ -1,0 +1,14 @@
+Begin write thread
+Begin write thread
+Begin writing next spill Total Previous Bytes(440) 
+Spill writing complete Total Bytes Written (212920)
+Begin writing next spill Total Previous Bytes(212960) 
+Spill writing complete Total Bytes Written (425440)
+Begin writing next spill Total Previous Bytes(425480) 
+Spill writing complete Total Bytes Written (637960)
+Begin writing next spill Total Previous Bytes(638000) 
+Spill writing complete Total Bytes Written (850480)
+Begin writing next spill Total Previous Bytes(850520) 
+Spill writing complete Total Bytes Written (1063000)
+Found End Of Run Signal
+Exiting Write Thread
