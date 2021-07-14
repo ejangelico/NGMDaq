@@ -3,6 +3,7 @@
 
 #include "TTask.h"
 #include "TH1F.h"
+#include "TObjString.h"
 
  // forward declarations
 class TFolder;
@@ -11,7 +12,7 @@ class TSQLServer;
 class NGMSystemConfiguration;
 class NGMHit;
 class NGMBufferedPacket;
-class TObjString;
+//class TObjString;
 
 class NGMModule: public TTask{
  public:

@@ -4,7 +4,7 @@
 #include "NGMHit.h"
 #include "NGMLogger.h"
 #include "TSystem.h"
-#include "TObjString.h"
+//#include "TObjString.h"
 #include "TSQLServer.h"
 #include "TSQLResult.h"
 #include "TSQLRow.h"

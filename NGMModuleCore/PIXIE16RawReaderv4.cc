@@ -14,6 +14,7 @@
 #include "NGMConfigurationTable.h"
 #include "TThread.h"
 #include "TFile.h"
+#include "TSystem.h"
 #include "NGMModule.h"
 #include "NGMBufferedPacket.h"
 #include <stdlib.h>

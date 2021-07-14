@@ -235,3 +235,18 @@ Post bank switch ...
 14 00000000 00000020 00000000 00000000 00000000 00000000 (0.009847) 
 15 00000000 00000020 00000000 00000000 00000000 00000000 (0.009847) 
 End of Read Thread
+Begin RunPipelinedAcquisitionReadThread
+Before Timestamp clear: Tue, 13 Jul 2021 21:30:17 +0000 (GMT) +781454000 nsec
+After Timestamp clear: Tue, 13 Jul 2021 21:30:17 +0000 (GMT) +835911000 nsec
+Diff from Config 0.335909 seconds.
+Run Duration 2.079847 seconds: Exiting Event Loop: 0x00000000 0 15
+Waiting on previous buffer to be written
+... Complete
+Prior to bank switch ... 
+0	559c	559c
+1	7fe3	7fe3
+... End Prior to bank switch. 
+Post bank switch ... 
+0	7fe3	7fe3
+1	7fe3	7fe3
+... End Post bank switch. 
