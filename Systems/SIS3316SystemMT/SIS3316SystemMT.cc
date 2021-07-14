@@ -426,7 +426,7 @@ void* SIS3316SystemMT::StartRunPipelinedAcquisitionReadThread(void * arg){
 int SIS3316SystemMT::RunPipelinedAcquisition()
 {
     SIS3316Buffer_st spillComplete;
-    spillComplete.status =SIS3316Buffer_st::spillComplete;
+    spillComplete.status = SIS3316Buffer_st::spillComplete;
     if(_prun){
         delete _prun;
     }
@@ -479,7 +479,7 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
     _sisreadlog<<"After Timestamp clear: "<< ts1.AsString()<<std::endl;
     _sisreadlog<<"Diff from Config "<<ts1.AsDouble()-_runBegin->AsDouble()<<" seconds." <<std::endl;
     // Start Readout Loop  */
-    return_code = firstcard->DisarmAndArmBank();  //
+    return_code = firstcard->DisarmAndArmBank();  //primes the SIS3316 memory registers for data logging
     
     double maxLiveTime = _config->GetSystemParameters()->GetParValueD("MaxDuration", 0);
     double timeOfLastTemp = 0.0;
@@ -513,12 +513,13 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
 		    break;
 		}
 	    }
-
+            //always true because poll_counter%1 always == 0? (Evan)
             if(vmei!=0&&doForcedTriggers&&poll_counter%1==0){
                 triggerCount++;
-                return_code = vmei->vme_A32D32_write ( _broadcastbase + SIS3316_KEY_TRIGGER, 0x0);
+                return_code = vmei->vme_A32D32_write ( _broadcastbase + SIS3316_KEY_TRIGGER, 0x0); //trigger's data aquisition
                 usleep(10);
                 uint32_t data;
+                //only 1 iteration??? ichan<1 only once... (Evan)
                 for(int ichan = 0; ichan<1; ichan++){
                     unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
                     return_code = vmei->vme_A32D32_read (prevBankEndingRegister,&data);
@@ -526,6 +527,7 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
                     _sisreadlog<<messages<<std::endl;
                 }
             }
+            //again, always true... 
             if(poll_counter%1==0)
             {
                 TTimeStamp curTime;
@@ -540,15 +542,15 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
                 if((_runduration-timeOfLastTemp)>timeToReadTemp)
                 {
                     timeOfLastTemp = _runduration;
-		    std::vector<double> vtemp;
-		    double tmaxtemp = 0.0;
-		    _sisreadlog<<"SIS3316 Temperature: ";
-		    for(int icard=0; icard<_prun->vcards.size();icard++){
-		      vtemp.push_back(_prun->vcards[icard]->ReadTemp());
-		      _sisreadlog<<vtemp[icard]<<"\t";
-		      if(vtemp[icard]>tmaxtemp) tmaxtemp = vtemp[icard];
-		    }
-		    _sisreadlog<<std::endl;
+        		    std::vector<double> vtemp;
+        		    double tmaxtemp = 0.0;
+        		    _sisreadlog<<"SIS3316 Temperature: ";
+        		    for(int icard=0; icard<_prun->vcards.size();icard++){
+        		      vtemp.push_back(_prun->vcards[icard]->ReadTemp());
+        		      _sisreadlog<<vtemp[icard]<<"\t";
+        		      if(vtemp[icard]>tmaxtemp) tmaxtemp = vtemp[icard];
+        		    }
+		            _sisreadlog<<std::endl;
                     if(tmaxtemp>maxTemp)
                     {
                         _sisreadlog<<"SIS3316 Temperature Exceeding maximum of 52C < "<<tmaxtemp<<ENDM_FATAL;
@@ -556,7 +558,7 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
                     }
                 }
             }
-            {
+            { //empty brackets??? (Evan)
                 TTimeStamp curTime;
                 curTime.Set();
                 _runduration = curTime.AsDouble()-_runBegin->AsDouble();
