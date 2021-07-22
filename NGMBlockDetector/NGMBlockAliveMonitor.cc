@@ -19,6 +19,7 @@
 #include "TH2.h"
 #include "TCanvas.h"
 #include "TVirtualPad.h"
+#include "TObjString.h"
 #include "TROOT.h"
 #include "NGMBufferedPacket.h"
 #include "TProfile2D.h"

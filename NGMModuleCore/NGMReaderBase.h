@@ -23,6 +23,7 @@
 #include "TArrayI.h"
 #include "TTimeStamp.h"
 #include "TString.h"
+#include "TSystem.h"
 #include <fstream>
 #include "NGMSystemConfiguration.h"
 #include "NGMModule.h"

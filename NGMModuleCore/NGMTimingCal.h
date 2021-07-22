@@ -1,6 +1,7 @@
 #ifndef __NGMTIMINGCAL_H__
 #define __NGMTIMINGCAL_H__
 #include "TObject.h"
+#include "TObjString.h"
 #include <list>
 #include <vector>
 #include "NGMHit.h"

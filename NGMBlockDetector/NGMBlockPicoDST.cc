@@ -14,6 +14,7 @@
 #include "NGMHit.h"
 #include "TThread.h"
 #include "TClass.h"
+#include "TObjString.h"
 #include "NGMSystemConfiguration.h"
 
 ////////////////////////////////////////////////////////////

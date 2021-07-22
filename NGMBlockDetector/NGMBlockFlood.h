@@ -14,6 +14,7 @@
 #include "TObjArray.h"
 #include "NGMSpy.h"
 #include "TMatrixD.h"
+#include "TObjString.h"
 #include "NGMBlockMapping.h"
 
 // Forward declarations

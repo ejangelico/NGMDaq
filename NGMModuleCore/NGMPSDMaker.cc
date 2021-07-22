@@ -18,6 +18,7 @@
 #include "TVirtualFitter.h"
 #include "TDirectory.h"
 #include "TSpectrum.h"
+#include "TObjString.h"
 #include <cmath>
 #include "TGraphErrors.h"
 #include "TFitter.h"

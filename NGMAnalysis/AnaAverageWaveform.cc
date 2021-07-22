@@ -13,6 +13,7 @@
 #include "TFolder.h"
 #include "NGMLogger.h"
 #include "TDirectory.h"
+#include "TObjString.h"
 #include <cmath>
 #include "TMath.h"
 #include "NGMBufferedPacket.h"

@@ -7,6 +7,7 @@
 #include "NGMParticleIdent.h"
 #include "NGMBlockMapping.h"
 #include "TTree.h"
+#include "TObjString.h"
 
 #include "TH2.h"
 #include "TH3.h"

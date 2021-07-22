@@ -9,6 +9,7 @@
 #ifndef __NGMBlockPicoDST__
 #define __NGMBlockPicoDST__
 
+#include "TObjString.h"
 #include "NGMHitIO.h"
 #include <fstream>
 #include "NGMHit.h"

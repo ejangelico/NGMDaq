@@ -8,6 +8,7 @@
 //  Copyright 2011 ORNL. All rights reserved.
 //
 
+#include "TObjString.h"
 #include "NGMModule.h"
 #include "NGMPSDAnalyzer.h"
 class NGMBufferedPacket; //Forward Declaration

@@ -2,6 +2,7 @@
 #include "CoincidenceImager.h"
 
 #include "TFile.h"
+#include "TObjString.h"
 
 using namespace std;
 #include <iostream>

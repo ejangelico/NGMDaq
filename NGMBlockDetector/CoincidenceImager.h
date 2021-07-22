@@ -8,6 +8,7 @@
 #include <vector>
 #include "TObject.h"
 #include "TChain.h"
+#include "TObjString.h"
 
 class CoincidenceImageCut : public TObject
 {

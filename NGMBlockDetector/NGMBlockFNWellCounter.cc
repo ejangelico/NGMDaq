@@ -6,6 +6,7 @@
 #include "TFolder.h"
 #include <cmath>
 #include "TFile.h"
+#include "TObjString.h"
 #include "NGMSystemConfiguration.h"
 #include "TParameter.h"
 

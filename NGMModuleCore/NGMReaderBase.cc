@@ -23,6 +23,7 @@
 #include "NGMModule.h"
 #include "TObjString.h"
 #include "TStopwatch.h"
+#include "TSystem.h"
 #include "TROOT.h"
 #include "NGMSystem.h"
 #include <cstdlib>

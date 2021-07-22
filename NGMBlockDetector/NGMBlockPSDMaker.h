@@ -13,6 +13,7 @@
 #include "TObjArray.h"
 #include "NGMSpy.h"
 #include "TMatrixD.h"
+#include "TObjString.h"
 #include "NGMBlockMapping.h"
 #include <map>
 #include "TSpline.h"

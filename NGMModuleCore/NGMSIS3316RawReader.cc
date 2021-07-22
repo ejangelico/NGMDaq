@@ -10,6 +10,7 @@
 #include "sis3316card.h"
 #include "TThread.h"
 #include "TFile.h"
+#include "TSystem.h"
 #include "TObjString.h"
 #include "TString.h"
 #include "TCanvas.h"

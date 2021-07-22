@@ -1,5 +1,6 @@
 #include "NGMTimingCal.h"
 #include "NGMHit.h"
+#include "TObjString.h"
 
 bool NGMTimingCalHitCompare(NGMHit* first, NGMHit* second)
 {
