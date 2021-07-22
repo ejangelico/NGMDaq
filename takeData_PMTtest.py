@@ -67,9 +67,9 @@ def takeData(doLoop=False, n_hours=10.0):
   sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",0,"192.168.1.100")
   sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",1,"192.168.2.100")
 
-  print "\n----> calling InitializeSystem()"
+  print("\n----> calling InitializeSystem()")
   sis.InitializeSystem() # this also calls ConfigureSystem()
-  print "----> done InitializeSystem()\n"
+  print("----> done InitializeSystem()\n")
 
   # Adjust trigger thresholds etc. See sis3316card.{h,cc}
   for icard in xrange(2): # loop over cards:
@@ -81,11 +81,11 @@ def takeData(doLoop=False, n_hours=10.0):
     # master/slave sharingmode:
     sis0.SetClockChoice(clock_source_choice,sis0.sharingmode)
 
-    print "\nSIS", icard, \
+    print("\nSIS", icard, \
       "| nimtriginput:", sis0.nimtriginput, \
       "| clock_source_choice:", sis0.clock_source_choice, \
       "| sharingmode:", sis0.sharingmode, \
-      "| nimtrigoutput:", sis0.nimtrigoutput
+      "| nimtrigoutput:", sis0.nimtrigoutput)
 
     for j in xrange(4): # loop over adc groups
 
@@ -94,11 +94,11 @@ def takeData(doLoop=False, n_hours=10.0):
         sis0.pretriggerdelay_block[j] = pretriggerdelay
         sis0.dacoffset[j] = dacoffset
 
-        print "\t ADC group",  j, \
+        print("\t ADC group",  j, \
             "| dacoffset:", sis0.dacoffset[j], \
             "| gate_window_length:", sis0.gate_window_length_block[j], \
             "| sample_length:", sis0.sample_length_block[j], \
-            "| pretriggerdelay:", sis0.pretriggerdelay_block[j] 
+            "| pretriggerdelay:", sis0.pretriggerdelay_block[j])
 
     # end loop over adc groups
 
@@ -109,22 +109,22 @@ def takeData(doLoop=False, n_hours=10.0):
       #sis0.termination[i] = termination # set termination
       sis0.trigconf[i] = trigconf # set trigger conf
 
-      print "\t SIS", icard, "ch%i" % i, \
+      print("\t SIS", icard, "ch%i" % i, \
           "| gain:", sis0.gain[i], \
           "| termination:", sis0.termination[i], \
           "| firthresh:", sis0.firthresh[i], \
-          "| trigconf:", sis0.trigconf[i]
+          "| trigconf:", sis0.trigconf[i])
 
      # end loop over channels
 
   # end loop over cards
 
-  print "\n-----> configure system" 
+  print("\n-----> configure system")
   sis.ConfigureSystem()
 
-  print "\n-----> start acquisition" 
+  print("\n-----> start acquisition")
   if doLoop:
-      print "===> starting %.1f-hour loop of %.1f-second runs.." % (n_hours, runDuration)
+      print("===> starting %.1f-hour loop of %.1f-second runs.." % (n_hours, runDuration))
       n_loops = 0
       n_errors = 0
       start_time = time.time()
@@ -134,18 +134,18 @@ def takeData(doLoop=False, n_hours=10.0):
           try:
               sis.StartAcquisition() 
           except:
-              print "error!"
+              print("error!")
               n_errors += 1
           n_loops += 1
           now = time.time()
           hours_elapsed = (now - start_time)/60.0/60.0
-          print "=====> %i loops | %i errors | %.1f seconds | %.1e seconds total | %.2f hours total \n" % (
+          print("=====> %i loops | %i errors | %.1f seconds | %.1e seconds total | %.2f hours total \n" % (
               n_loops,
               n_errors,
               now - last_time,
               now - start_time,
               hours_elapsed,
-          )
+          ))
           last_time = now
   else:
       "\n===> starting single run, %.1f seconds" % runDuration

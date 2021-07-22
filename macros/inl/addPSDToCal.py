@@ -21,7 +21,7 @@ def addPSDToCal(calname,dataname):
     irow = detTable.FindFirstRowMatching("DetectorName",detName)
     if irow > -1:
       detTable.SetParameterO("BLOCK_PSD",irow,psdcalc)
-      print "Saving " + psdcalc.GetName()
+      print("Saving " + psdcalc.GetName())
   ofname = ROOT.gSystem.BaseName(dataname)
   ofname = ofname.replace(".root","-cal.root")
   ofile = ROOT.TFile.Open(ofname,"NEW")

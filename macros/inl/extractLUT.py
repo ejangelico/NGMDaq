@@ -32,7 +32,7 @@ def extractLUT(fname):
     flood=floodFolder.FindObjectAny(histname)
     if flood==None:
       continue
-    print "Found " + histname
+    print("Found " + histname)
     flood.SetDirectory(0)
     mLUT=ROOT.LUTmaker(flood,100)
     mLUT.PixelSearch()

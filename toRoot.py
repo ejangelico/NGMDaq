@@ -25,7 +25,7 @@ FIXME -- change NGMHitv6 _waveform to an array/vector? -- maybe make this v8?
 
 import os
 import sys
-import commands
+import subprocess
 import ROOT
 
 def toRoot(fname = None):
@@ -33,11 +33,11 @@ def toRoot(fname = None):
     #If input filename is null assume we want to examine the most recent file
     if(fname == None):
         # example name: SIS3316Raw_20160712204526_1.bin
-        output  = commands.getstatusoutput("ls -rt SIS3316Raw*_1.bin | tail -n1")
-        print "using most recent file, ", output[1]
+        output  = subprocess.getstatusoutput("ls -rt SIS3316Raw*_1.bin | tail -n1")
+        print("using most recent file, ", output[1])
         fname = output[1]
 
-    print "--> processing", fname
+    print("--> processing", fname)
 
     basename = os.path.basename(fname)
     basename =  os.path.splitext(basename)[0]
