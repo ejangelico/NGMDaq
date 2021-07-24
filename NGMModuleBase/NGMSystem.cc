@@ -5,9 +5,7 @@
 #include "NGMLogger.h"
 #include "TThread.h"
 #include "TGClient.h"
-#include "NGMDaqGui.h"
 #include "TFolder.h"
-#include "NGMSpyServ.h"
 #include "TROOT.h"
 #include "TTimer.h"
 #include "TSysEvtHandler.h"
@@ -22,7 +20,7 @@ NGMSystem::NGMSystem()
   _config = 0;
   acqThread = 0;
   _treeSaveSequence = 0;
-  spySrv = 0;
+  //spySrv = 0;
   stopDaqOnCtlC = 0;
   registerSystem(this);
 }
@@ -41,7 +39,7 @@ NGMSystem* NGMSystem::getSystem(int nsystem){
 NGMSystem::~NGMSystem(){
   // deleting a null pointer is ok -JN 2011Jul26
   delete _config;
-  delete spySrv;
+  // delete spySrv;
 }
 
 int NGMSystem::readConfigFile(const char* configfile){
@@ -132,16 +130,18 @@ void* NGMSystem::StartThreadedAcquisitionMethod(void * arg){
   return 0;
 }
 
+/*
 void NGMSystem::LaunchGui()
 {
   NGMDaqGui* gui = new NGMDaqGui(gClient->GetRoot(),800,800);
   gui->DisplayConfiguration(GetConfiguration());
 }
-
+*/
+/*
 void NGMSystem::LaunchSpyServ(int port)
 {
   delete spySrv;
-  spySrv = new NGMSpyServ(port);
+  spySrv = new NGMSpyServ(port);spyserv
 }
 
 void NGMSystem::ProcessSpyServ()
@@ -149,12 +149,14 @@ void NGMSystem::ProcessSpyServ()
   if(spySrv)
     spySrv->CheckForRequests();
 }
+*/
 
  void NGMSystem::GetStatus(TString& status)
 {
     status="NGMSystem::GetStatus Not Implemented in Derived Class\n";
 }
 
+/*
 void NGMSystem::SetStopDaqOnCtlC()
 {
     if(!stopDaqOnCtlC)
@@ -184,3 +186,4 @@ void NGMSystem::ResetCtlC()
     gSystem->ResetSignal(kSigInterrupt);
     printf("Reset ROOT Interrupt Handler\n");
 }
+*/

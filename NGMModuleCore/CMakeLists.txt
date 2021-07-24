@@ -19,7 +19,6 @@ NGMHitIO.cc
 NGMHitProcess.cc
 NGMHitPSD.cc
 NGMPacketMergeSort.cc
-NGMPSDMaker.cc
 NGMTimeGapFinder.cc
 NGMParticleIdent.cc
 NGMSimpleParticleIdent.cc
@@ -41,7 +40,6 @@ NGMHitIO.h
 NGMHitProcess.h
 NGMHitPSD.h
 NGMPacketMergeSort.h
-NGMPSDMaker.h
 NGMTimeGapFinder.h
 NGMParticleIdent.h
 NGMSimpleParticleIdent.h

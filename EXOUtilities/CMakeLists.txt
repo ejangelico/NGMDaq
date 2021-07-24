@@ -64,7 +64,7 @@ SET(EXOUtilities_LIBRARY_PROPERTIES ${EXOUtilities_LIBRARY_PROPERTIES}
 
 ############### build the library #####################
 add_library(EXOUtilities SHARED ${EXOUtilities_SRCS})
-target_link_libraries(EXOUtilities ${ROOT_LIBRARIES} -lFFTW -lfftw3)
+target_link_libraries(EXOUtilities ${ROOT_LIBRARIES} -lFFTW)
 set_target_properties(EXOUtilities PROPERTIES ${EXOUtilities_LIBRARY_PROPERTIES})
 
 set(INCLUDE_FLAGS)

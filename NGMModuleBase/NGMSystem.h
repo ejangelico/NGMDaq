@@ -21,7 +21,7 @@
 #include <vector>
 class NGMSystemConfiguration; // Forward Declaration
 class TThread; // Forward Declaration
-class NGMSpyServ; // Forward Declaration
+// class NGMSpyServ; // Forward Declaration
 class TSignalHandler; //Forward Declaration
 //#include "TThread.h"
 
@@ -197,7 +197,7 @@ protected:
    NGMSystemConfiguration* _config;
    TThread* acqThread; //!
   int _treeSaveSequence;
-  NGMSpyServ* spySrv; //!
+  //NGMSpyServ* spySrv; //!
   TSignalHandler* stopDaqOnCtlC;//!
   
 public:

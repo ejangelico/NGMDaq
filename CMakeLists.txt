@@ -23,10 +23,8 @@ ${ROOT_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/EXOUtilities 
 ${CMAKE_SOURCE_DIR}/NCACommon 
 ${CMAKE_SOURCE_DIR}/NGMData 
-${CMAKE_SOURCE_DIR}/NGMModuleBase 
+${CMAKE_SOURCE_DIR}/NGMModuleBase
 ${CMAKE_SOURCE_DIR}/NGMModuleCore
-${CMAKE_SOURCE_DIR}/NGMAnalysis
-${CMAKE_SOURCE_DIR}/NGMBlockDetector
 ${CMAKE_SOURCE_DIR}/VMECards
 ${CMAKE_SOURCE_DIR}/VMEInterfaces
 ${CMAKE_SOURCE_DIR}/Systems/SIS3316System
@@ -37,14 +35,13 @@ ${TBBINCDIR}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
+link_directories(/usr/lib/x86_64-linux-gnu)
 
 add_subdirectory(EXOUtilities)
 add_subdirectory(NGMData)
 add_subdirectory(NCACommon)
 add_subdirectory(NGMModuleBase)
 add_subdirectory(NGMModuleCore)
-add_subdirectory(NGMAnalysis)
-add_subdirectory(NGMBlockDetector)
 add_subdirectory(VMECards)
 
 find_library(USB_LIBRARY NAMES libusb usb
@@ -61,7 +58,6 @@ add_subdirectory(VMEInterfaces)
 endif(HAVE_3150)
 
 add_subdirectory(Systems/SIS3316System)
-add_subdirectory(Systems/SIS3302System)
 
 #if(HAVETBB)
 add_subdirectory(Systems/SIS3316SystemMT)

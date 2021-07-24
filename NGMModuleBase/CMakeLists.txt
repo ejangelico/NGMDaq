@@ -8,17 +8,11 @@ set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set( NGMModuleBase_SRCS
 NGMModule.cc
 NGMSystem.cc
-NGMDaqGui.cc
-NGMSpyServ.cc
-NGMSpy.cc
 )
 
 set(NGMModuleBase_HEADERS
 NGMModule.h
 NGMSystem.h
-NGMDaqGui.h
-NGMSpyServ.h
-NGMSpy.h
 )
 
 # set everything needed for the root dictonary and create the
