@@ -1,4 +1,4 @@
-from packaging.src import SIS3316
+import SIS3316
 
 if __name__ == "__main__":
     sis = SIS3316.SIS3316()
