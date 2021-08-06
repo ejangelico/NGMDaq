@@ -720,14 +720,13 @@ int SIS3316SystemMT::FetchData()
 {
     bool firstBufferOfSpill = true;
     SIS3316Buffer_st sisbuffer;
-    sisbuffer.status =SIS3316Buffer_st::firstOfSpill;
+    sisbuffer.status = SIS3316Buffer_st::firstOfSpill;
 
     bool isAnyChannelTooFull = false;
     for(int icard = 0; icard < _prun->vcards.size(); icard++)
     {
         sis3316card* card =_prun->vcards[icard];
         card->FetchScalars();
-        printf("Card is %d\n", icard);
         for(int ichan = 0; ichan<SIS3316_CHANNELS_PER_CARD; ichan++){
             double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
             //printf("Frac of buffer on channel %d is %f\n", ichan, fractionOfBuffer);

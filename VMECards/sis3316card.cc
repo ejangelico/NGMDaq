@@ -2,10 +2,11 @@
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
+#include <iostream>
 #include "sis3316card.h"
 #include "vme_interface_class.h"
 
-//using namespace std;
+using namespace std;
 
 /**************************************************************************************/
 

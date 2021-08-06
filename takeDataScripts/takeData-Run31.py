@@ -20,14 +20,14 @@ def takeData( doLoop=False, n_hours=10.0):
   # ---------------------------------------------------------------------------
   # options
   # ---------------------------------------------------------------------------
+  n_cards = 3 #how many struck modules are being used
 
-  n_cards = 3
-
-  runDuration = 20 # seconds
+  runDuration = 15 # seconds
   #A 60s run is 720 MB with 4ms veto
 
   # settings
-  threshold = 1300
+  threshold = 1200 #1200
+  spe_threshold = 1.
   gain = 1 # default = 1 1 = 2V; 0 = 5V, use 1 for LXe runs, 0 for testing warm
   termination = 1 # 1 = 50 ohm?
   nimtriginput = 0x10 # Bit0 Enable : Bit1 Invert , we use 0x10 (from struck root gui)
@@ -35,11 +35,25 @@ def takeData( doLoop=False, n_hours=10.0):
   gaptime = 4 # delay
   risetime = 10 # peaking time
   firenable = 0
- 
-  file_suffix = "evantest".format(int(threshold))
+  min_coincident_channels = 3 #minimum number of coincident channels for an event to trigger "TO"
+  coinc_enable = 0 #enable coincidence setting.
 
 
-  dacoffset = 32768 # default = 32768 
+  #the channels in SiPM card that are
+  #considered in the coincidence and trigger logic
+  #(even if not coincidence, considered in the all-way OR)
+  trig_chan_list = [3,4,5,6,8,9]
+  spe_to_adc_values = [200,150,150,150,150,150]
+  #unsigned int version of this list
+  uint_trig_chan_list = 0x0
+  for i in range(16):
+    if(i in trig_chan_list):
+      uint_trig_chan_list += (1 << i)
+
+  file_suffix = "evantest"
+
+
+  dacoffset = 40000 # default = 32768 
 
   # could have a few other clock freqs if we define them, look to struck root gui for info
   # clock_source_choice = [1,1] # 0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz (we use 3) 
@@ -110,8 +124,20 @@ def takeData( doLoop=False, n_hours=10.0):
   for icard in xrange(n_cards): # loop over cards:
     sis0 = sis.GetConfiguration().GetSlotParameters().GetParValueO("card",icard)
 
+
+
+    sis0.coincidenceEnable = coinc_enable
     sis0.nimtriginput = nimtriginput
-    sis0.nimtrigoutput = 0x1
+    #Output settings that are common:
+    #0x37D: or of [0,2,3,4,5,6,8,9]
+    #0x1000000: stretched pulse from coincidence table 1 settings.
+    if(coinc_enable):
+    	sis0.nimtrigoutput = 0x1000000 
+    	sis0.coincMask = uint_trig_chan_list
+    	sis0.minimumCoincidentChannels = min_coincident_channels
+    else:
+    	#base it off of the trig_chan_list
+    	sis0.nimtrigoutput = uint_trig_chan_list
 
     # need to use this method to set clock freq. We don't want to change the
     # master/slave sharingmode:
@@ -149,11 +175,14 @@ def takeData( doLoop=False, n_hours=10.0):
       sis0.trigconf[i] = trigconf # set trigger conf
       sis0.firenable[i] = firenable
 
-      if icard == 0 and (i in [0,1,2,3,4,5,6,8,9]):
-        sis0.firthresh[i] = threshold # set threshold
+      
+
+      if icard == 0 and (i in trig_chan_list):
+        trig_chan_idx = trig_chan_list.index(i)
+        sis0.firthresh[i] = spe_threshold*spe_to_adc_values[trig_chan_idx] # set threshold
         sis0.firenable[i] = 1
 
-      if icard == 0 and (i in [7,11,12,13,14,15]):
+      if icard == 0 and (i in [1,7,11,12,13,14,15]):
         sis0.trigconf[i] = 0x0
 
       if icard == 1 and i ==13:
@@ -167,6 +196,7 @@ def takeData( doLoop=False, n_hours=10.0):
           "| gain:", sis0.gain[i], \
           "| termination:", sis0.termination[i], \
           "| firthresh:", sis0.firthresh[i], \
+          "| firenable:", sis0.firenable[i], \
           "| trigconf:", sis0.trigconf[i]
 
      # end loop over channels
