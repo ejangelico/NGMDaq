@@ -3,6 +3,7 @@
 #include "NGMReaderBase.h"
 #include "TTimeStamp.h"
 #include "TString.h"
+#include "TSystem.h"
 #include <cstdio>
 #include <vector>
 #include <map>

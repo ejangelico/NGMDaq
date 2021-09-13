@@ -8,6 +8,7 @@
 //  Copyright 2011 ORNL. All rights reserved.
 //
 #include "NGMReaderBase.h"
+#include "TSystem.h"
 #include "TArrayD.h"
 #include "TTimeStamp.h"
 #include <fstream>

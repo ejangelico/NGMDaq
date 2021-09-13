@@ -20,7 +20,7 @@ def takeData( doLoop=False, n_hours=10.0):
   # ---------------------------------------------------------------------------
   # options
   # ---------------------------------------------------------------------------
-  n_cards = 3 #how many struck modules are being used
+  n_cards = 1 #how many struck modules are being used
 
   runDuration = 15 # seconds
   #A 60s run is 720 MB with 4ms veto
@@ -109,7 +109,7 @@ def takeData( doLoop=False, n_hours=10.0):
   sis.GetConfiguration().GetSlotParameters().AddParameterS("IPaddr")
   
   #The VME unit is the master so must go first
-  sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",0,"192.168.1.101")
+  sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",0,"192.168.4.40")
   if n_cards > 1:
     #Slave is currently the DT so goes second
     sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",1,"192.168.1.100")

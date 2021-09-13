@@ -10,6 +10,7 @@
 #include "NGMReaderBase.h"
 #include "TArrayD.h"
 #include "TTimeStamp.h"
+#include "TSystem.h"
 #include <fstream>
 
 class NGMBufferedPacket; //forward declaration
