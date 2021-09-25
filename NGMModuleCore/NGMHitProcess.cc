@@ -5,7 +5,6 @@
 //#include "NGMBlockPSDMaker.h"
 #include "NGMLogger.h"
 #include "sis3316card.h"
-#include "sis3302card.h"
 #include <cmath>
 #include <iostream>
 #include "NGMHitPSD.h"
@@ -83,20 +82,6 @@ bool NGMHitProcess::Init(const NGMSystemConfiguration* conf, int chanseq)
             {
                 _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
                 _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3316_CHANNELS_PER_CARD/SIS3316_CHANNELS_PER_ADCGROUP][iqdc];
-            }
-        }else if(conf->GetSlotParameters()->GetParValueS("cardtype",0)==TString("sis3302card")||
-		 conf->GetSlotParameters()->GetParValueS("cardtype",0)==TString("ssi3302card")){
-            _gatewidth.resize(8);
-            _gatestart.resize(8);
-            int islot =  _chanSeq/SIS3302_CHANNELS_PER_CARD;
-            if(nspar){
-                _nsPerClock = nspar->GetValue(islot);
-            }
-            const sis3302card* card = dynamic_cast<const sis3302card*>(conf->GetSlotParameters()->GetParValueO("card",islot));
-            for(int iqdc =0; iqdc<SIS3302_QDC_PER_CHANNEL; iqdc++)
-            {
-                _gatewidth[iqdc] = card->qdclength[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
-                _gatestart[iqdc] = card->qdcstart[_chanSeq%SIS3302_CHANNELS_PER_CARD/SIS3302_CHANNELS_PER_ADCGROUP][iqdc];
             }
         }else{
             std::cerr<<"Matching card not found "<<std::endl;

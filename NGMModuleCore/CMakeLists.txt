@@ -12,7 +12,6 @@ NGMPIXIE16RawReaderv2.cc
 PIXIE16RawReaderv3.cc
 PIXIE16RawReaderv4.cc
 NGMSIS3316RawReader.cc
-NGMSIS3302RawReader.cc
 NGMMultiFormatReader.cc
 NGMPacketBufferIO.cc
 NGMHitIO.cc
@@ -30,7 +29,6 @@ set(NGMModuleCore_HEADERS
 NGMBaseline.h
 NGMReaderBase.h
 NGMSIS3316RawReader.h
-NGMSIS3302RawReader.h
 NGMPIXIE16RawReaderv2.h
 PIXIE16RawReaderv3.h
 PIXIE16RawReaderv4.h

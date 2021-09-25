@@ -10,7 +10,6 @@ vme_interface_class.cc
 sis3316_ethernetB_access_class.cc
 sis3316_ethernet_access_class.cc
 sis3316card.cc
-sis3302card.cc
 caenHV6533card.cc
 )
 
@@ -20,8 +19,6 @@ sis3316_ethernetB_access_class.h
 sis3316_ethernet_access_class.h
 sis3316card.h
 sis3316.h
-sis3302card.h
-sis3302.h
 caenHV6533card.h
 )
 

@@ -32,7 +32,6 @@
 #include "PIXIE16RawReaderv3.h"
 #include "PIXIE16RawReaderv4.h"
 #include "NGMSIS3316RawReader.h"
-#include "NGMSIS3302RawReader.h"
 
 #define MAXALLOWEDSAMPLES 10000
 #define MAXBUFFERLENGTH 20000000
@@ -133,8 +132,6 @@ NGMReaderBase* NGMReaderBase::Factory(const char* readerType, NGMModule* parent)
     return new PIXIE16RawReaderv4(parent);
   }else if(rstr=="SIS3316Raw"){
     return new NGMSIS3316RawReader(parent);
-  }else if(rstr=="SIS3302Raw"){
-    return new NGMSIS3302RawReader(parent);
   }
   
   
