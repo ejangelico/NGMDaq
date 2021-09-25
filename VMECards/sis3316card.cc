@@ -2,10 +2,11 @@
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
+#include <iostream>
 #include "sis3316card.h"
 #include "vme_interface_class.h"
 
-//using namespace std;
+using namespace std;
 
 /**************************************************************************************/
 
@@ -1885,6 +1886,9 @@ bool sis3316card::DataThresholdReached(){
     SysError("sis3316card:DataThresholdReached","Error reading status from card at address 0x%08x\n",baseaddress);
     return false;
   }
+  //this is effectively an "or" between the two IRQ bits active in 0x0000c000 (14 and 15),
+  //because the and operation returns any integer > 0 if either of the bits are active, and
+  //the if statement returns true if any integer > 0.  (Evan)
   if(ctlstatus&0x0000c000) return true;
   return false;
 }

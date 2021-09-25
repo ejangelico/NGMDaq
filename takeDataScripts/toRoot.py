@@ -19,7 +19,6 @@ created from toROOT.py
       NGMModuleCore/NGMHitOutputFile (in NGMHitIO.{h, cc})
 
 NGMModuleCore/NGMSIS3316RawReader.cc fills out the NGMHit object
-FIXME -- change NGMHitv6 _waveform to an array/vector? -- maybe make this v8?
 
 """
 
@@ -64,7 +63,12 @@ if __name__ == "__main__":
         toRoot()
     else:
         for filename in sys.argv[1:]:
-            toRoot(filename)
+            ext = os.path.splitext(filename)[1]
+            print ext
+            if ext == ".bin":
+                toRoot(filename)
+            else:
+                print "--> skipping %s, please provide *.bin file(s) \n" % filename
 
 
 

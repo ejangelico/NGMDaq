@@ -11,6 +11,7 @@
 #include "NGMModule.h"
 #include "NGMHit.h"
 #include "TObjArray.h"
+#include "TObjString.h"
 #include "NGMSpy.h"
 #include "TMatrixD.h"
 #include "TObjString.h"

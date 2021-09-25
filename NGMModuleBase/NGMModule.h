@@ -3,6 +3,7 @@
 
 #include "TTask.h"
 #include "TH1F.h"
+#include "TObjString.h"
 
  // forward declarations
 class TFolder;

@@ -12,6 +12,7 @@
 #include "TTimeStamp.h"
 #include "TSystem.h"
 #include <fstream>
+#include "TSystem.h"
 
 class NGMBufferedPacket; //forward declaration
 class NGMTimingCal; //forward declaration
