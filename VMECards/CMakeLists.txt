@@ -11,7 +11,6 @@ sis3316_ethernetB_access_class.cc
 sis3316_ethernet_access_class.cc
 sis3316card.cc
 sis3302card.cc
-sis3820card.cc
 caenHV6533card.cc
 )
 
@@ -23,7 +22,6 @@ sis3316card.h
 sis3316.h
 sis3302card.h
 sis3302.h
-sis3820card.h
 caenHV6533card.h
 )
 
@@ -31,10 +29,6 @@ set( SIS3316SimpleTest_SRCS
 SIS3316SimpleTest.cc
 )
 
-
-set( SIS3350Scope_SRCS
-sis3350_scope.cc
-)
 
 set (SIS3316EthTest_SRCS
 sis3316_eth_access_test.cc
@@ -75,9 +69,6 @@ add_executable(SIS3316SimpleTest ${SIS3316SimpleTest_SRCS})
 target_link_libraries(SIS3316SimpleTest VMECards ${ROOT_LIBRARIES})
 
 
-add_executable(SIS3350Scope ${SIS3350Scope_SRCS})
-target_link_libraries(SIS3350Scope VMECards NGMData ${ROOT_LIBRARIES})
-
 add_executable(SIS3316EthTest ${SIS3316EthTest_SRCS})
 target_link_libraries(SIS3316EthTest VMECards NGMData ${ROOT_LIBRARIES})
 
@@ -85,7 +76,7 @@ add_executable(sis3316ethB_tests ${sis3316ethB_tests_SRCS})
 target_link_libraries(sis3316ethB_tests VMECards ${ROOT_LIBRARIES})
 
 ############### install the library ###################
-install(TARGETS SIS3316SimpleTest SIS3350Scope SIS3316EthTest DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(TARGETS SIS3316SimpleTest SIS3316EthTest DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 install(TARGETS sis3316ethB_tests DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 install(TARGETS VMECards DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 install(FILES ${VMECards_HEADERS} DESTINATION include)
