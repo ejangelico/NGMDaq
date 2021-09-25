@@ -197,15 +197,15 @@ def takeData( doLoop=False, n_hours=10.0):
           "| termination:", sis0.termination[i], \
           "| firthresh:", sis0.firthresh[i], \
           "| firenable:", sis0.firenable[i], \
-          "| trigconf:", sis0.trigconf[i]
+          "| trigconf:", sis0.trigconf[i])
 
      # end loop over channels
 
   # end loop over cards
 
-  print("\n-----> configure system" )
+  print("\n-----> configure system")
   sis.ConfigureSystem()
-  print("\n-----> start acquisition" )
+  print("\n-----> start acquisition")
   if doLoop:
       print("===> starting %.1f-hour loop of %.1f-second runs.." % (n_hours, runDuration))
       n_loops = 0
@@ -231,7 +231,7 @@ def takeData( doLoop=False, n_hours=10.0):
           ))
           last_time = now
   else:
-      print "\n===> starting single run, %.1f seconds" % runDuration
+      print("\n===> starting single run, %.1f seconds" % runDuration)
       sis.StartAcquisition() 
 
 
