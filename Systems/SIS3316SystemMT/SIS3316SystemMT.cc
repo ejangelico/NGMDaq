@@ -248,12 +248,16 @@ int SIS3316SystemMT::InitializeSystem()
         std::cout << "Making card #" << icard << " Master " << std::endl;
         card->SetClockChoice(0,2);  //default is (0,2); changed into (1,2) since card 0 with SN 205 could only sample at 125 MS/s
       // card->SetClockChoice(0,2);  
-      }else{
+      }
+      else
+      {
          std::cout << "Making card #" << icard << " Slave " << std::endl;
          card->SetClockChoice(0,1);  //default is (0,1); changed into (1,1) so that card 0 and 1 could sample at the same frequency
       // card->SetClockChoice(0,1); 
       } 
-    }else{
+    }
+    else
+    {
      // card->SetClockChoice(1,0);
       card->SetClockChoice(0,0);   // default is (0,0);
     }
@@ -261,7 +265,11 @@ int SIS3316SystemMT::InitializeSystem()
     Default3316Card(card);
     card->SetCardHeader(icard);
   }
-  ConfigureSystem();
+  //The configure system call is commented out because Evan
+  //thinks it is unneccesary. If you find issues, uncomment. 
+  //if you have a working digitizing system. please remove this 
+  //comment and the old line. 
+  //ConfigureSystem();
   return 0;
 }
 
@@ -341,13 +349,11 @@ int SIS3316SystemMT::ConfigureSystem()
 	if(! active->GetValueI(icard)) continue;
         
         sis3316card* card = dynamic_cast<sis3316card*>(cards->GetValueO(icard));
-        //card->SetClockChoice(0,1);
         //card->SetBroadcastAddress(_broadcastbase,true,icard==0/*first card is broadcast master*/);
         card->ConfigureEventRegisters();
         card->ConfigureAnalogRegisters();
         card->ConfigureFIR();
         card->EnableThresholdInterrupt();
-        // BRIAN'S COINCIDENCE CHANGES
         if(card->coincidenceEnable)
             card->ConfigureCoincidenceTable();
         printf("Modid %x Firmware 0x%08x\n",card->modid,card->adcfirmware[0]);
