@@ -1181,7 +1181,8 @@ void sis3316card::initcommon()
     modid = 0;
     clock_source_choice = 0;
     nimtriginput = 0;
-    nimtrigoutput = 0;
+    nimtrigoutput_to = 0;
+    nimtrigoutput_uo = 0;
 
     coincidenceEnable = 0;
     minimumCoincidentChannels = 0;
@@ -1311,8 +1312,10 @@ void sis3316card::ConfigureEventRegisters()
     // Configure NIM Trigger Input
 	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_NIM_INPUT_CONTROL_REG, ((0x1FFF & nimtriginput)));
     
-    // Configure NIM Trigger Output
-	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput));
+    // Configure NIM Trigger Output, TO, UO, CO
+	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput_to));
+	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_UO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput_uo));
+
     // Configure Acquisition Control Register
     // BIT(5)  : FP-BUS Control as Veto Enable
     // BIT(6)  : FP-BUS Control2 as Timestamp Clear
@@ -2012,9 +2015,14 @@ int sis3316card::PrintRegisters()
     printf("SIS3316_NIM_INPUT_CONTROL_REG 0x%08x 0x%08x\n",data,dataShould);
     
     // Configure NIM Trigger Output
-    dataShould=(0xFFFFFFFF & nimtrigoutput);
+    dataShould=(0xFFFFFFFF & nimtrigoutput_to);
 	return_code = vmei->vme_A32D32_read( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, &data );
     printf("SIS3316_LEMO_OUT_TO_SELECT_REG 0x%08x 0x%08x\n",data,dataShould);
+
+    // Configure NIM Trigger Output
+    dataShould=(0xFFFFFFFF & nimtrigoutput_uo);
+	return_code = vmei->vme_A32D32_read( baseaddress + SIS3316_LEMO_OUT_UO_SELECT_REG, &data );
+    printf("SIS3316_LEMO_OUT_UO_SELECT_REG 0x%08x 0x%08x\n",data,dataShould);
     
     return 0;
 }

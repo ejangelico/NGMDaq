@@ -50,7 +50,7 @@ def takeData( doLoop=False, n_hours=10.0):
     if(i in trig_chan_list):
       uint_trig_chan_list += (1 << i)
 
-  file_suffix = "evantest"
+  file_suffix = "clarketest"
 
 
   dacoffset = 40000 # default = 32768 

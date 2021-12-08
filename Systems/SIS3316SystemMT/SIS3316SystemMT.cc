@@ -207,21 +207,6 @@ int SIS3316SystemMT::InitializeSystem()
     sis3316card* card = dynamic_cast<sis3316card*>(cards->GetValueO(icard));
     if(daqifmode==ethmulti || daqifmode == ethsingle) {
       vme_interface_class * vmei_eth = vme_interface_class::Factory(_vmeinterfacetype.c_str());
-     // vme_interface_class * vmei_eth = vme_interface_class::Factory(vEthType[icard].c_str());
-
-      // hard-code this for a test -- AGS, 18 May 2017
-   /*
-      if (icard == 2) {
-          std::cout << "=========================================" << std::endl;
-          std::cout << "=========================================" << std::endl;
-          std::cout << "=>> forcing sis3316_ethb for card " << icard <<"!! <<=" << std::endl;
-          //vmei_eth = vme_interface_class::Factory("sis3316_ethb");
-          vmei_eth = vme_interface_class::Factory("sis3316_eth");
-          std::cout << "=========================================" << std::endl;
-          std::cout << "=========================================" << std::endl;
-      }
-   */ 
-
       TString IPaddr = cslot->GetParValueS("IPaddr",icard);
       std::cout << "card " << icard << ": _vmeinterfacetype: " << _vmeinterfacetype.c_str() << std::endl;
       std::cout<<"Setting IPAddress for card"<< icard <<" to " << IPaddr.Data()<<std::endl;
