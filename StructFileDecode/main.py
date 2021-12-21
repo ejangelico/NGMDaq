@@ -163,11 +163,11 @@ def find_NGM_header(fileContent, word_offset):    # Find NGM header
     else:
         print('\n============ Appears to be a non standard NGM header block #%d =============\n' % (NGM_header_count))
         for length_offset in np.arange(0, 0x100):  # 0x100 is arbitrary
-            word_32 = get_32_bit_number(fileContent, word_offset + length_offset)
+            NGM_block_size = get_32_bit_number(fileContent, word_offset + length_offset)
             test_lower_length_word = fileContent[word_offset + length_offset]
             tester = 0xabba     # Some bizarre error caused this
             if test_lower_length_word == tester:
-                print('!!!! ===== Super header found =====')
+                print('!!!! ===== Super header #%d found =====' % super_header_count)
                 print("Super header count / offset: %d\t0x%x" % (super_header_count, word_offset))
                 super_header_count += 1
                 super_header_size = length_offset + 20
@@ -176,7 +176,7 @@ def find_NGM_header(fileContent, word_offset):    # Find NGM header
                 presumed_length = get_32_bit_number(fileContent, word_offset + length_offset)
                 print('Presumed length: 0x%x' % presumed_length)
                 break
-            elif word_32 in block_lengths:
+            elif NGM_block_size in block_lengths:
                 print('Lower length word found at offset 0x%x, header #: %d' % (length_offset, NGM_header_count))
                 break
         if length_offset >= 0x0ff:
@@ -198,15 +198,19 @@ def find_NGM_header(fileContent, word_offset):    # Find NGM header
                 print('===>>> uh-oh - unexpected length offset: %d *** Bailing out' % length_offset)        # Will blow up
                 dump_hex(fileContent, word_offset, 0x100)
                 exit(0)
-        word_32 = get_32_bit_number(fileContent, word_offset + length_offset)
-        print('===>>> Word try search: 0x%x' % word_32)
+        NGM_block_size = get_32_bit_number(fileContent, word_offset + length_offset)
+        print('===>>> Length try search: 0x%x' % NGM_block_size)
+        NGM_block_count = (NGM_block_size / 5013)
+        print('!!!! Is this a whole number of 5013s? %0.2f' % NGM_block_count)
 
-        if word_32 not in block_lengths:
+        if NGM_block_size not in block_lengths:
             print('===>>> uh-oh -- no length offset found.  Header size: 0x%x' % size_of_NGM_header)  # Will blow up
             return -1
     # Need to be incrementing word_offset for non-standard length - are we already?
     dump_hex(fileContent, word_offset, size_of_NGM_header)      # Dump the header
     return size_of_NGM_header + super_header_size
+
+DEBUG = False
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Parse NGM Struck File')
@@ -243,36 +247,47 @@ if __name__ == '__main__':
                 while True:
                     print('======= NGM header blocks ========')
                     print('\nNGM header:')
-                    dump_hex(fileContent, file_offset, 0x20)
-                    if fileContent[file_offset+1] == 0:     # Purely empirical - and ugly
+                    dump_hex(fileContent, file_offset, 0x20)        # This is the NGM header
+                    print('========== Magic number indicating size of NGM header: 0x%x' % fileContent[file_offset + 1])
+                    if fileContent[file_offset + 1] == 0:     # Purely empirical - and ugly
                         size_offset = 18
                     elif fileContent[file_offset + 1] == 0x10:  # Purely empirical - and ugly
                         size_offset = 30
-                    elif fileContent[file_offset + 1] == 0x30:
+                    elif fileContent[file_offset + 1] >= 0x30:
                         size_offset = 14
                     else:
                         print('Undecoded magic number: 0x%x' % fileContent[file_offset + 1])
+                        exit(-1)
 
-                    dump_hex(fileContent, file_offset, 0x20)
+                    if DEBUG:
+                        # Just pulling random numbers out of the NGM header - they escalate so they must be some sort of counter
+                        print('NGM counter: 0x%x' % fileContent[file_offset+8])
+                        print('NGM counter #2: 0x%x' % fileContent[file_offset+12])
 
-                    # Just pulling random numbers out of the NGM header - they escalate so they must be some sort of counter
-                    print('NGM counter: 0x%x' % fileContent[file_offset+8])
-                    print('NGM counter #2: 0x%x' % fileContent[file_offset+12])
-
-                    print('Current offset: 0x%x' % file_offset)
+                    if DEBUG:
+                        print('Current offset: 0x%x' % file_offset)
                     NGM_block_size = get_32_bit_number(fileContent, file_offset + size_offset)  # This is the entire length of the block in 32-bit increments
                     print('NGM block size 0x%x' % NGM_block_size)
+                    if NGM_block_size == 0:         # These are NGM headers with extra bytes at the beginning of them
+                        dump_hex(fileContent, file_offset-0x40, 0x200)  # This is the NGM header
+
                     NGM_block_count = (NGM_block_size / 5013)
                     print('Is this a whole number of 5013s? %0.2f' % NGM_block_count)
+
                     # Assuming that NGM_block_count is a whole number
-                    dump_hex(fileContent, file_offset, 0x50)
+                    if DEBUG:
+                        dump_hex(fileContent, file_offset, 0x50)
                     NGM_block_count_integer = int(NGM_block_count)
                     file_offset += size_offset+2
                     for i in range(0, NGM_block_count_integer):
-                        dump_hex(fileContent, file_offset, 0x10)
+                        if DEBUG:
+                            dump_hex(fileContent, file_offset, 0x10)        # Dump the beginning of the of the Struct block
+                        print('0x%x ' % fileContent[file_offset], end='')
                         file_offset += (2 * 5013)
-                    print('\n=======Next NGM header:')
-                    dump_hex(fileContent, file_offset-0x100, 0x140)
+                    print()
+                    if DEBUG:
+                        print('\n=======Next NGM header:')
+                        dump_hex(fileContent, file_offset-0x100, 0x140)             # Looking for 0xABBA - but doesn't work - need to know how many NGMs there are in an 0xABBA
 
                 # This is a bad test
                 channel_and_format = fileContent[file_offset]
@@ -325,7 +340,7 @@ if __name__ == '__main__':
             else:
                 size_of_NGM_header = find_NGM_header(fileContent, word_offset)      # probably don't need all of these return values
                 if size_of_NGM_header != -1:
-                    print('!!!!============================= size_of_NGM_header: 0x%x =======================' % size_of_NGM_header)
+                    print('!!!!============================= size_of_NGM_header #%d: 0x%x =======================' % (NGM_header_count, size_of_NGM_header))
                     word_offset += size_of_NGM_header
                     NGM_header_count += 1
                 else:
