@@ -8,70 +8,17 @@ import numpy as np
 import sys
 ROOT.gROOT.SetBatch(True)
 
-def takeData( doLoop=False, n_hours=10.0):
+def takeData(config_path):
 
 
   #we have migrated to a yaml file input for configuring the strucks. 
-  config_path = "./NGMDaq/config/cryotest_config.yml"
-  config = yaml.load(open(config_path))
-
-
-  # ---------------------------------------------------------------------------
-  # options
-  # ---------------------------------------------------------------------------
-  n_cards = 1 #how many struck modules are being used
-
-  runDuration = 50 # seconds
-  #A 60s run is 720 MB with 4ms veto
-  file_suffix = "evantest"
-
-  # settings
-  threshold = 10 #1200
-  spe_threshold = 1.
-  gain = 1 # default = 1 1 = 2V; 0 = 5V, use 1 for LXe runs, 0 for testing warm
-  termination = 1 # 1 = 50 ohm?
-  nimtriginput = 0x10 # Bit0 Enable : Bit1 Invert , we use 0x10 (from struck root gui)
-  trigconf = 0x8 # default = 0x5, we use 0x8 Bit0:Invert, Bit1:InternalBlockSum, Bit2:Internal, Bit3:External                       
-  gaptime = 4 # delay
-  risetime = 10 # peaking time
-  firenable = 0
-  min_coincident_channels = 3 #minimum number of coincident channels for an event to trigger "TO"
-  coinc_enable = 0 #enable coincidence setting.
-
-
-  #the channels in SiPM card that are
-  #considered in the coincidence and trigger logic
-  #(even if not coincidence, considered in the all-way OR)
-  trig_chan_list = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15]
-  spe_to_adc_values = [200,150,150,150,150,150]
-  
-
-  
-
-
-  dacoffset = 40000 # default = 32768 
-
-  # could have a few other clock freqs if we define them, look to struck root gui for info
-  # clock_source_choice = [1,1] # 0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz (we use 3) 
-  clock_source_choice = 2 # 0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz (we use 3) 
-  gate_window_length = 1050 #800 (normal)
-  pretriggerdelay = 275
-  if clock_source_choice == 0: # preserve length of wfm in microseconds
-      gate_window_length = 8000
-      pretriggerdelay = 2000
-  elif clock_source_choice == 1:
-      #At 125MHz we have 5 times more samples in the same time window 
-      #so extend the number of struck samples saved.
-      gate_window_length = 13000
-      pretriggerdelay = 1000
-      #pretrigger=2000
-      #gate_window_length = 20000
-  elif clock_source_choice == 2:
-      gate_window_length = 10000
-      pretriggerdelay = 2000
-
-  #gate_window_length = 300
-  #pretriggerdelay    = 150
+  with open(config_path, 'r') as stream:
+    try: 
+      config = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+      print("Had trouble opening yaml file:")
+      print(exc)
+      sys.exit()
 
   # ---------------------------------------------------------------------------
 
@@ -91,7 +38,7 @@ def takeData( doLoop=False, n_hours=10.0):
   sis = ROOT.SIS3316SystemMT()
   #sis.setDebug() # NGMModuleBase/NGMModule::setDebug()
   sis.initModules() # NGMModuleBase/NGMModule::initModules()
-  sis.SetNumberOfSlots(n_cards) # SIS3316SystemMT::SetNumberOfSlots()
+  sis.SetNumberOfSlots(len(config['run']['card_numbers'])) # SIS3316SystemMT::SetNumberOfSlots()
   sis.CreateDefaultConfig("SIS3316") # SIS3316SystemMT _config = new NGMSystemConfigurationv1
   
   #sis.SetInterfaceType("sis3316_eth")
@@ -106,7 +53,7 @@ def takeData( doLoop=False, n_hours=10.0):
   
   #IP addresses of cards, that are all confirmed connected by
   #StruckRootGUI
-  for i, no in config["run"]["card_numbers"]:
+  for i, no in enumerate(config["run"]["card_numbers"]):
     #index of card number matches index of IP number 
     sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",no,config["run"]["card_ips"][i])
 
@@ -118,55 +65,136 @@ def takeData( doLoop=False, n_hours=10.0):
   #set each card's configurations 
   for icard in config["run"]["card_numbers"]: # loop over cards:
     sis0 = sis.GetConfiguration().GetSlotParameters().GetParValueO("card",icard)
+    sis0.SetClockChoice(config['digitization']['clock'],sis0.sharingmode) #share clock amongst all cards
 
     #-----trigger settings-----#
     trg = config["trigger"]
+    strg = trg['self_trig_settings']
 
     #get active channels if self-trigger mode is relevant
-    active_chs = trg["self_trig_settings"]["enabled_channels"][icard]
+    #if the card is not listed in the enabled channels zone, internal trig is disabled
+    if(icard not in strg["enabled_channels"]):
+      active_chs = []
+    else:
+      active_chs = strg["enabled_channels"][icard]
     #form an unsigned int, representing the active channels
     active_chs_uint = 0x0
     for i in range(16):
       if(i in active_chs):
-        active_chs_uint += (1 << i)
+        active_chs_uint += (1 << i) #used late for coinc settings
+
+        trigconf = 0x0 #to start
+        trigconf = trigconf | (1 << 2) #enables internal triggering 
+        if(trg['level0_input'] == 'nim'):
+          trigconf = trigconf | (1 << 3) #enables external trigger
+        if(strg['pulse_polarity'] == 'n'):
+          trigconf = trigconf | (1 << 0)
+        sis0.trigconf[i] = trigconf # set trigger conf
+        sis0.firenable[i] = 1
+
+        #set thresholds
+        if(icard not in strg['pe_to_adc']):
+          print("You forgot to add thresholds, pe_to_adc, for card : " + str(icard))
+          print("Exiting.")
+          return
+        adc_conversion = strg['pe_to_adc'][icard] #thresholds for each channel
+        npe = strg['pe_for_trigger'] #same for all channels
+        #these are lists that index-match the active channels list.
+        #first, find which index this channel corresponds to. 
+        chidx = active_chs.index(i) #index of this channel in the channel list
+
+        sis0.firthresh[i] = int(npe*adc_conversion[chidx])
+
+      else:
+        trigconf = 0x0
+        if(trg['level0_input'] == 'nim'):
+          trigconf = trigconf | (1 << 3) #enables external trigger
+        sis0.trigconf[i] = trigconf #allows only for external trigger if provided
+        sis0.firenable[i] = 0x0
 
     #applies coincidence conditions, regardless of the level0_input
-    sis0.coincidenceEnable = trg["self_trig_settings"]["coinc_enable"]
-    if(trg["self_trig_settings"]["coinc_enable"]):
+    sis0.coincidenceEnable = strg["coinc_enable"]
+    if(strg["coinc_enable"]):
       sis0.coincMask = active_chs_uint 
-      sis0.minimumCoincidentChannels = trg["self_trig_settings"]["min_coinc_channels"]
+      sis0.minimumCoincidentChannels = strg["min_coinc_channels"]
 
     #trigger input settings. 
     if(trg["level0_input"] == 'nim'):
       sis0.nimtriginput = 0x10 #set "TI as Trigger Enable", see page 114
     elif(trg["level0_input"] == "self"):
-      pass # i think default values will work perfectly well. 
+      sis0.nimtriginput = 0x0 
     else:
       pass #default settings
 
-    
+    #trigger output settings
+    to = trg['to_settings'] #list of settings to enable
+    tofull = 0x0
+    for setting in to:
+      if(setting == 'coinc'):
+        tofull = tofull | (1 << 24)
+      if(setting == 'sum'):
+        tofull = tofull | (active_chs_uint)
+      if(setting == 'ext'):
+        tofull = tofull | (1 << 25)
+
+    uo = trg['uo_settings'] #list of settings to enable
+    uofull = 0x0
+    for setting in uo:
+      if(setting == 'busy'):
+        uofull = uofull | (1 << 9)
+      if(setting == 'ready'):
+        uofull = uofull | (1 << 8)
+      if(setting == 'coinc'):
+        uofull = uofull | (1 << 24)
 
 
-    # need to use this method to set clock freq. We don't want to change the
-    # master/slave sharingmode:
-    sis0.SetClockChoice(clock_source_choice,sis0.sharingmode)
 
+
+
+    #----digitization settings------#
+    dig = config['digitization']
 
     for j in range(4): # loop over adc groups
+        sis0.gate_window_length_block[j] = dig['gate_window_length'] 
+        sis0.sample_length_block[j] = dig['raw_data_sample_length']
+        sis0.pretriggerdelay_block[j] = dig['pretrig_delay']
 
-        sis0.gate_window_length_block[j] = gate_window_length
-        sis0.sample_length_block[j] = gate_window_length # is this right?!
-        sis0.pretriggerdelay_block[j] = pretriggerdelay
-        sis0.dacoffset[j] = dacoffset
+        #sample start block, which determines the sample_start_index
+        #shown on page 60, will adjust how much baseline is taken before
+        #the time of trigger. This is set in the config as a "baseline_samples",
+        #and here we calculate what the sample index should be based
+        #on the pretrig delay. The baseline can at most be equal to
+        #the pretrigger delay. 
+        if(dig['baseline_samples'] > dig['pretrig_delay']):
+          dig['baseline_samples'] = dig['pretrig_delay']
+        sis0.sample_start_block[j] = dig['pretrig_delay'] - dig['baseline_samples']
+
+        #dac_offset: see page 113: a calc is made in the run script based on the gain setting. 
+        #for example, parametrized here: 
+        #0 is centered in the full ADC range, -1V to +1V
+        #-1 is fully shifted negative polar, -2V to 0V
+        #1 is fully shifted positive, 0V to 2V. 
+        #all floats in between are allowed. default will floor or ceiling if outside of -1 to 1
+        doff = dig['dac_offset']
+        if(doff < -1): doff = -1
+        if(doff > 1): doff = 1 
+        if(dig['gain'] == 1):
+          #gain is for 2V range
+          doff = ((52000 - 13000)/2.0)*doff + 32768
+        elif(dig['gain'] == 0):
+          doff = (65535/2.0)*doff + 32768
+
+        sis0.dacoffset[j] = int(doff)
 
 
-    # end loop over adc groups
 
     for i in range(16):  # loop over each channel
-      sis0.gain[i] = gain
-      sis0.termination[i] = termination # set termination
-      sis0.trigconf[i] = trigconf # set trigger conf
-      sis0.firenable[i] = firenable
+      if(dig['gain'] != 0 and dig['gain'] != 1):
+        print("Warning! Gain setting must be 0 or 1. Setting to 1")
+        dig['gain'] = 1
+      sis0.gain[i] = dig['gain']
+      sis0.termination[i] = dig['termination'] # set termination
+      
 
       
 
@@ -176,9 +204,10 @@ def takeData( doLoop=False, n_hours=10.0):
 
   print("\n-----> configure system") 
   sis.ConfigureSystem()
-  print("\n-----> start acquisition") 
-  if doLoop:
-      print("===> starting %.1f-hour loop of %.1f-second runs.." % (n_hours, runDuration))
+  
+  if(config['run']['do_loop']):
+      n_hours = config['run']['hours_per_iteration']
+      print("===> starting %.1f-hour loop of %.1f-second runs.." % (n_hours, config['run']['duration_per_file']))
       n_loops = 0
       n_errors = 0
       start_time = time.time()
@@ -186,6 +215,7 @@ def takeData( doLoop=False, n_hours=10.0):
       hours_elapsed = 0.0
       while hours_elapsed < n_hours:
           try:
+              print("\n-----> start acquisition") 
               sis.StartAcquisition() 
           except:
               print("error!")
@@ -202,9 +232,13 @@ def takeData( doLoop=False, n_hours=10.0):
           ))
           last_time = now
   else:
-      print("\n===> starting single run, %.1f seconds" % runDuration)
+      print("\n===> starting single run, %.1f seconds" % config['run']['duration_per_file'])
+      print("\n-----> start acquisition") 
       sis.StartAcquisition() 
 
 
 if __name__ == "__main__":
-   takeData()
+  if(len(sys.argv) != 2):
+    print("Progam usage: python takeData.py <config file path>.yml")
+    sys.exit()
+  takeData(sys.argv[1])

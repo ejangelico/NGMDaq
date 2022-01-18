@@ -286,7 +286,8 @@ int main(int argc, char* argv[])
             vslot->dataformat_block[iadc] = 0x07070707; //
         }
         vslot->nimtriginput=0x0; //Disable:0x0 Enable:0x1 Enable+Invert:0x3
-        vslot->nimtrigoutput=0x0;
+        vslot->nimtrigoutput_to=0x0;
+        vslot->nimtrigoutput_uo=0x0;
         for (int ichan=0;ichan<SIS3316_CHANNELS_PER_CARD;ichan++) {
                 if (ichan<4)
                 {

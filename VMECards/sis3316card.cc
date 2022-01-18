@@ -1363,22 +1363,23 @@ void sis3316card::ConfigureAnalogRegisters()
                 write_code = 0x81001400; // The AD9463 only has LVDS; bit 6 set to 0.
           
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
-                usleep(1); //unsigned int uint_usec
-                return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
-                usleep(1); //unsigned int uint_usec
+        usleep(100); //unsigned int uint_usec
+        return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
+        usleep(100); //unsigned int uint_usec
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, 0x8100ff01 ); // SPI (OE)  update
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //unsigned int uint_usec
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, 0x8140ff01 ); // SPI (OE)  update
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //unsigned int uint_usec
 	}
     
     //  set ADC offsets (DAC)
 	for (int iadc=0;iadc<SIS3316_ADCGROUP_PER_CARD;iadc++) { // over all 4 ADC-FPGAs
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0x80000000 + 0x8000000 +  0xf00000 + 0x1);  // set internal Reference
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //this command needs 23us time to execute on board
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0x80000000 + 0x2000000 +  0xf00000 + ((dacoffset[iadc] & 0xffff) << 4) );  // clear error Latch bits
+		usleep(100); 
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0xC0000000 );  // clear error Latch bits
-		usleep(1); //unsigned int uint_usec
+		usleep(100); 
 	}	
 
 }
@@ -1405,11 +1406,6 @@ void sis3316card::ConfigureFIR()
                 + ( (ichan/SIS3316_CHANNELS_PER_ADCGROUP) + 1)*SIS3316_FPGA_ADC_REG_OFFSET
                 + 0x10*(ichan%SIS3316_CHANNELS_PER_ADCGROUP)
                 + 0x44;
-        //data= ( (0x1 & highenergysuppress[ichan]) << 30)
-        //      | ( (0x3 & fircfd[ichan]) << 28 ) // different
-        //     | (0x08000000 + (risetime[ichan] * firthresh[ichan]) );
-        //        std::cout << "test data: " << data << std::endl; // AGS -- int trig testing Feb 2017
-        //        std::cout << "test data: 0x" << std::hex << data << std::dec << std::endl; // AGS -- int trig testing Feb 2017
         data= ( (0x1 & firenable[ichan]) << 31)
               | ( (0x1 & highenergysuppress[ichan]) << 30)
               | ( (0x3 & fircfd[ichan]) << 28 ) // different
@@ -1436,7 +1432,7 @@ void sis3316card::ConfigureFIR()
 
         }
     
-    // set FIR Block Trigger Setup
+    // set FIR Block Trigger Setup, this determines what "SUM" trigger from FIR is. 
 	for (int iadc=0;iadc<SIS3316_ADCGROUP_PER_CARD;iadc++) {
         // FIR Conf
         addr = baseaddress

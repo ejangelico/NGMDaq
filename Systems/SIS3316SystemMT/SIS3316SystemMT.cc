@@ -250,11 +250,8 @@ int SIS3316SystemMT::InitializeSystem()
     Default3316Card(card);
     card->SetCardHeader(icard);
   }
-  //The configure system call is commented out because Evan
-  //thinks it is unneccesary. If you find issues, uncomment. 
-  //if you have a working digitizing system. please remove this 
-  //comment and the old line. 
-  //ConfigureSystem();
+
+
   return 0;
 }
 
@@ -283,7 +280,9 @@ void SIS3316SystemMT::Default3316Card(sis3316card* vslot)
         vslot->dataformat_block[iadc] = 0x05050505; //
     }
     vslot->nimtriginput=0x0; //Disable:0x0 Enable:0x1 Enable+Invert:0x3
-    vslot->nimtrigoutput=0x0;
+    vslot->nimtrigoutput_to=0x0;
+    vslot->nimtrigoutput_uo=0x0;
+
     for (int ichan=0;ichan<SIS3316_CHANNELS_PER_CARD;ichan++) {
         if (ichan<4)
         {
