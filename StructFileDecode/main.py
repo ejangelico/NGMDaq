@@ -67,20 +67,20 @@ def show_super_header(file_data, word_offset):
 
     print('======= Super header =======')
     # Start of 0xabbas is at 0xc8 words
-    sliced, word_offset = make_NGM_file_slice(0xc8, 20)
+    sliced, word_offset = make_NGM_file_slice(200, 20)
     abba = fileContent[sliced]    # The 0xabbas (these could be variable in length?)
     vhex = np.vectorize(hex)
     print('Magic block: %s' % vhex(abba))
 
-    print('\n====  Word offset after first super header: 0x%x (in bytes: 0x%x) ====' % (word_offset, 2*word_offset)) # This is the end of the first super header
+    print('\n====  Word offset after first super header: 0x%x, %d (in bytes: 0x%x) ====' % (word_offset, word_offset, 2*word_offset)) # This is the end of the first super header
     print('======= End of super header =======\n')
     return word_offset
 
-def show_NGM_header(file_data, word_offset, NGM_header_count, NGM_header_start_offset=0, short=False):  # NGM_header_count may be unused
+def show_NGM_header(file_data, word_offset, NGM_header_count, phdr=False):  # NGM_header_count may be unused
     #### print('\n===== NGM header #%d =====' % NGM_header_count)
     vhex = np.vectorize(hex)
-    offset_into_header = word_offset + NGM_header_start_offset
-    if not short:
+    offset_into_header = word_offset
+    if phdr:
         phdrid_slice, word_offset_ignore = make_NGM_file_slice(offset_into_header, 4)
         phdrid = file_data[phdrid_slice]
         print('phdrid: %s' % vhex(phdrid))
@@ -154,44 +154,10 @@ def get_size_of_struck_block_data(fileContent, word_offset):
 def show_offset_or_size(label, offset_or_size):
     print(label + '0x%x (words), 0x%x (bytes), %d (decimal words)' % (offset_or_size, 2 * offset_or_size, offset_or_size))
 
-# This is never used
-def find_super_header(fileContent, word_offset):
-    print('\nLooking for super header:')
-    dump_hex(fileContent, word_offset, 0x100)
-    for i in np.arange(0, 0x100):  # 0x100 is arbitrary
-        test_word = fileContent[word_offset + i]
-        if test_word == 0xabba:
-            break
-    if i >= 0x100:
-        return -1
-    else:
-        print('Start of a new super header')
-        sliced, word_offset_ignore = make_NGM_file_slice(word_offset+i, 20)
-        abba = fileContent[sliced]  # The 0xabbas (these could be variable in length?)
-        vhex = np.vectorize(hex)
-        print('Magic block: %s' % vhex(abba))
-        dump_hex(fileContent, word_offset+i, 20)        # Assuming that there are 20 of these 0xabbas
-        return i + 20       # This is the size of the super header
-
-
-def decode_super_header(fileContent, word_offset, pre_abba_length_offset):
-    global super_header_count
-    # Found a super header
-    print('\n\n===== Super header #%d  =====' % super_header_count)
-    super_header_count += 1
-    super_header_size = pre_abba_length_offset + 20
-    print("Super header size: 0x%x" % (super_header_size))
-    dump_hex(fileContent, word_offset, super_header_size, label='super header')
-    #length_offset = 18  # This is the presumed length offset after a super header.  TODO: couldn't it be 14 too?
-    #presumed_length = get_32_bit_number(fileContent, word_offset + length_offset)
-    #print('Presumed length: 0x%x' % presumed_length)  #### TODO: does this "presumed length" have any meaning?
-    print(30 * '=' + '\n')
-    return super_header_size
-
-
 def decode_struct_blocks(fileContent, word_offset, number_of_struct_blocks, first_block=False):
     S3316_data_block_relative_counter = 1
     total_data_size = 0
+    size_of_struck_block_data = 0
     for block_number in range(0, number_of_struct_blocks):
         # Decode Struck blocks in sequence
         channel_and_format = fileContent[word_offset]
@@ -219,101 +185,56 @@ def decode_struct_blocks(fileContent, word_offset, number_of_struct_blocks, firs
 
 block_lengths = [0x02244c, 0x025f0b, 0x024b76]
 super_header_count = 1
+previous_card_id = None
 
 # Find the length of the NGM header using empirical lengths of the NGM header and the Struck data blocks that we figured out
 # Empirically, the sizes of the NGM header can be 16, 20, 32, 0x64, 0x44, 0x24 (those are all of them in our test file
 
 def find_NGM_header_length(fileContent, word_offset):    # Find NGM header
+    global super_header_count
+    global previous_card_id
 
-    # print('\nDebug header dump:')
-    # dump_hex(fileContent, word_offset, 0x40)
-    # Try the standard as a shortcut to avoid searching
-    # print('\n===== NGM header #%d =====' % NGM_header_count)
-    # test_size = get_32_bit_number(fileContent, word_offset + 18)
-    # test_size2 = get_32_bit_number(fileContent, word_offset + 14)
-    # test_size3 = get_32_bit_number(fileContent, word_offset + 30)
-    # test_size4 = get_32_bit_number(fileContent, word_offset + 0x62)
-    # test_size5 = get_32_bit_number(fileContent, word_offset + 0x42)
-    # test_size6 = get_32_bit_number(fileContent, word_offset + 0x22)
-    # super_header_size = 0
-    # # Testing specific offsets is fragile
-    # if test_size in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     print('A size offset of 0x%x applies, NGM header #%d' % (18, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count)
-    # elif test_size2 in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     # The actual NGM header skips the phdr ID (see "short=True")
-    #     print('\nDefault size offset of 0x%x applies, NGM header #%d' % (14, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count, short=True)
-    # elif test_size3 in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     print('\nA size offset of 0x%x applies, NGM header #%d' % (30, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count)
-    # elif test_size4 in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     print('\nA size offset of 0x%x applies, NGM header #%d' % (0x62, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count) # TODO: This will probably be all wrong
-    # elif test_size5 in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     print('\nA size offset of 0x%x applies, NGM header #%d' % (0x42, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count)  # TODO: This will probably be all wrong
-    # elif test_size6 in block_lengths:  # Note that the first block is exempt from this test.  Which is probably not a good idea
-    #     print('\nA size offset of 0x%x applies, NGM header #%d' % (0x22, NGM_header_count))
-    #     size_of_NGM_header = show_NGM_header(fileContent, word_offset, NGM_header_count)  # TODO: This will probably be all wrong
+    number_of_data_blocks = 0
+    NGM_block_count = 0
+    total_struck_blocks_size = 0
+    size_of_super_header = 0
+    NGM_header_size = 0
 
-    if False:
-        i = 1
+    header_start = get_32_bit_number(fileContent, word_offset)
+    test_block_length = get_32_bit_number(fileContent, word_offset)
+    if test_block_length == 0xabbaabba:       # It's a super block
+        super_header_count += 1
+        size_of_super_header = 0x10
+    elif test_block_length == 0xe0f0e0f:
+        print('End of file detected')
+        exit(0)
     else:
-        NGM_header_size = 0
-        super_header_size = 0
-        number_of_data_blocks = 0
-        NGM_block_count = 0
+        this_card_id = (0xff000000 & header_start) >> 24
+        print('header_start data: {}'.format(hex(header_start)))
+        print('Card ID: {}'.format(this_card_id))
+        print()
 
-        # A brute force search is ugly
-        # TODO: skip by 2 in the loop
+        if (this_card_id != previous_card_id) and (header_start & 0xff0000 == 0):
+            # If we've switched to a new card and are on channel 0, there should
+            # be a phdrid; two 32-bit words long.
 
-        total_struck_blocks_size = 0
-        for length_offset in np.arange(0, 0x100):  # 0x100 is arbitrary search length       # Is it enough?
-            struck_block_size_in_NGM_header = get_32_bit_number(fileContent, word_offset + length_offset)
-            test_block_length = get_32_bit_number(fileContent, word_offset + length_offset)
-            tester = 0xabbaabba
-            # print('Lower length word this try: 0x%x' % test_block_length)
-            if test_block_length in block_lengths:      # TODO: This is super fragile
-                print('\n===== NGM header #%d =====' % NGM_header_count)
-                print('Lower length word found at offset 0x%x, header #: %d' % (length_offset, NGM_header_count))
-                print('>>> Struck block size: %d, 0x%x' % (struck_block_size_in_NGM_header, struck_block_size_in_NGM_header))
-                NGM_header_size = length_offset+2
-                print('--->>> NGM header size: %d, 0x%x' % (NGM_header_size, NGM_header_size))
-                NGM_block_count = (test_block_length / 5013)       # TODO: 5013 cannot be hardwired
-                print('Is this a whole number of 5013s? %0.2f' % NGM_block_count)
-                NGM_block_count = int(NGM_block_count)
+            print('\nREADING NEXT CARD')
+            phdr = True
+        else:
+            phdr = False
 
-                short = False
-                if NGM_header_size == 16:
-                    short = True
-                    NGM_header_start_offset = 0
-                else:
-                    NGM_header_start_offset = NGM_header_size - 20
-                # TODO: I don't like returning things from a "show" method
-                number_of_data_blocks, total_struck_blocks_size = show_NGM_header(fileContent, word_offset,
-                                                                                  NGM_header_count,
-                                                                                  NGM_header_start_offset=NGM_header_start_offset,
-                                                                                  short=short)
-                # Need to be incrementing word_offset for non-standard length - are we already?
-                dump_hex(fileContent, word_offset, NGM_header_size, 'NGM header')  # Dump the header
-                print('Internal NGM block count: %d' % fileContent[word_offset+1])
-                if NGM_block_count != number_of_data_blocks:         # Need to give better names to these
-                    print('========!!!!!!!!! Uh oh.  mismatch between Struck block counts.')
-                    print('\tCount by dividing by 5013: %d vs. direct count from spill header: %d' % (NGM_block_count, number_of_data_blocks))
-                    print('\tUsing division count.  Which is very fragile.')
-                print('==== size_of_NGM_header #%d: 0x%x ====' % (NGM_header_count, NGM_header_size))
-                print('===== End of NGM header #%d =====\n' % NGM_header_count)
+        number_of_data_blocks, total_struck_blocks_size = show_NGM_header(fileContent, word_offset,
+                                                                          NGM_header_count,
+                                                                          phdr=phdr)
+        if (number_of_data_blocks == 0):
+            print('===== Empty spill header')
+        NGM_header_size = 0x10 + (4 if phdr == True else 0)
+        # Need to be incrementing word_offset for non-standard length - are we already?
+        dump_hex(fileContent, word_offset, NGM_header_size, 'NGM header')  # Dump the header
+        print('Internal NGM block count: %d' % fileContent[word_offset + 1])
+        print('===== End of NGM header #%d =====\n' % NGM_header_count)
 
-                break
-            elif test_block_length == tester:       # It's a super block
-                super_header_size = decode_super_header(fileContent, word_offset, length_offset)
-                break
-        if length_offset >= 0x0ff:
-            print('===>>> uh oh - Did not find the NGM length word or a 0xabba super header')  # Will blow up
-            dump_hex(fileContent, word_offset, 0x100)
-            exit(0)
-    return NGM_header_size, super_header_size, NGM_block_count, total_struck_blocks_size
+    return NGM_header_size, size_of_super_header, number_of_data_blocks, total_struck_blocks_size  # number_of_data_blocks
 
 DEBUG = False
 
@@ -416,14 +337,6 @@ if __name__ == '__main__':
             print('===== Super header #%d =====' % super_header_count)
             super_header_count += 1
             word_offset = show_super_header(fileContent, 0)
-
-            # print('\n' + 40 * '#')
-            # show_offset_or_size('Super header size:\t', 0xdc)
-            # show_offset_or_size('NGM header size:\t', size_of_NGM_header)
-            # show_offset_or_size('Struck header size:\t', 26)
-            # show_offset_or_size('Data size:\t\t\t', size)
-            # print(40 * '#' + '\n')
-
 
             NGM_header_count = 1
             #### NGM_this_block_header_count = 0     # this number is immediately overridden below
