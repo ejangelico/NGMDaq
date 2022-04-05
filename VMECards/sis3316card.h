@@ -144,12 +144,11 @@ private:
     void ConfigureEventRegisters();
     void ConfigureAnalogRegisters();
     void ConfigureFIR();
-    // BRIAN'S COINCIDENCE CHANGES
     void ConfigureCoincidenceTable();
 	int set_frequency(int osc, unsigned char *values);
     int AllocateBuffers(unsigned int buffersize = 0x1000000);
-    int AllocateDatabuffer(int ichan, unsigned int buffersize = 0x1000000 /*64MBytes*/);
-    int clearDataBuffers();
+    int AllocateDatabuffer(int ichan, unsigned int buffersize = 0x1000000 /*64MBytes*/); //64MB is maximum channel size
+    int resetAllFifos();
     double FetchDataSizeForChannel(int ichan);
     int FetchDataForChannel(int ichan);
     int FetchDataOnlyForChannel(int ichan);

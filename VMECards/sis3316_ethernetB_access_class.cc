@@ -117,12 +117,14 @@ int sis3316_ethb::vmeopen ( )
     if( return_code != 0 ) {
         printf("sis3316_ethernetB_access_class : vmeopen : ERROR writing to arbitration control on 3316\nReturn code %i\n", return_code);
     }
+    printf("Wrote 0x80000000 to the INTERFACE_ACCESS_ARBITRATION_CONTROL reg\n");
     //    ARBITRATE
     //    whatever that means
     return_code = this->vme_A32D32_write(0x10/*SIS3316_INTERFACE_ACCESS_ARBITRATION_CONTROL*/, 0x1);
     if( return_code != 0 ) {
         printf("sis3316_ethernetB_access_class : vmeopen : ERROR writing to arbitration control on 3316\nReturn code %i\n", return_code);
     }
+    printf("Wrote 0x1 to the INTERFACE_ACCESS_ARBITRATION_CONTROL reg\n");
     if( return_code == 0 ) {
         printf("sis3316_ethb interface opened successfully\n");
         // AGS

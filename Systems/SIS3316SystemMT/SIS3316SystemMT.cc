@@ -71,6 +71,8 @@ int SIS3316SystemMT::CreateDefaultConfig(char const *configname)
     csys->AddParameterI("RunCheckStopEventsFlag", 0);
     csys->AddParameterI("RunMaxEventCounter", 0);
     csys->AddParameterD("MaxDuration", 0,60);
+    csys->AddParameterD("SpillDuration", 0,2);
+    csys->AddParameterD("FullFraction", 0,0.9);
     csys->AddParameterI("DataEvent_FileCounter", 0);
 	csys->AddParameterI("dataFormat", 0);
 	csys->AddParameterI("NoOfModulesRun", 0);
@@ -85,6 +87,8 @@ int SIS3316SystemMT::CreateDefaultConfig(char const *configname)
     csys->SetParameterToDefault("RawOutputPath");
     csys->SetParameterToDefault("OutputFileSuffix");
     csys->SetParameterToDefault("MaxDuration");
+    csys->SetParameterToDefault("SpillDuration");
+    csys->SetParameterToDefault("FullFraction");
 
     // Required Configuration Parameters
     csys->AddParameterI("RunReadoutMode",1,1,3);
@@ -92,7 +96,7 @@ int SIS3316SystemMT::CreateDefaultConfig(char const *configname)
     cslot->AddParameterI("ModEnable");
 	cslot->AddParameterS("ModAddr", "NA");
     cslot->AddParameterI("ClockMode",0);
-    cslot->AddParameterD("NanoSecondsPerSample",40.0);
+    cslot->AddParameterD("NanoSecondsPerSample",4.0);
     cslot->AddParameterI("modid");
     cslot->AddParameterS("cardtype","sis3316card");
     cslot->AddParameterO("card");
@@ -111,7 +115,7 @@ int SIS3316SystemMT::CreateDefaultConfig(char const *configname)
         card->baseaddress = strtoul(cslot->GetParValueS("ModAddr",icard),0,0);
         printf("Slot %d BaseAddress 0x%08x\n",icard,card->baseaddress);
         cslot->SetParameterI("ModEnable",icard,1);
-        cslot->SetParameterD("NanoSecondsPerSample",icard,40.0);
+        cslot->SetParameterD("NanoSecondsPerSample",icard,4.0);
     }
     
     cdet->AddParameterS("DetectorName","NA");
@@ -224,8 +228,8 @@ int SIS3316SystemMT::InitializeSystem()
       }
     }
     else card->vmei=vmei;
-    card->initcard();
-    card->AllocateBuffers();
+    card->initcard(); //sets struck to its power up state. 
+    card->AllocateBuffers(); //by default allocates 64 MB, the max size of hardware memory per channel. 
     if(_numberOfSlots>1)
     {
       if(icard==0)
@@ -480,48 +484,44 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
     int poll_counter = 0;
     bool doForcedTriggers = false;
     bool singleCardAtThreshold = false;
-    int maxpollcount = 100000;
-    double maxTimeBetweenSpills = 2.0;
+    double maxTimeBetweenSpills = _config->GetSystemParameters()->GetParValueD("SpillDuration", 0);
     double timeOfLastSpillRead = 0.0;
-    while(!_requestStop) 
+    TTimeStamp curTime;
+    cout << "Starting run with maxLiveTime " << maxLiveTime << endl;
+    while(!_requestStop)
     {
+        cout << "Listening for events in " << maxTimeBetweenSpills << " second interval..." << endl;
         triggerCount = 0;
-    	poll_counter = 0 ;
-    	singleCardAtThreshold = false;
-        while ((data_rd & 0xFE) == 0x00000
-                 && !_requestStop
-                 //&& poll_counter<maxpollcount
-                 && !singleCardAtThreshold
-                 && (_runduration-timeOfLastSpillRead < maxTimeBetweenSpills))
+        poll_counter = 0 ;
+        singleCardAtThreshold = false;
+
+        //iterate for a duration of "maxTimeBetweenSpills" seconds, unless some other
+        //conditions arise
+        while ((data_rd & 0xFE) == 0x00000 && !_requestStop && !singleCardAtThreshold
+           && (_runduration-timeOfLastSpillRead < maxTimeBetweenSpills))
         {
-			poll_counter++;
-			//vmei->vme_IRQ_Status_read( &data_rd);
+            poll_counter++;
+            //vmei->vme_IRQ_Status_read( &data_rd);
             //if(poll_counter>1) usleep(1000);
 
-    	    for(int icard = 0; icard < _prun->vcards.size(); icard++)
-            {
-                //check if the struck has filled its data memory banks (Evan)
-    	        if(_prun->vcards[icard]->DataThresholdReached())
-                {
-                    TTimeStamp curTime; 
-                    curTime.Set(); //computer time (Evan)
-                    _runduration = curTime.AsDouble() - _runBegin->AsDouble();
+            for(int icard = 0; icard < _prun->vcards.size(); icard++){
+                if(_prun->vcards[icard]->DataThresholdReached()){
+                    curTime.Set();
+                    _runduration = curTime.AsDouble()-_runBegin->AsDouble();
 
                     _sisreadlog<<"Data Treshold reached for card "<<icard<<" at "<<_runduration<<" seconds."<<std::endl;
                     singleCardAtThreshold = true;
-                    break; //break out if any card has reached data threshold (Evan)
-        		}
-    	    }
+                    break;
+                }
+            }
 
-            //this looks like a "software trigger mode", in that doForcedTriggers
-            //is a setting, and this if statement forces a trigger and then reads it
+            //doForcedTrigger not implemented for us, but is like a software trigger
             if(vmei!=0&&doForcedTriggers&&poll_counter%1==0)
             {
                 triggerCount++;
-                return_code = vmei->vme_A32D32_write ( _broadcastbase + SIS3316_KEY_TRIGGER, 0x0); //triggers data aquisition
+                return_code = vmei->vme_A32D32_write ( _broadcastbase + SIS3316_KEY_TRIGGER, 0x0);
                 usleep(10);
                 uint32_t data;
-                //only 1 iteration??? ichan<1 only once... (Evan)
                 for(int ichan = 0; ichan<1; ichan++)
                 {
                     unsigned int prevBankEndingRegister = firstcard->baseaddress + SIS3316_ADC_CH1_ACTUAL_SAMPLE_ADDRESS_REG + 0x1000*(ichan/4)+ (ichan%4)*0x4;
@@ -530,55 +530,50 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
                     _sisreadlog<<messages<<std::endl;
                 }
             }
-            //this is always true... why (Evan)
-            if(poll_counter % 1 == 0)
-            {
-                TTimeStamp curTime;
-                curTime.Set();
-                _runduration = curTime.AsDouble() - _runBegin->AsDouble();
-                //this is the 60 seconds or so specified in takeData... but is measured
-                //in computer time, which does not represent much if no data is coming in... confused (Evan)
-                if(_runduration > maxLiveTime)
-                {
-                    sprintf(messages,"Maximum RunTime Exceeded %f(%f)",_runduration,maxLiveTime);
-                    _sisreadlog<<messages<<std::endl;
-                    _requestStop = true;
-                }
-                if((_runduration - timeOfLastTemp)>timeToReadTemp)
-                {
-                    timeOfLastTemp = _runduration;
-        		    std::vector<double> vtemp;
-        		    double tmaxtemp = 0.0;
-        		    _sisreadlog<<"SIS3316 Temperature: ";
-        		    for(int icard=0; icard<_prun->vcards.size();icard++){
-        		      vtemp.push_back(_prun->vcards[icard]->ReadTemp());
-        		      _sisreadlog<<vtemp[icard]<<"\t";
-        		      if(vtemp[icard]>tmaxtemp) tmaxtemp = vtemp[icard];
-        		    }
-		            _sisreadlog<<std::endl;
-                    if(tmaxtemp>maxTemp)
-                    {
-                        _sisreadlog<<"SIS3316 Temperature Exceeding maximum of 52C < "<<tmaxtemp<<ENDM_FATAL;
-                        _requestStop = true;
-                    }
-                }
-            }
-            //empty brackets??? (Evan)
-            TTimeStamp curTime;
+
+
             curTime.Set();
             _runduration = curTime.AsDouble()-_runBegin->AsDouble();
-            //sprintf(messages,"Run Duration %f seconds: Polling Loop: 0x%08x %d %d",_runduration,data_rd,_requestStop,poll_counter);
-            //_sisreadlog<<messages<<std::endl;
+            //if the run duration reaches the 50 seconds or so full run duration, end. 
+            if(_runduration>maxLiveTime)
+            {
+                sprintf(messages,"Maximum RunTime Exceeded %f(%f)",_runduration,maxLiveTime);
+                _sisreadlog<<messages<<std::endl;
+                _requestStop = true;
+            }
+            //take temperatures at regular intervals
+            if((_runduration-timeOfLastTemp)>timeToReadTemp)
+            {
+                timeOfLastTemp = _runduration;
+                std::vector<double> vtemp;
+                double tmaxtemp = 0.0;
+                _sisreadlog<<"SIS3316 Temperature: ";
+                for(int icard=0; icard<_prun->vcards.size();icard++){
+                  vtemp.push_back(_prun->vcards[icard]->ReadTemp());
+                  _sisreadlog<<vtemp[icard]<<"\t";
+                  if(vtemp[icard]>tmaxtemp) tmaxtemp = vtemp[icard];
+                }
+                _sisreadlog<<std::endl;
+                if(tmaxtemp>maxTemp)
+                {
+                _sisreadlog<<"SIS3316 Temperature Exceeding maximum of 52C < "<<tmaxtemp<<ENDM_FATAL;
+                _requestStop = true;
+                }
+            }
             
+
+            curTime.Set();
+            _runduration = curTime.AsDouble()-_runBegin->AsDouble();
+     
         } 
-        
-        TTimeStamp curTime;
+    
+
         curTime.Set();
         _runduration = curTime.AsDouble()-_runBegin->AsDouble();
         timeOfLastSpillRead = _runduration;
         sprintf(messages,"Run Duration %f seconds: Exiting Event Loop: 0x%08x %d %d",_runduration,data_rd,_requestStop,poll_counter);
         _sisreadlog<<messages<<std::endl;
-        
+    
         // This blocking pop tells us that the Writing thread from a previous spill
         // has completed.
         SIS3316Buffer_st isFillComplete;
@@ -592,6 +587,26 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
             _sisreadlog<<"Prior to bank switch ... "<<std::endl;
             for(auto tcard: _prun->vcards)
             {
+              _sisreadlog<<icard
+              <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
+              <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
+              <<std::dec
+              <<std::endl;
+              icard++;
+            }
+            _sisreadlog<<"... End Prior to bank switch. "<<std::endl;
+        }
+
+
+        firstcard->DisarmAndArmBank();
+
+        // Print status and current address
+        if(getDebug()){
+            usleep(100);
+            int icard =0;
+            _sisreadlog<<"Post bank switch ... "<<std::endl;
+            for(auto tcard: _prun->vcards)
+            {
                 _sisreadlog<<icard
                 <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
                 <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
@@ -599,34 +614,18 @@ int SIS3316SystemMT::RunPipelinedAcquisitionReadThread()
                 <<std::endl;
                 icard++;
             }
-            _sisreadlog<<"... End Prior to bank switch. "<<std::endl;
+            _sisreadlog<<"... End Post bank switch. "<<std::endl;
         }
-      
-        firstcard->DisarmAndArmBank();
-      
-      // Print status and current address
-      if(getDebug()){
-        usleep(100);
-        int icard =0;
-        _sisreadlog<<"Post bank switch ... "<<std::endl;
-        for(auto tcard: _prun->vcards){
-          _sisreadlog<<icard
-          <<"\t"<<std::hex<<tcard->GetAcquisitionControl()
-          <<"\t"<<std::hex<<tcard->GetActualSampleAddress()
-          <<std::dec
-          <<std::endl;
-          icard++;
-        }
-        _sisreadlog<<"... End Post bank switch. "<<std::endl;
-      }
         FetchData();
 
     }
+
     firstcard->Disarm();
     SIS3316Buffer_st endOfRun;
     endOfRun.status=SIS3316Buffer_st::endOfRun;
     _prun->filledPacketBuffers.push(endOfRun);
     _sisreadlog<<"End of Read Thread"<<std::endl;
+
     return 0;
 
 }
@@ -674,17 +673,19 @@ int SIS3316SystemMT::RunPipelinedAcquisitionWriteThread()
         
         if(nextBuf.status==SIS3316Buffer_st::normal
            || nextBuf.status==SIS3316Buffer_st::firstOfSpill){
-            if(nextBuf.chan==0){
+            if(nextBuf.chan==0)
+            {
                 unsigned int phdrid[2];
                 phdrid[0] = _prun->vcards[nextBuf.slot]->adcheaderid[0]&0xFF000000;
                 phdrid[1] = 0;
                 if(nextBuf.skippedRead) phdrid[1] = 0x1;
                 written+= fwrite(phdrid,0x4,2,_rawFilePointer)*0x4;
                 errorcode = ferror(_rawFilePointer);
-                if(errorcode){
+                if(errorcode)
+                {
                     _writelog<<"sis3316card::WriteSpillToFile: Error writing spill header to binary file "<<errorcode<<std::endl;
                 }
-            }
+            }   
             written = _prun->vcards[nextBuf.slot]->WriteChannelToFile(nextBuf.chan, _rawFilePointer);
             _totalBytesWritten+=written;
 
@@ -711,40 +712,44 @@ int SIS3316SystemMT::FetchData()
     bool firstBufferOfSpill = true;
     SIS3316Buffer_st sisbuffer;
     sisbuffer.status = SIS3316Buffer_st::firstOfSpill;
-
+    double fullFraction = _config->GetSystemParameters()->GetParValueD("FullFraction", 0); //fraction of data buffer considered "full"
     bool isAnyChannelTooFull = false;
     for(int icard = 0; icard < _prun->vcards.size(); icard++)
     {
         sis3316card* card =_prun->vcards[icard];
         card->FetchScalars();
         for(int ichan = 0; ichan<SIS3316_CHANNELS_PER_CARD; ichan++){
+
+            //this function will return 0x900 = 2304 if it fails to
+            //"Verify that the previous bank address is valid", which is a bit vague. 
             double fractionOfBuffer = card->FetchDataSizeForChannel(ichan);
-            //printf("Frac of buffer on channel %d is %f\n", ichan, fractionOfBuffer);
-            if(fractionOfBuffer>0.99) isAnyChannelTooFull = true;
-            if (isAnyChannelTooFull) std::cout << " Full channel found "<< ichan << std::endl;
+            
+            if(fractionOfBuffer>fullFraction) isAnyChannelTooFull = true; //not always, sometimes its 0x900, but the outcome is also a skipped read. 
+            if (isAnyChannelTooFull) std::cout << " Full channel found "<< ichan << " with fraction of buffer " << fractionOfBuffer << std::endl;
         }
     }
     sisbuffer.skippedRead = isAnyChannelTooFull;
-    
+    cout << "sisbuffer.skippedRead: " << isAnyChannelTooFull << endl;
+    int read_retval = 0;
     for(int icard = 0; icard < _prun->vcards.size(); icard++)
     {
         sis3316card* card =_prun->vcards[icard];
         for(int ichan = 0; ichan<SIS3316_CHANNELS_PER_CARD; ichan++){
             if(!sisbuffer.skippedRead){
-                card->FetchDataOnlyForChannel(ichan);
+                read_retval = card->FetchDataOnlyForChannel(ichan);
             }
             sisbuffer.slot = icard;
             sisbuffer.chan = ichan;
             _prun->filledPacketBuffers.push(sisbuffer);
 
             if(firstBufferOfSpill){
-                sisbuffer.status =SIS3316Buffer_st::normal;
+                sisbuffer.status = SIS3316Buffer_st::normal;
                 firstBufferOfSpill = false;
             }
-
         }
         card->LogScalars(_sisreadlog);
     }
+
     
     sisbuffer.status =SIS3316Buffer_st::spillComplete;
     _prun->filledPacketBuffers.push(sisbuffer);

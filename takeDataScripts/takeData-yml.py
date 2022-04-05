@@ -36,7 +36,8 @@ def takeData(config_path):
   """
 
   sis = ROOT.SIS3316SystemMT()
-  #sis.setDebug() # NGMModuleBase/NGMModule::setDebug()
+  if(config['run']['debug']):
+    sis.setDebug() # NGMModuleBase/NGMModule::setDebug()
   sis.initModules() # NGMModuleBase/NGMModule::initModules()
   sis.SetNumberOfSlots(len(config['run']['card_numbers'])) # SIS3316SystemMT::SetNumberOfSlots()
   sis.CreateDefaultConfig("SIS3316") # SIS3316SystemMT _config = new NGMSystemConfigurationv1
@@ -45,9 +46,12 @@ def takeData(config_path):
   sis.SetInterfaceType("sis3316_ethb") # SIS3316SystemMT testing this one since it has VME_FPGA_VERSION_IS_0008_OR_HIGHER
 
   # NGMSystem::GetConfiguration returns NGMSystemConfiguration, in NGMData/
+
   # NGMSystemConfiguration::GetSystemParameters() returns
   # NGMConfigurationTable, in NGMData/
   sis.GetConfiguration().GetSystemParameters().SetParameterD("MaxDuration",0,config["run"]["duration_per_file"]) #seconds
+  sis.GetConfiguration().GetSystemParameters().SetParameterD("SpillDuration", 0, config["run"]["spill_duration"])
+  sis.GetConfiguration().GetSystemParameters().SetParameterD("FullFraction", 0, config["full_fraction"])
   sis.GetConfiguration().GetSystemParameters().SetParameterS("OutputFileSuffix",0,config["run"]["file_suffix"]) 
   sis.GetConfiguration().GetSlotParameters().AddParameterS("IPaddr")
   
@@ -57,6 +61,8 @@ def takeData(config_path):
     #index of card number matches index of IP number 
     sis.GetConfiguration().GetSlotParameters().SetParameterS("IPaddr",no,config["run"]["card_ips"][i])
 
+  
+
   print("\n----> calling InitializeSystem()")
   sis.InitializeSystem() 
   print("----> done InitializeSystem()\n")
@@ -65,52 +71,46 @@ def takeData(config_path):
   #set each card's configurations 
   for icard in config["run"]["card_numbers"]: # loop over cards:
     sis0 = sis.GetConfiguration().GetSlotParameters().GetParValueO("card",icard)
-    sis0.SetClockChoice(config['digitization']['clock'],sis0.sharingmode) #share clock amongst all cards
+    sis0.SetClockChoice(config['clock'],sis0.sharingmode) #share clock amongst all cards
 
     #-----trigger settings-----#
-    trg = config["trigger"]
+    trg = config[icard]["trigger"]
     strg = trg['self_trig_settings']
 
-    #get active channels if self-trigger mode is relevant
-    #if the card is not listed in the enabled channels zone, internal trig is disabled
-    if(icard not in strg["enabled_channels"]):
-      active_chs = []
-    else:
-      active_chs = strg["enabled_channels"][icard]
+
+    active_chs = strg["enabled_channels"]
     #form an unsigned int, representing the active channels
     active_chs_uint = 0x0
     for i in range(16):
-      if(i in active_chs):
-        active_chs_uint += (1 << i) #used late for coinc settings
-
-        trigconf = 0x0 #to start
+      trigconf = 0x0
+      #if this card wants to have self (internal) trigger enabled
+      #and if the channel of interest is "activated" as a trigger channel
+      if('self' in trg['level0_input'] and (i in active_chs)):
+        active_chs_uint += (1 << i) #used later for coinc settings
+        sis0.firenable[i] = 1 
         trigconf = trigconf | (1 << 2) #enables internal triggering 
-        if(trg['level0_input'] == 'nim'):
-          trigconf = trigconf | (1 << 3) #enables external trigger
         if(strg['pulse_polarity'] == 'n'):
           trigconf = trigconf | (1 << 0)
-        sis0.trigconf[i] = trigconf # set trigger conf
-        sis0.firenable[i] = 1
 
-        #set thresholds
-        if(icard not in strg['pe_to_adc']):
-          print("You forgot to add thresholds, pe_to_adc, for card : " + str(icard))
-          print("Exiting.")
-          return
-        adc_conversion = strg['pe_to_adc'][icard] #thresholds for each channel
+        #threshold setting
+        adc_conversion = strg['pe_to_adc'] #thresholds for each channel
         npe = strg['pe_for_trigger'] #same for all channels
         #these are lists that index-match the active channels list.
         #first, find which index this channel corresponds to. 
         chidx = active_chs.index(i) #index of this channel in the channel list
+        if(chidx >= len(adc_conversion)):
+          print("Looks like you forgot to add a threshold for card " + str(icard) + " channel " + str(i)) 
+          sys.exit()
 
         sis0.firthresh[i] = int(npe*adc_conversion[chidx])
 
-      else:
-        trigconf = 0x0
-        if(trg['level0_input'] == 'nim'):
-          trigconf = trigconf | (1 << 3) #enables external trigger
-        sis0.trigconf[i] = trigconf #allows only for external trigger if provided
-        sis0.firenable[i] = 0x0
+      #if the nim external trigger also wants to be active
+      #or wants to be the only active triggering mechanism. 
+      if('nim' in trg['level0_input']):
+        trigconf = trigconf | (1 << 3)
+
+      #set the trig conf here
+      sis0.trigconf[i] = trigconf
 
     #applies coincidence conditions, regardless of the level0_input
     sis0.coincidenceEnable = strg["coinc_enable"]
@@ -119,12 +119,11 @@ def takeData(config_path):
       sis0.minimumCoincidentChannels = strg["min_coinc_channels"]
 
     #trigger input settings. 
-    if(trg["level0_input"] == 'nim'):
+    if('nim' in trg["level0_input"]):
       sis0.nimtriginput = 0x10 #set "TI as Trigger Enable", see page 114
-    elif(trg["level0_input"] == "self"):
-      sis0.nimtriginput = 0x0 
     else:
-      pass #default settings
+      sis0.nimtriginput = 0x0 
+
 
     #trigger output settings
     to = trg['to_settings'] #list of settings to enable
@@ -136,6 +135,7 @@ def takeData(config_path):
         tofull = tofull | (active_chs_uint)
       if(setting == 'ext'):
         tofull = tofull | (1 << 25)
+    sis0.nimtrigoutput_to = tofull
 
     uo = trg['uo_settings'] #list of settings to enable
     uofull = 0x0
@@ -146,28 +146,22 @@ def takeData(config_path):
         uofull = uofull | (1 << 8)
       if(setting == 'coinc'):
         uofull = uofull | (1 << 24)
+    sis0.nimtrigoutput_uo = uofull
 
 
 
 
 
     #----digitization settings------#
-    dig = config['digitization']
-
+    dig = config[icard]['digitization']
+    #we'll use the clock to convert timing parameters from 
+    #num samples to microseconds and vice versa
+    clk_int = config['clock']
     for j in range(4): # loop over adc groups
         sis0.gate_window_length_block[j] = dig['gate_window_length'] 
         sis0.sample_length_block[j] = dig['raw_data_sample_length']
         sis0.pretriggerdelay_block[j] = dig['pretrig_delay']
-
-        #sample start block, which determines the sample_start_index
-        #shown on page 60, will adjust how much baseline is taken before
-        #the time of trigger. This is set in the config as a "baseline_samples",
-        #and here we calculate what the sample index should be based
-        #on the pretrig delay. The baseline can at most be equal to
-        #the pretrigger delay. 
-        if(dig['baseline_samples'] > dig['pretrig_delay']):
-          dig['baseline_samples'] = dig['pretrig_delay']
-        sis0.sample_start_block[j] = dig['pretrig_delay'] - dig['baseline_samples']
+        sis0.sample_start_block[j] = dig['raw_data_start_index']
 
         #dac_offset: see page 113: a calc is made in the run script based on the gain setting. 
         #for example, parametrized here: 
@@ -235,6 +229,26 @@ def takeData(config_path):
       print("\n===> starting single run, %.1f seconds" % config['run']['duration_per_file'])
       print("\n-----> start acquisition") 
       sis.StartAcquisition() 
+
+
+#input is the integer code for the clock rate in MHz
+#and the number of microseconds to convert to samples
+def get_nsamples(clk_int, us):
+  #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
+  clk_MHz_dict = {0: 250, 1: 125, 2:62.5, 3:25}
+  clk_MHz = clk_MHz_dict[clk_int]
+  nsamp = int(clk_MHz*us)
+  return nsamp
+
+#input is the integer code for the clock rate in MHz
+#and the number of samples to convert to microseconds
+def get_nus(clk_int, nsamp):
+  #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
+  clk_MHz_dict = {0: 250, 1: 125, 2:62.5, 3:25}
+  clk_MHz = clk_MHz_dict[clk_int]
+  us = nsamp/clk_MHz
+  return us
+
 
 
 if __name__ == "__main__":
