@@ -113,6 +113,7 @@ int SIS3316System::readConfigFile(const char* configfile){
         delete _config;
     _config = tmpConf;
     delete confFin;
+    return 1;
     
 }
 
@@ -192,7 +193,8 @@ void SIS3316System::Default3316Card(sis3316card* vslot)
         vslot->dataformat_block[iadc] = 0x05050505; //
     }
     vslot->nimtriginput=0x0; //Disable:0x0 Enable:0x1 Enable+Invert:0x3
-    vslot->nimtrigoutput=0x0;
+    vslot->nimtrigoutput_to=0x0;
+    vslot->nimtrigoutput_uo=0x0;
     for (int ichan=0;ichan<SIS3316_CHANNELS_PER_CARD;ichan++) {
         if (ichan<4)
         {

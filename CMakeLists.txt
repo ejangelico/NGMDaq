@@ -20,7 +20,6 @@ endif()
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR}
-${CMAKE_SOURCE_DIR}/EXOUtilities 
 ${CMAKE_SOURCE_DIR}/NCACommon 
 ${CMAKE_SOURCE_DIR}/NGMData 
 ${CMAKE_SOURCE_DIR}/NGMModuleBase 
@@ -38,7 +37,6 @@ ${TBBINCDIR}
 
 include_directories( ${INCLUDE_DIRECTORIES})
 
-add_subdirectory(EXOUtilities)
 add_subdirectory(NGMData)
 add_subdirectory(NCACommon)
 add_subdirectory(NGMModuleBase)

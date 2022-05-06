@@ -10,6 +10,7 @@
 
 #include "NGMModule.h"
 #include "NGMPSDAnalyzer.h"
+#include "TObjString.h"
 class NGMBufferedPacket; //Forward Declaration
 class NGMHit; //Forward Declaration
 class TH2; //Forward Declaration

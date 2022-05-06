@@ -65,7 +65,8 @@ private:
     unsigned int sharingmode; // 0 single card, 1 shared slave, 2 shared master
     //Board Settings
     unsigned int nimtriginput; //Bit0 Enable : Bit1 Invert , For typical use 0x3
-    unsigned int nimtrigoutput; //Bit0:Ch1 , Bit1:Ch2 ... Bit15:Ch16, Bit16:Sum1 ... Bit19:Sum4
+    unsigned int nimtrigoutput_to; //TO nim output, page 120
+    unsigned int nimtrigoutput_uo; //UO nim output, page 121
     
     //coincidence settings
     bool coincidenceEnable;
@@ -143,12 +144,11 @@ private:
     void ConfigureEventRegisters();
     void ConfigureAnalogRegisters();
     void ConfigureFIR();
-    // BRIAN'S COINCIDENCE CHANGES
     void ConfigureCoincidenceTable();
 	int set_frequency(int osc, unsigned char *values);
     int AllocateBuffers(unsigned int buffersize = 0x1000000);
-    int AllocateDatabuffer(int ichan, unsigned int buffersize = 0x1000000 /*64MBytes*/);
-    int clearDataBuffers();
+    int AllocateDatabuffer(int ichan, unsigned int buffersize = 0x1000000 /*64MBytes*/); //64MB is maximum channel size
+    int resetAllFifos();
     double FetchDataSizeForChannel(int ichan);
     int FetchDataForChannel(int ichan);
     int FetchDataOnlyForChannel(int ichan);

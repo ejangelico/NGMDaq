@@ -2,10 +2,11 @@
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
+#include <iostream>
 #include "sis3316card.h"
 #include "vme_interface_class.h"
 
-//using namespace std;
+using namespace std;
 
 /**************************************************************************************/
 
@@ -21,7 +22,7 @@ ClassImp(sis3316card)
 #define __IS_16BIT_MODEL__  1  // Added to switch ADC output modes correctly. (Brian L.);
 #define OSC_ADR	0x55
 
-int sis3316card::prevRunningBank = 0;
+int sis3316card::prevRunningBank = 1;
 
 sis3316card::sis3316card()
 {
@@ -1025,6 +1026,9 @@ void sis3316card::initcard()
         printf("SIS3316_ADC_CH9_12_STATUS_REG    = 0x%08x \n", data);
         vmei->vme_A32D32_read ( baseaddress + SIS3316_ADC_CH13_16_STATUS_REG, &data);
         printf("SIS3316_ADC_CH13_16_STATUS_REG   = 0x%08x \n\n", data);
+
+        //clear data buffer? shouldnt need to
+        resetAllFifos();
     }else{
         printf("SIS3316_MODID                  = 0x%08x     return_code = 0x%08x\n", data, return_code);
     }
@@ -1180,7 +1184,8 @@ void sis3316card::initcommon()
     modid = 0;
     clock_source_choice = 0;
     nimtriginput = 0;
-    nimtrigoutput = 0;
+    nimtrigoutput_to = 0;
+    nimtrigoutput_uo = 0;
 
     coincidenceEnable = 0;
     minimumCoincidentChannels = 0;
@@ -1310,8 +1315,10 @@ void sis3316card::ConfigureEventRegisters()
     // Configure NIM Trigger Input
 	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_NIM_INPUT_CONTROL_REG, ((0x1FFF & nimtriginput)));
     
-    // Configure NIM Trigger Output
-	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput));
+    // Configure NIM Trigger Output, TO, UO, CO
+	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput_to));
+	return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_LEMO_OUT_UO_SELECT_REG, (0xFFFFFFFF & nimtrigoutput_uo));
+
     // Configure Acquisition Control Register
     // BIT(5)  : FP-BUS Control as Veto Enable
     // BIT(6)  : FP-BUS Control2 as Timestamp Clear
@@ -1357,24 +1364,27 @@ void sis3316card::ConfigureAnalogRegisters()
                 write_code = 0x81001440; // Make sure the AD9268 output is LVDS, not CMOS
               else
                 write_code = 0x81001400; // The AD9463 only has LVDS; bit 6 set to 0.
-          
-		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
-                usleep(1); //unsigned int uint_usec
-                return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
-                usleep(1); //unsigned int uint_usec
+        
+        cout << "*16bit reg write: " << write_code << endl;
+	return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
+        usleep(100); //unsigned int uint_usec
+        return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code + 0x00400000 );
+        //return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, write_code );
+        usleep(100); //unsigned int uint_usec
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, 0x8100ff01 ); // SPI (OE)  update
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //unsigned int uint_usec
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, 0x8140ff01 ); // SPI (OE)  update
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //unsigned int uint_usec
 	}
     
     //  set ADC offsets (DAC)
 	for (int iadc=0;iadc<SIS3316_ADCGROUP_PER_CARD;iadc++) { // over all 4 ADC-FPGAs
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0x80000000 + 0x8000000 +  0xf00000 + 0x1);  // set internal Reference
-		usleep(1); //unsigned int uint_usec
+		usleep(100); //this command needs 23us time to execute on board
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0x80000000 + 0x2000000 +  0xf00000 + ((dacoffset[iadc] & 0xffff) << 4) );  // clear error Latch bits
+		usleep(100); 
 		return_code = vmei->vme_A32D32_write ( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG, 0xC0000000 );  // clear error Latch bits
-		usleep(1); //unsigned int uint_usec
+		usleep(100); 
 	}	
 
 }
@@ -1401,18 +1411,12 @@ void sis3316card::ConfigureFIR()
                 + ( (ichan/SIS3316_CHANNELS_PER_ADCGROUP) + 1)*SIS3316_FPGA_ADC_REG_OFFSET
                 + 0x10*(ichan%SIS3316_CHANNELS_PER_ADCGROUP)
                 + 0x44;
-        //data= ( (0x1 & highenergysuppress[ichan]) << 30)
-        //      | ( (0x3 & fircfd[ichan]) << 28 ) // different
-        //     | (0x08000000 + (risetime[ichan] * firthresh[ichan]) );
-        //        std::cout << "test data: " << data << std::endl; // AGS -- int trig testing Feb 2017
-        //        std::cout << "test data: 0x" << std::hex << data << std::dec << std::endl; // AGS -- int trig testing Feb 2017
         data= ( (0x1 & firenable[ichan]) << 31)
               | ( (0x1 & highenergysuppress[ichan]) << 30)
               | ( (0x3 & fircfd[ichan]) << 28 ) // different
               | (0x08000000 + (risetime[ichan] * firthresh[ichan]) );
-                //std::cout << "data: " << data << std::endl; // AGS -- int trig testing Feb 2017
-                //std::cout << "data: 0x" << std::hex << data << std::dec << std::endl; // AGS -- int trig testing Feb 2017
 		return_code = vmei->vme_A32D32_write ( addr, data) ;
+		//printf("%08x written to FIR_THRESH channel %d \n", data, ichan);
         
         //High Energy Threshold
         addr = baseaddress
@@ -1432,7 +1436,7 @@ void sis3316card::ConfigureFIR()
 
         }
     
-    // set FIR Block Trigger Setup
+    // set FIR Block Trigger Setup, this determines what "SUM" trigger from FIR is. 
 	for (int iadc=0;iadc<SIS3316_ADCGROUP_PER_CARD;iadc++) {
         // FIR Conf
         addr = baseaddress
@@ -1647,7 +1651,7 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
     + i_adc*SIS3316_FPGA_ADC_REG_OFFSET
     + (ichan%4)*0x4;
     // Verify that the previous bank address is valid
-    max_poll_counter = 1000;
+    max_poll_counter = 10000; //in good cases, it always only takes 1 try! verified. 
     do {
         return_code = vmei->vme_A32D32_read (prevBankEndingRegister, &previousBankEndingAddress[ichan]); //
         if(return_code < 0) {
@@ -1657,11 +1661,10 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
         max_poll_counter--;
         if (max_poll_counter == 0) {
             std::cout<<"Max tries exceeded for channel: "<<ichan
-          <<" "<<std::hex<<baseaddress<<std::dec<<", Previous Bank: "<<prevRunningBank<<std::endl;
+          <<" card "<< ((baseaddress >> 20) & 0x3) <<", Previous Bank: "<< (prevRunningBank - 1) << " but read " << ((previousBankEndingAddress[ichan] & 0x1000000) >> 24 ) << std::endl;
             return 0x900;
         }
     } while (((previousBankEndingAddress[ichan] & 0x1000000) >> 24 )  != (prevRunningBank-1)) ; // previous Bank sample address is valid if bit 24 is equal bank2_read_flag
-    
     
     prevBankReadBeginAddress = (previousBankEndingAddress[ichan] & 0x03000000) + 0x10000000*((ichan/2)%2);
     expectedNumberOfWords = previousBankEndingAddress[ichan] & 0x00FFFFFF;
@@ -1669,8 +1672,7 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
     databufferread[ichan] = 0;
     //Fraction of buffer
     double fractionOfBuffer = expectedNumberOfWords/double(0xfffffE);
-    //std::cout << "Expected Words " << expectedNumberOfWords << " divided " << double(0xfffffE) << std::endl;
-    //std::cout << "Baseaddress: " << baseaddress << " " << fractionOfBuffer  << std::endl;
+    std::cout << "Fraction of buffer for chan " << ichan << ": " << fractionOfBuffer  << std::endl;
     return fractionOfBuffer;
 }
 
@@ -1686,10 +1688,10 @@ int sis3316card::FetchDataOnlyForChannel(int ichan)
     
     prevBankReadBeginAddress = (previousBankEndingAddress[ichan] & 0x03000000) + 0x10000000*((ichan/2)%2);
     expectedNumberOfWords = previousBankEndingAddress[ichan] & 0x00FFFFFF;
+
     
     databufferread[ichan] = 0;
     
-    //printf("Channnel %d 0x%x 0x%x 0x%x\n",ichan,prevBankEndingAddress,prevBankReadBeginAddress,expectedNumberOfWords);
     // Start FPGA Transfer Logic
     addr = baseaddress
            + SIS3316_DATA_TRANSFER_CH1_4_CTRL_REG
@@ -1704,22 +1706,6 @@ int sis3316card::FetchDataOnlyForChannel(int ichan)
     addr = baseaddress
             + SIS3316_FPGA_ADC1_MEM_BASE
             +i_adc*SIS3316_FPGA_ADC_MEM_OFFSET;
-//    return_code = vmei->vme_A32BLT32FIFO_read ( addr , databuffer[ichan], expectedNumberOfWords, &got_nof_32bit_words);
-//    if(return_code != 0) {
-//        printf("vme_A32BLT32FIFO_read: %d Address: %08x %d %d\n",ichan, addr, expectedNumberOfWords, prevRunningBank-1);
-//        return return_code;
-//    }
-
-    //expectedNumberOfWords =0xfffffE;
-    //expectedNumberOfWords =0x4ffffE;
-//    if(((expectedNumberOfWords + 1) & 0xfffffE) > 0x1000000)
-//    {
-//        std::cerr<<" Channel " <<(adcheaderid[0]>>24)<<":"<< ichan << " did not receive the expected number of words "
-//        <<got_nof_32bit_words<<"("<<((expectedNumberOfWords + 1) & 0xfffffE)<<std::endl;
-//        return 1; 
-//    }
-    
-    //return_code = vmei->vme_A32MBLT64FIFO_read ( addr , databuffer[ichan], ((expectedNumberOfWords + 1) & 0xfffffE), &got_nof_32bit_words);
     return_code = vmei->vme_A32_FastestFIFO_read( addr , databuffer[ichan], ((expectedNumberOfWords + 1) & 0xfffffE), &got_nof_32bit_words);
 
     //printf("Chan %d Received %d words\n",ichan,got_nof_32bit_words);
@@ -1728,109 +1714,41 @@ int sis3316card::FetchDataOnlyForChannel(int ichan)
         return return_code;
     }
     
-    if((got_nof_32bit_words)!=((expectedNumberOfWords + 1) & 0xfffffE))
-    //if( got_nof_32bit_words!=expectedNumberOfWords )
+    if((got_nof_32bit_words)!=((expectedNumberOfWords + 1) & 0xfffffE) | return_code == 0x121)
     {
         databufferread[ichan] = 0;
         std::cerr<<" Channel " <<(adcheaderid[0]>>24)<<":"<< ichan << " did not receive the expected number of words "
-        <<got_nof_32bit_words<<"("<<((expectedNumberOfWords + 1) & 0xfffffE)<<std::endl;
+        <<got_nof_32bit_words<<"("<<((expectedNumberOfWords + 1) & 0xfffffE)<< ")" << std::endl;
         return 1;
     }else{
         databufferread[ichan] = expectedNumberOfWords;
     }
     
+    //Struck code has a "reset FSM" at this stage. 
+    addr = baseaddress + SIS3316_DATA_TRANSFER_CH1_4_CTRL_REG
+    + i_adc*0x4; 
+    return_code = vmei->vme_A32D32_write(addr, 0x00000000);
+
     return 0;
 }
 
 
-/*
-int sis3316card::clearDataBuffers()
+int sis3316card::resetAllFifos()
 {
-	int return_code = 0;
-    int i_adc = 0;
-    unsigned int addr = 0;
-    unsigned int expectedNumberOfWords = 0;
-    unsigned int got_nof_32bit_words = 0;
-    unsigned int prevBankReadBeginAddress = 0;
-    int dataWordsCleared = 0; //the number of data words cleared from the buffer
-    double dataFractionCleared = 0; //the fraction of the total buffer length cleared.
-    const unsigned int bsize = 0x1000000; //dummy buffer size
-    unsigned int* dummydatabuffer = new unsigned int[bsize]; //fills with data and then we throw it away
-    int loopSafetyCount = 100000; //safety counter to exit loop in case of wierd bug
-    int whileCount = 0;
-
-
-    //loop over channels, reading each ones buffer
-	for(int ichan = 0; ichan<SIS3316_CHANNELS_PER_CARD; ichan++)
-    {
-    	i_adc = ichan/4;
-     	prevBankReadBeginAddress = (previousBankEndingAddress[ichan] & 0x03000000) + 0x10000000*((ichan/2)%2);
-    	expectedNumberOfWords = previousBankEndingAddress[ichan] & 0x00FFFFFF; 
-    	//select the channel's data buffer  
-    	addr = baseaddress + SIS3316_DATA_TRANSFER_CH1_4_CTRL_REG + i_adc*0x4; 
-	    return_code = vmei->vme_A32D32_write ( addr , 0x80000000 + prevBankReadBeginAddress); 
-	    if(return_code < 0) {
-	        printf("error on vme_A32D32_write: %d Address: %08x %08x %d\n",ichan, addr, 0x80000000 + prevBankReadBeginAddress, prevRunningBank-1);
-	        return return_code;
-    	}
-
-    	//memory-read address
-    	addr = baseaddress + SIS3316_FPGA_ADC1_MEM_BASE + i_adc*SIS3316_FPGA_ADC_MEM_OFFSET;
-    	whileCount = 0;
-    	while(got_nof_32bit_words > 0 && return_code >= 0 && whileCount < loopSafetyCount)
-    	{	
-    		return_code = vmei->vme_A32_FastestFIFO_read( addr , dummydatabuffer, ((expectedNumberOfWords + 1) & 0xfffffE), &got_nof_32bit_words);
-    		whileCount++;
-    	}
-
-    	if(whileCount == loopSafetyCount)
-    	{
-    		printf("had to read %d times in order for buffer to clear. and it still isn't clear.\n", loopSafetyCount);
-    	}
-    	else if(return_code < 0)
-    	{
-    		printf("had an error on VME communication while emptying buffer on channel %d", ichan);
-    	}
-    	else
-    	{
-    		printf("Cleared buffer on channel %d with %d number of reads. Is the number of words, %d, zero?\n", ichan, whileCount, got_nof_32bit_words);
-    	}
-
-
-    }
-}
-*/
-
-
-int sis3316card::clearDataBuffers()
-{
-	double currentBufferFraction = 1.0; //how full is the buffer? read until this goes to 0.
-	double dataFractionCutoff = 0.01; //considered "all clear"
-	int loopCounter = 0;
-	int safetyLoopCount = 1000; //number of while iterations before killing the loop. 
-	FetchScalars();
-	for(int ichan = 0; ichan<SIS3316_CHANNELS_PER_CARD; ichan++)
-    {
-    	currentBufferFraction = FetchDataSizeForChannel(ichan);
-    	loopCounter = 0;
-    	while(currentBufferFraction >= dataFractionCutoff && loopCounter < safetyLoopCount)
-    	{
-    		FetchDataOnlyForChannel(ichan);
-    		currentBufferFraction = FetchDataSizeForChannel(ichan);
-    		loopCounter++;
-    	}
-
-    	if(loopCounter == safetyLoopCount)
-    	{
-    		printf("Couldn't empty channel %d buffer even after %d read iterations. Remaining buffer fraction is %f\n", ichan, loopCounter, currentBufferFraction);
-    	}
-    	else
-    	{
-    		printf("Cleared buffer on channl %d after %d read iterations. Remaining buffer fraction is %f\n", ichan, loopCounter, currentBufferFraction);
-    	}
-    }
-
-    return 0;
+	cout << "Resetting all fifos" << endl;
+	int retval_sum = 0;
+	int return_code = 0; 
+	unsigned int addr;
+	for(int i_adc = 0; i_adc < 4; i_adc++)
+	{
+		//Struck code has a "reset FSM" at this stage. 
+	    //Struck code has a "reset FSM" at this stage. 
+	    addr = baseaddress + SIS3316_DATA_TRANSFER_CH1_4_CTRL_REG
+	    + i_adc*0x4; 
+	    return_code = vmei->vme_A32D32_write(addr, 0x00000000);
+	    retval_sum += return_code;
+	}
+	return retval_sum;
 }
 
 
@@ -1885,6 +1803,9 @@ bool sis3316card::DataThresholdReached(){
     SysError("sis3316card:DataThresholdReached","Error reading status from card at address 0x%08x\n",baseaddress);
     return false;
   }
+  //this is effectively an "or" between the two IRQ bits active in 0x0000c000 (14 and 15),
+  //because the and operation returns any integer > 0 if either of the bits are active, and
+  //the if statement returns true if any integer > 0.  (Evan)
   if(ctlstatus&0x0000c000) return true;
   return false;
 }
@@ -1912,6 +1833,7 @@ int sis3316card::Disarm()
 int sis3316card::DisarmAndArmBank()
 {
     int return_code;
+    cout << "Previous bank is " << prevRunningBank << ", about to arm that bank" << endl;
     if(prevRunningBank==2){
         return_code = vmei->vme_A32D32_write ( baseaddress + SIS3316_KEY_DISARM_AND_ARM_BANK2 , 0);
         prevRunningBank=1;
@@ -1999,18 +1921,38 @@ int sis3316card::PrintRegisters()
         dataShould=data;
         return_code =  vmei->vme_A32D32_read ( addr , &data );
         printf("SIS3316_ADC_CH1_4_ADDRESS_THRESHOLD_REG 0x%08x 0x%08x\n",data,dataShould);
-        
+
+        //Gain and offset
+        addr = baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET)  + SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG;
+        dataShould = dataformat_block[iadc];
+        return_code =  vmei->vme_A32D32_read ( addr , &data );
+        printf("SIS3316_ADC_CH1_4_DAC_OFFSET_CTRL_REG 0x%08x 0x%08x\n",data,dataShould);
+
+        addr = baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET)  + SIS3316_ADC_CH1_4_ANALOG_CTRL_REG;
+        dataShould = dataformat_block[iadc];
+        return_code =  vmei->vme_A32D32_read ( addr , &data );
+        printf("SIS3316_ADC_CH1_4_ANALOG_CTRL_REG 0x%08x 0x%08x\n",data,dataShould);
+       
+        // SPI Control registers
+        return_code = vmei->vme_A32D32_read( baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET) + SIS3316_ADC_CH1_4_SPI_CTRL_REG, &data );
+        printf("SIS3316_ADC_CH1_4_SPI_CTRL_REG 0x%08x\n", data);
+
     }
     
     // Configure NIM Trigger Input
-    dataShould=((0xF & nimtriginput)<<4);
+    dataShould=((0xFFFF & nimtriginput));
 	return_code = vmei->vme_A32D32_read ( baseaddress + SIS3316_NIM_INPUT_CONTROL_REG, &data);
     printf("SIS3316_NIM_INPUT_CONTROL_REG 0x%08x 0x%08x\n",data,dataShould);
     
     // Configure NIM Trigger Output
-    dataShould=(0xFFFFFFFF & nimtrigoutput);
+    dataShould=(0xFFFFFFFF & nimtrigoutput_to);
 	return_code = vmei->vme_A32D32_read( baseaddress + SIS3316_LEMO_OUT_TO_SELECT_REG, &data );
     printf("SIS3316_LEMO_OUT_TO_SELECT_REG 0x%08x 0x%08x\n",data,dataShould);
+
+    // Configure NIM Trigger Output
+    dataShould=(0xFFFFFFFF & nimtrigoutput_uo);
+	return_code = vmei->vme_A32D32_read( baseaddress + SIS3316_LEMO_OUT_UO_SELECT_REG, &data );
+    printf("SIS3316_LEMO_OUT_UO_SELECT_REG 0x%08x 0x%08x\n",data,dataShould);
     
     return 0;
 }
@@ -2024,35 +1966,43 @@ bool sis3316card::IsBlockReadout(int iadc) const
 }
 size_t sis3316card::WriteChannelToFile(int ichan, FILE* fileraw)
 {
-    size_t written = 0;
+    size_t header_written = 0;
+    size_t data_written = 0;
     int errorcode = 0;
     unsigned int hdrid = adcheaderid[ichan/SIS3316_ADCGROUP_PER_CARD]|(ichan%SIS3316_ADCGROUP_PER_CARD)<<20;
     
-    written+= fwrite(&hdrid,0x4,1,fileraw)*0x4;
+    header_written+= fwrite(&hdrid,0x4,1,fileraw)*0x4;
     errorcode = ferror(fileraw);
     if(errorcode){
         std::cerr<<"sis3316card::WriteChannelToFile: Error writing channel header to binary file "<<errorcode<<std::endl;
     }
 
-    written+= fwrite(triggerstatspill[ichan],0x4,6,fileraw)*0x4;
+    header_written+= fwrite(triggerstatspill[ichan],0x4,6,fileraw)*0x4;
     errorcode = ferror(fileraw);
     if(errorcode){
         std::cerr<<"sis3316card::WriteChannelToFile: Error writing trigger stat to binary file "<<errorcode<<std::endl;
     }
     
-    written+= fwrite(&(databufferread[ichan]),0x4,1,fileraw)*0x4;
+    header_written+= fwrite(&(databufferread[ichan]),0x4,1,fileraw)*0x4;
     errorcode = ferror(fileraw);
     if(errorcode){
         std::cerr<<"sis3316card::WriteChannelToFile: Error writing packet size to binary file "<<errorcode<<std::endl;
     }
     
-    written+= fwrite(databuffer[ichan],0x4,databufferread[ichan],fileraw)*0x4;
+    data_written+= fwrite(databuffer[ichan],0x4,databufferread[ichan],fileraw)*0x4;
     errorcode = ferror(fileraw);
     if(errorcode){
         std::cerr<<"sis3316card::WriteChannelToFile: Error writing packet to binary file "<<errorcode<<std::endl;
     }
+    if(data_written > 0)
+    {
+    	cout << "Just wrote " << data_written/4.0 << " bytes waveform data to file in WriteChannelToFile for chan : " << ichan << endl;
+    }
+
+    size_t total_written = data_written + header_written;
     
-    return written;
+    
+    return total_written;
 }
 
 size_t sis3316card::WriteSpillToFile(FILE* fileraw)
