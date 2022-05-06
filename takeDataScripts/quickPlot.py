@@ -122,7 +122,7 @@ def plot_all_channels(fn, nevents):
             if(channel in plotted_chs[card_idx]):
                 break
             else:
-                axs[card_idx].plot(times, channel_wfm, label=str(channel))
+                axs[card_idx].plot(times, channel_wfm - np.mean(channel_wfm[:200]), label=str(channel))
                 plotted_chs[card_idx].append(channel)
 
             plotted_full_event = True
