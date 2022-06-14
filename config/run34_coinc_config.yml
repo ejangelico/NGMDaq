@@ -1,9 +1,9 @@
 run:
   duration_per_file: 15 #seconds
-  spill_duration: 0.5 #seconds between subsequent read/write thread initiations, and swapping between memory banks 
+  spill_duration: 3 #seconds between subsequent read/write thread initiations, and swapping between memory banks 
   do_loop: True #loop mode described here please
   hours_per_iteration: 10 #for loop mode 
-  file_suffix: "Run34_DS08_20220601_Rn220_1"
+  file_suffix: "Run34_DS09_20220601_Rn220_1"
   card_numbers: [0,1,2] #[0, 1, 2] with  matching IP's below; Primary card must always be "0" 
   card_ips: ['192.168.4.40', '192.168.4.100', "192.168.4.102"]
   debug: 0 #will execute additional print statements (from NGMModule::getDebug())
@@ -38,7 +38,7 @@ full_fraction: 0.9
       pe_for_trigger: 13 #how many PE needed for a trigger
       pe_to_adc: [150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
       #will have to restructure code to do multi-card coinc combinatorix
-      coinc_enable: 0
+      coinc_enable: 1
       min_coinc_channels: 2 #>= this number of channels will generate a trigger
     
     #two LEMO outputs are available: 'to' and 'uo'.
@@ -48,7 +48,7 @@ full_fraction: 0.9
     #'coinc', if a coincidence trigger is generated for combos of channels in table 1
     #'sum', sum-or of all channels enabled in self trigger
     #'ext', external trigger to ADC FPGA rerouted to output
-    to_settings: ['sum']
+    to_settings: ['coinc']
     #Options (put multiple in a list): 
     #'busy', if sample logic is busy
     #'ready', if sample logic is ready

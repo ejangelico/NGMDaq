@@ -1,9 +1,9 @@
 run:
-  duration_per_file: 15 #seconds
-  spill_duration: 0.5 #seconds between subsequent read/write thread initiations, and swapping between memory banks 
-  do_loop: True #loop mode described here please
+  duration_per_file: 60 #seconds
+  spill_duration: 1 #seconds between subsequent read/write thread initiations, and swapping between memory banks 
+  do_loop: False #loop mode described here please
   hours_per_iteration: 10 #for loop mode 
-  file_suffix: "Run34_DS08_20220601_Rn220_1"
+  file_suffix: "PulserCalibration_Run35_20220613_SiPM34-5_1"
   card_numbers: [0,1,2] #[0, 1, 2] with  matching IP's below; Primary card must always be "0" 
   card_ips: ['192.168.4.40', '192.168.4.100', "192.168.4.102"]
   debug: 0 #will execute additional print statements (from NGMModule::getDebug())
@@ -11,7 +11,7 @@ run:
 #the clock I beleive technically can be different for each card,
 #but for the moment I am keeping it universal as it is "shared" on
 #LVDS for all connected cards by default. 
-clock: 3 #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
+clock: 1 #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
 
 #a certain set of instructions is executed if the
 #memory on any card exceeds this fraction of being full. 
@@ -26,7 +26,7 @@ full_fraction: 0.9
     #options: 
     #'nim', which is a -700mV signal on "TI" nim input, sets enable external trigger bit to 1
     #'self', specifically sets external trig enable to 0, relying only on FIR trigger settings
-    level0_input: ['self','nim']
+    level0_input: ['nim']
     #these settings only active if level0_input = 'self'
     self_trig_settings:
       pulse_polarity: 'p' #'n' or 'p', determines if threshold is negative or positive
@@ -48,12 +48,12 @@ full_fraction: 0.9
     #'coinc', if a coincidence trigger is generated for combos of channels in table 1
     #'sum', sum-or of all channels enabled in self trigger
     #'ext', external trigger to ADC FPGA rerouted to output
-    to_settings: ['sum']
+    to_settings: []
     #Options (put multiple in a list): 
     #'busy', if sample logic is busy
     #'ready', if sample logic is ready
     #'coinc', coincidences for combos of channels in table 2  
-    uo_settings: ['busy']
+    uo_settings: []
 
   
   digitization:
@@ -100,7 +100,7 @@ full_fraction: 0.9
     #for these digitization settings, look to page 60 of the manual. 
     pretrig_delay: 500 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
     raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
-    raw_data_sample_length: 3000 #how many samples are saved to stored data, starts from baseline index. 
+    raw_data_sample_length: 1700 #how many samples are saved to stored data, starts from baseline index. 
     gate_window_length: 60000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
 
     dac_offset: 0
@@ -130,7 +130,7 @@ full_fraction: 0.9
     #for these digitization settings, look to page 60 of the manual. 
     pretrig_delay: 500 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
     raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
-    raw_data_sample_length: 3000 #how many samples are saved to stored data, starts from baseline index. 
+    raw_data_sample_length: 1700 #how many samples are saved to stored data, starts from baseline index. 
     gate_window_length: 60000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
 
     dac_offset: 0
