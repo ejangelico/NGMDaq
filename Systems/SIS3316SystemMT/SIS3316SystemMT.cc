@@ -401,8 +401,8 @@ int SIS3316SystemMT::StartAcquisition()
     
     _isRunning = 0;
     ResetCtlC();
-    
-    return 0;
+
+    return (int)_requestStop;
 }
 
 void* SIS3316SystemMT::StartRunPipelinedAcquisitionWriteThread(void * arg){
