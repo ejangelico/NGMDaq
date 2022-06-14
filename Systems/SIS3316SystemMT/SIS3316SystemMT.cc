@@ -774,6 +774,7 @@ int SIS3316SystemMT::StopAcquisition()
 }
 int SIS3316SystemMT::RequestAcquisitionStop()
 {
+    printf("In SIS33316SystemMT.cc, request acquisition stop called");
     _requestStop = true;
     return 0;
 }
