@@ -179,6 +179,7 @@ void NGMSystem::SetStopDaqOnCtlC()
     gSystem->GetListOfSignalHandlers()->Print();
 }
 
+
 void NGMSystem::ResetCtlC()
 {
     gSystem->ResetSignal(kSigInterrupt);

@@ -98,7 +98,7 @@ public:
    
    /// \brief Set the Acquisition Stop Request
    ///
-   virtual int RequestAcquisitionStop() {return 0;} // *MENU*
+   virtual int RequestAcquisitionStop() {printf("in ngmsystem.h, virtual request acq stop called"); return 0;} // *MENU*
 
    /// \brief Get the LiveTime in seconds for this run
    ///

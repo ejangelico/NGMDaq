@@ -1651,7 +1651,7 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
     + i_adc*SIS3316_FPGA_ADC_REG_OFFSET
     + (ichan%4)*0x4;
     // Verify that the previous bank address is valid
-    max_poll_counter = 10000; //in good cases, it always only takes 1 try! verified. 
+    max_poll_counter = 10; //in good cases, it always only takes 1 try! verified. 
     do {
         return_code = vmei->vme_A32D32_read (prevBankEndingRegister, &previousBankEndingAddress[ichan]); //
         if(return_code < 0) {

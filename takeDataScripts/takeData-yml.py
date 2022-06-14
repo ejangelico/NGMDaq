@@ -207,10 +207,11 @@ def takeData(config_path):
       start_time = time.time()
       last_time = start_time # last_time is time since start of last loop
       hours_elapsed = 0.0
+      ctrl_c_occurred = 0 #catched whether SIGINT was sent on the C++ side. retval of StartAcquisition. 
       while hours_elapsed < n_hours:
           try:
               print("\n-----> start acquisition") 
-              sis.StartAcquisition() 
+              ctrl_c_occurred = sis.StartAcquisition() 
           except:
               print("error!")
               n_errors += 1
@@ -225,10 +226,14 @@ def takeData(config_path):
               hours_elapsed,
           ))
           last_time = now
+
+          if(ctrl_c_occurred):
+            print("Got a SIGINT on the C++ side, so python while loop is exiting")
+            break
   else:
       print("\n===> starting single run, %.1f seconds" % config['run']['duration_per_file'])
       print("\n-----> start acquisition") 
-      sis.StartAcquisition() 
+      ctrl_c_occurred = sis.StartAcquisition() 
 
 
 #input is the integer code for the clock rate in MHz
