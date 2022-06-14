@@ -401,8 +401,8 @@ int SIS3316SystemMT::StartAcquisition()
     
     _isRunning = 0;
     ResetCtlC();
-    
-    return 0;
+
+    return (int)_requestStop;
 }
 
 void* SIS3316SystemMT::StartRunPipelinedAcquisitionWriteThread(void * arg){
@@ -774,6 +774,7 @@ int SIS3316SystemMT::StopAcquisition()
 }
 int SIS3316SystemMT::RequestAcquisitionStop()
 {
+    printf("In SIS33316SystemMT.cc, request acquisition stop called");
     _requestStop = true;
     return 0;
 }
