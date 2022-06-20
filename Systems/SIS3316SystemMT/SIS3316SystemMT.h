@@ -78,6 +78,7 @@ private:
     UInt_t _broadcastbase;
     TTimeStamp* _runBegin;
     bool _requestStop;
+    bool _sigintStop; //marks whether the request stop was issued from SIGINT or not
     double _livetime; // seconds
     double _runduration; //seconds
     int _totalEventsThisRun;

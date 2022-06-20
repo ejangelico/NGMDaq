@@ -46,6 +46,7 @@ SIS3316SystemMT::SIS3316SystemMT()
     _numberOfSlots = 5;
     _maxbytestoraw = 1700000000LL;
     _prun = 0;
+    _sigintStop = false;
     
 }
 
@@ -359,6 +360,7 @@ int SIS3316SystemMT::StartAcquisition()
     SetStopDaqOnCtlC();
     _isRunning = 1;
     _requestStop=false;
+    _sigintStop=false;
     _totalEventsThisRun = 0;
     _firstTimeOfRun = TTimeStamp(0,0);
     _earliestTimeInSpill = TTimeStamp(0,0);
@@ -402,7 +404,7 @@ int SIS3316SystemMT::StartAcquisition()
     _isRunning = 0;
     ResetCtlC();
 
-    return (int)_requestStop;
+    return (int)_sigintStop;
 }
 
 void* SIS3316SystemMT::StartRunPipelinedAcquisitionWriteThread(void * arg){
@@ -776,6 +778,7 @@ int SIS3316SystemMT::RequestAcquisitionStop()
 {
     printf("In SIS33316SystemMT.cc, request acquisition stop called");
     _requestStop = true;
+    _sigintStop = true; //this is only called when sigint triggers, see NGMSystem class of which this derives
     return 0;
 }
 void SIS3316SystemMT::PlotAdcDistribution(int slot, int channel)
