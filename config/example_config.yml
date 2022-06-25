@@ -29,7 +29,6 @@ full_fraction: 0.9
     level0_input: ['nim']
     #these settings only active if level0_input = 'self'
     self_trig_settings:
-      pulse_polarity: 'n' #'n' or 'p', determines if threshold is negative or positive
       #indexed by card number 
       #this enables internal trigger on these channels,
       #and includes them in the coinc settings if coinc is enabled. 
@@ -60,6 +59,9 @@ full_fraction: 0.9
     
     gain: 1 #default = 1, 1 = 2V; 0 = 5V; 2V range is 0.03 ADC/mV, 5V range is 0.076 ADC/mV 
     termination: 1 #1 = 50 ohm, 0 = 1kohm
+    #applies an inverting amplifier to the input. also affects trigger. the trigger works off
+    #of a positive polarity signal, so if your signals are negative polar, set invert = 1
+    invert: 1 
 
     #for these digitization settings, look to page 60 of the manual. 
     pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
@@ -80,7 +82,6 @@ full_fraction: 0.9
   trigger: 
     level0_input: ['nim']
     self_trig_settings: 
-      pulse_polarity: 'n' #'n' or 'p'
       enabled_channels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
       pe_for_trigger: 10 #how many PE needed for a trigger
       pe_to_adc: [150, 150,150,150,150,150,150,150,150,150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
@@ -96,6 +97,7 @@ full_fraction: 0.9
     
     gain: 1 #default = 1, 1 = 2V; 0 = 5V; 2V range is 0.03 ADC/mV, 5V range is 0.076 ADC/mV 
     termination: 1 #1 = 50 ohm, 0 = 1kohm
+    invert: 1 
 
     #for these digitization settings, look to page 60 of the manual. 
     pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
@@ -110,7 +112,6 @@ full_fraction: 0.9
   trigger: 
     level0_input: ['nim']
     self_trig_settings: 
-      pulse_polarity: 'n' #'n' or 'p'
       enabled_channels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
       pe_for_trigger: 10 #how many PE needed for a trigger
       pe_to_adc: [150, 150,150,150,150,150,150,150,150,150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
@@ -126,7 +127,8 @@ full_fraction: 0.9
     
     gain: 1 #default = 1, 1 = 2V; 0 = 5V; 2V range is 0.03 ADC/mV, 5V range is 0.076 ADC/mV 
     termination: 1 #1 = 50 ohm, 0 = 1kohm
-
+    invert: 1 
+    
     #for these digitization settings, look to page 60 of the manual. 
     pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
     raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0

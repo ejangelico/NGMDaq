@@ -89,8 +89,6 @@ def takeData(config_path):
         active_chs_uint += (1 << i) #used later for coinc settings
         sis0.firenable[i] = 1 
         trigconf = trigconf | (1 << 2) #enables internal triggering 
-        if(strg['pulse_polarity'] == 'n'):
-          trigconf = trigconf | (1 << 0)
 
         #threshold setting
         adc_conversion = strg['pe_to_adc'] #thresholds for each channel
@@ -108,6 +106,13 @@ def takeData(config_path):
       #or wants to be the only active triggering mechanism. 
       if('nim' in trg['level0_input']):
         trigconf = trigconf | (1 << 3)
+
+      #this is more of a "digitization" setting, but ends
+      #up being coded into the trigger settings. The inversion 
+      #bit, which activates an inverting amplifier on the input,
+      #is in the EVENT_CONFIG registers. 
+      if(config[icard]['digitization']['invert'] == 1):
+          trigconf = trigconf | (1 << 0)
 
       #set the trig conf here
       sis0.trigconf[i] = trigconf
