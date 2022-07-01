@@ -1,17 +1,17 @@
 run:
-  duration_per_file: 2 #seconds
+  duration_per_file: 60 #seconds
   spill_duration: 0.5 #seconds between subsequent read/write thread initiations, and swapping between memory banks 
-  do_loop: False #loop mode described here please
-  hours_per_iteration: 10 #for loop mode 
-  file_suffix: "evantest"
+  do_loop: True #loop mode described here please
+  hours_per_iteration: 1 #for loop mode 
+  file_suffix: "DuringRecirc_Run35_SiPM28-5_hv840V_10000ADC_1"
   card_numbers: [0,1,2] #[0, 1, 2] with  matching IP's below; Primary card must always be "0" 
   card_ips: ['192.168.4.40', '192.168.4.100', "192.168.4.102"]
-  debug: 1 #will execute additional print statements (from NGMModule::getDebug())
+  debug: 0 #will execute additional print statements (from NGMModule::getDebug())
 
 #the clock I beleive technically can be different for each card,
 #but for the moment I am keeping it universal as it is "shared" on
 #LVDS for all connected cards by default. 
-clock: 3 #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
+clock: 2 #0: 250MHz, 1: 125MHz, 2=62.5MHz 3: 25 MHz
 
 #a certain set of instructions is executed if the
 #memory on any card exceeds this fraction of being full. 
@@ -26,7 +26,7 @@ full_fraction: 0.9
     #options: 
     #'nim', which is a -700mV signal on "TI" nim input, sets enable external trigger bit to 1
     #'self', specifically sets external trig enable to 0, relying only on FIR trigger settings
-    level0_input: ['nim']
+    level0_input: ['self','nim']
     #these settings only active if level0_input = 'self'
     self_trig_settings:
       #indexed by card number 
@@ -34,11 +34,11 @@ full_fraction: 0.9
       #and includes them in the coinc settings if coinc is enabled. 
       #if none are listed, or the card is not listed, then internal trig is disabled. 
       enabled_channels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-      pe_for_trigger: 10 #how many PE needed for a trigger
-      pe_to_adc: [150, 150,150,150,150,150,150,150,150,150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
+      pe_for_trigger: 1 #how many PE needed for a trigger
+      pe_to_adc: [10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
       #will have to restructure code to do multi-card coinc combinatorix
       coinc_enable: 0
-      min_coinc_channels: 3 #>= this number of channels will generate a trigger
+      min_coinc_channels: 2 #>= this number of channels will generate a trigger
     
     #two LEMO outputs are available: 'to' and 'uo'.
     #They are highly configurable, see manual pages 120 and 121. 
@@ -47,12 +47,12 @@ full_fraction: 0.9
     #'coinc', if a coincidence trigger is generated for combos of channels in table 1
     #'sum', sum-or of all channels enabled in self trigger
     #'ext', external trigger to ADC FPGA rerouted to output
-    to_settings: []
+    to_settings: ['sum']
     #Options (put multiple in a list): 
     #'busy', if sample logic is busy
     #'ready', if sample logic is ready
     #'coinc', coincidences for combos of channels in table 2  
-    uo_settings: ['busy']
+    uo_settings: []
 
   
   digitization:
@@ -64,9 +64,9 @@ full_fraction: 0.9
     invert: 0 
 
     #for these digitization settings, look to page 60 of the manual. 
-    pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
+    pretrig_delay: 500 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
     raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
-    raw_data_sample_length: 50 #how many samples are saved to stored data, starts from baseline index. 
+    raw_data_sample_length: 2000 #how many samples are saved to stored data, starts from baseline index. 
     gate_window_length: 60000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
 
     #dac_offset: see page 113: a calc is made in the run script based on the gain setting. 
@@ -75,7 +75,7 @@ full_fraction: 0.9
     #-1 is fully shifted negative polar, -2V to 0V
     #1 is fully shifted positive, 0V to 2V. 
     #all floats in between are allowed. default will floor or ceiling if outside of -1 to 1
-    dac_offset: 0 
+    dac_offset: 1
 
 
 1:
@@ -84,13 +84,13 @@ full_fraction: 0.9
     self_trig_settings: 
       enabled_channels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
       pe_for_trigger: 10 #how many PE needed for a trigger
-      pe_to_adc: [150, 150,150,150,150,150,150,150,150,150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
+      pe_to_adc: [150,150,150,150,150,150,150,150,150,150,150,150,150,150,150,150] #note, this is in ADC counts which changes the mV conversion depending on gain = 1 or 0!. 
       coinc_enable: 0
       min_coinc_channels: 3 #>= this number of channels will generate a trigger
     
     
-    to_settings: ['coinc', 'sum']
-    uo_settings: ['busy']
+    to_settings: []
+    uo_settings: []
 
   
   digitization:
@@ -100,12 +100,12 @@ full_fraction: 0.9
     invert: 0 
 
     #for these digitization settings, look to page 60 of the manual. 
-    pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
+    pretrig_delay: 500 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
     raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
-    raw_data_sample_length: 50 #how many samples are saved to stored data, starts from baseline index. 
-    gate_window_length: 6000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
+    raw_data_sample_length: 2000 #how many samples are saved to stored data, starts from baseline index. 
+    gate_window_length: 60000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
 
-    dac_offset: 0 
+    dac_offset: 0
 
 
 2:
@@ -119,8 +119,8 @@ full_fraction: 0.9
       min_coinc_channels: 3 #>= this number of channels will generate a trigger
     
     
-    to_settings: ['coinc', 'sum']
-    uo_settings: ['busy']
+    to_settings: []
+    uo_settings: []
 
   
   digitization:
@@ -128,11 +128,11 @@ full_fraction: 0.9
     gain: 1 #default = 1, 1 = 2V; 0 = 5V; 2V range is 0.03 ADC/mV, 5V range is 0.076 ADC/mV 
     termination: 1 #1 = 50 ohm, 0 = 1kohm
     invert: 0 
-    
-    #for these digitization settings, look to page 60 of the manual. 
-    pretrig_delay: 50 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
-    raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
-    raw_data_sample_length: 50 #how many samples are saved to stored data, starts from baseline index. 
-    gate_window_length: 6000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
 
-    dac_offset: 0 
+    #for these digitization settings, look to page 60 of the manual. 
+    pretrig_delay: 500 #time shift in the adc signal relative to the input, for generating triggers and phasing accumulators
+    raw_data_start_index: 0 #the number of samples after the internal trigger generation for which to start digitizing. if you are unsure, set to 0
+    raw_data_sample_length: 2000 #how many samples are saved to stored data, starts from baseline index. 
+    gate_window_length: 60000 #how many clocks it takes from internal trigger generation until that channel is "ready" again. 
+
+    dac_offset: 0
