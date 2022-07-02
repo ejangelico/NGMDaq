@@ -529,6 +529,8 @@ def plot_all_channels(fn, nevents):
         for i in range(evts_in_spill):
             fig, axs = plt.subplots(figsize=(18, 6), ncols=3)
             for ch, channel_data in enumerate(spill_data):
+                if(i >= len(channel_data['data']['events'])):
+                    continue #this happens if that channel is not recorded in that event number
                 card_idx = channel_data['card']
                 channel_wfm = np.array(channel_data['data']['events'][i]['samples'])
                 channel = card_idx*16 + channel_data['chan']
