@@ -114,6 +114,10 @@ def takeData(config_path):
       if(config[icard]['digitization']['invert'] == 1):
           trigconf = trigconf | (1 << 0)
 
+      #new addition as of 5-26-2023, I think for coincidence window
+      #to work, internal gate 1 needs to be enabled on this trigconf register
+      
+
       #set the trig conf here
       sis0.trigconf[i] = trigconf
 
@@ -122,6 +126,7 @@ def takeData(config_path):
     if(strg["coinc_enable"]):
       sis0.coincMask = active_chs_uint 
       sis0.minimumCoincidentChannels = strg["min_coinc_channels"]
+      sis0.coincWindow = strg["coinc_window"] #will set coincidence window to this number x 2 in clock counts.  limited to 256, default is 10
 
     #trigger input settings. 
     if('nim' in trg["level0_input"]):

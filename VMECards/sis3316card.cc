@@ -1189,6 +1189,7 @@ void sis3316card::initcommon()
 
     coincidenceEnable = 0;
     minimumCoincidentChannels = 0;
+	coincWindow = 10; //by default, have 10 clocks coincidence and gate window in FIR trigger setup.
     coincMask = 0xFFFF;
     
     for(int iadc =0; iadc<SIS3316_ADCGROUP_PER_CARD; iadc++)
@@ -1430,7 +1431,14 @@ void sis3316card::ConfigureFIR()
         addr = baseaddress
                 + ( (ichan/SIS3316_CHANNELS_PER_ADCGROUP) + 1)*SIS3316_FPGA_ADC_REG_OFFSET
                 + 0x3C;
-        data = 0x000F0A0A; // Enables gate 1 for all four channels, and sets lengths to 10 * (2*clock)
+		//enable gate 1 for all four channels
+		data = 0x000F0000;
+		//get the gate window and coincidence window length (equal in this register) and limit to 2**8. 
+		if(coincWindow > 256)
+		{
+			coincWindow = 256;
+		}
+        data = data | coincWindow | (coincWindow << 8); //Sets length of coincWindow, and then 8 bits shifted the length of the "internal gate length"
         return_code = vmei->vme_A32D32_write( addr, data );
 
 

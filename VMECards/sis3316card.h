@@ -60,7 +60,7 @@ private:
     unsigned int modid;
     unsigned int adcfirmware[SIS3316_ADCGROUP_PER_CARD];
     unsigned int adcheaderid[SIS3316_ADCGROUP_PER_CARD];
-    unsigned int clock_source_choice; // 0 : 250MHz, 1 : 125MHz, 2 : 62.5MHz
+    unsigned int clock_source_choice; // 0 : 250MHz, 1 : 125MHz, 2 : 62.5MHz, 3: 25MHz
     unsigned int broadcastaddr;
     unsigned int sharingmode; // 0 single card, 1 shared slave, 2 shared master
     //Board Settings
@@ -72,6 +72,7 @@ private:
     bool coincidenceEnable;
     int minimumCoincidentChannels; 
     unsigned int coincMask; 
+    unsigned int coincWindow;
 
 
     
