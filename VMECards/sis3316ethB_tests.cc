@@ -35,7 +35,7 @@
 int main( int argc, char* argv[] ) {
     
 //    char* used for IP addresses
-//    step added, rather than using string literals, because C++11 no longer likes conversions between literals and char*s
+//    step added, rather than using string literals, because c++17 no longer likes conversions between literals and char*s
     char ipAddress_ours[32];
     char ipAddress_digi[32];
     if( argc == 1 ) {
