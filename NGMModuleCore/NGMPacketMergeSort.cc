@@ -447,6 +447,7 @@ int NGMPacketMergeSort::pushPacket(NGMBufferedPacket* packet){
       // the lists
       NGMTimeStamp earliestBufferTime = earliestTimeInNextBuffers();
       earliestBufferTime.IncrementNs(-_maxTimingCorrection);
+      /* Deleting these verbose mode printouts because they cause compiler error with C++17
       if(getVerbosity()>10)
       {
         std::cout<<" calling merge hits "<<earliestBufferTime.GetSec()<< " "<<earliestBufferTime.GetNanoSec()<<std::endl;
@@ -463,7 +464,9 @@ int NGMPacketMergeSort::pushPacket(NGMBufferedPacket* packet){
           }
        }
       }
+      */
       mergeHitsToLatestTime(earliestBufferTime);
+      /*
       if(getVerbosity()>11)
       {
         std::cout<<" called merge hits "<<earliestBufferTime.GetSec()<< " "<<earliestBufferTime.GetNanoSec()<<std::endl;
@@ -480,6 +483,7 @@ int NGMPacketMergeSort::pushPacket(NGMBufferedPacket* packet){
           }
         }
       }
+      */
       
     }
 
@@ -561,7 +565,7 @@ int NGMPacketMergeSort::flushBufferToList(int index)
       // Test if previous hit is later than current
       int plotIndex = getChannelIndex(tPacket->getHit(id));
       _hTotalEvents->Fill(plotIndex);
-      if(id > 0 && tHitList->Last() > 0)
+      if(id > 0 && tHitList->GetEntries() > 0)
       {
         if(tPacket->getHit(id)->GetNGMTime() < ((NGMHit*)(tHitList->Last()))->GetNGMTime() && _channelsPerBuffer!=1)
         {

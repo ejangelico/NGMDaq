@@ -800,7 +800,7 @@ void NGMTimeDisplay::displayChain(const TSeqCollection* pList, Long64_t first, L
   
   cWaterFallPad->Modified();
   cWaterFallPad->Update();
-  if(prevPad > 0 && prevPad!=cWaterFallPad) prevPad->cd();
+  if(prevPad!=cWaterFallPad) prevPad->cd();
 }
 
 void NGMTimeMonitor::LaunchDisplayCanvas()

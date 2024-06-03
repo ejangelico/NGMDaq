@@ -351,7 +351,7 @@ NGMLogger::RootErrorHandler(Int_t level, Bool_t abort_bool,
   // the root message queue.
 
   if (gErrorIgnoreLevel == kUnset) {
-	R__LOCKGUARD2(gErrorMutex);
+	R__LOCKGUARD2(gGlobalMutex);
 	
 	gErrorIgnoreLevel = 0;
 	if (gEnv) {
