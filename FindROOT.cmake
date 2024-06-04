@@ -58,10 +58,16 @@ IF (ROOT_CONFIG_EXECUTABLE)
   STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" req_root_patch_vers "${ROOT_MIN_VERSION}")
    
   # and now the version string given by qmake
+  #use this block for root version above 6.28
   SET(pattern "([0-9]+)\\.([0-9]+)\\.([0-9]+)")
   STRING(REGEX REPLACE ${pattern} "\\1" found_root_major_vers "${ROOTVERSION}")
   STRING(REGEX REPLACE ${pattern} "\\2" found_root_minor_vers "${ROOTVERSION}")
   STRING(REGEX REPLACE ${pattern} "\\3" found_root_patch_vers "${ROOTVERSION}")
+
+  #this one for root 6.22, for example
+  #STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" found_root_major_vers "${ROOTVERSION}")
+  #STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" found_root_minor_vers "${ROOTVERSION}")
+  #STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" found_root_patch_vers "${ROOTVERSION}")
 
   IF (found_root_major_vers LESS 5)
     MESSAGE( FATAL_ERROR "Invalid ROOT version \"${ROOTVERSION}\", at least major version 4 is required, e.g. \"5.00/00\"")

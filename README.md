@@ -30,6 +30,7 @@ fi #
 2. Install cern root using the conda installer. Presently, 6.22 root has been tested. 
 
 # Building NGMDaq
+For ROOT 6-6.24, we need to compile with c++17 it seems? 
 
 If your directory structure is assumed to be 
 ```

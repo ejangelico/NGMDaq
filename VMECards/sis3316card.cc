@@ -514,7 +514,7 @@ int sis3316card::I2cStart(int osc){
 	if(osc > 3){
 		return -101;
 	}
-	// start
+	// start 
 	rc = this->vmei->vme_A32D32_write(this->baseaddress + SIS3316_ADC_CLK_OSC_I2C_REG + (4 * osc), 1<<I2C_START);
 	if(rc){
         printf("I2cStart1 ERROR(%d)\n",rc);
@@ -1258,7 +1258,7 @@ void sis3316card::ConfigureEventRegisters()
     
     for(int iadc = 0; iadc<SIS3316_ADCGROUP_PER_CARD; iadc++)
     {
-        // Gate Window Length
+        // Gate Window Length 
         addr = baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET)  + SIS3316_ADC_CH1_4_TRIGGER_GATE_WINDOW_LENGTH_REG;
         data = (gate_window_length_block[iadc] & 0xffff) ;
         return_code =  vmei->vme_A32D32_write ( addr , data );
@@ -1268,7 +1268,6 @@ void sis3316card::ConfigureEventRegisters()
         data = ( pretriggerdelay_block[iadc] & 0x7ff )
                 | ( (0x1 & pretriggerdelaypg_block[iadc]) << 15);
         return_code =  vmei->vme_A32D32_write ( addr , data );
-        
         
         // Raw Data Buffer Length
         addr = baseaddress + (iadc*SIS3316_FPGA_ADC_REG_OFFSET)  + SIS3316_ADC_CH1_4_RAW_DATA_BUFFER_CONFIG_REG;
@@ -1653,6 +1652,9 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
     // Verify that the previous bank address is valid
     max_poll_counter = 10; //in good cases, it always only takes 1 try! verified. 
     do {
+		//2576980377
+		//2576980377
+		std::cout << "Prev bank is  " << (prevRunningBank - 1) << " and prev bank ending address is " << ((previousBankEndingAddress[ichan] & 0x1000000) >> 24 ) << "with raw hex as " <<  previousBankEndingAddress[ichan]  << endl;
         return_code = vmei->vme_A32D32_read (prevBankEndingRegister, &previousBankEndingAddress[ichan]); //
         if(return_code < 0) {
             printf("%d Address: %08x %d\n",max_poll_counter,previousBankEndingAddress[ichan],prevRunningBank-1);
@@ -2092,6 +2094,7 @@ float sis3316card::ReadTemp()
     if(!vmei)
         return 0.0;
     return_code = vmei->vme_A32D32_read ( baseaddress + SIS3316_INTERNAL_TEMPERATURE_REG, &data);
+	printf("Temperature reading comes out as 0x%08x", data); //7e04
     return ((((data&0x03FF)))/4.0);
 }
 

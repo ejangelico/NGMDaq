@@ -148,7 +148,7 @@ NGMLogger& NGMLogger::operator<<(const wchar_t *op)
 {
   // hack for CINT
 
-  LTRACE<<"wchar_t:"<<*op<<endl; // debug
+  //LTRACE<<"wchar_t:"<<*op<<endl; // debug
 
 #undef  LOGLOC
 #define LOGLOC " [interpreted]"

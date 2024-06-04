@@ -5,6 +5,8 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <cstring>
+#include <thread>
+#include <chrono>
 #include <iostream> // AGS
 #ifdef __APPLE__
 #include <net/if.h>
@@ -615,7 +617,8 @@ int sis3316_ethb::udp_sis3316_register_read ( unsigned int nof_read_registers, u
         this->udp_send_data[(4*i)+7] = (unsigned char) ((reg_addr >> 24) & 0xff) ; // address(31 dwonto 24)
     }
     return_code = sendto(this->udp_socket, udp_send_data, 4 + (4*nof_32bit_word), 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
-    
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
+
 #ifdef old
     return_code = recvfrom(udp_socket, udp_recv_data, 512, 0,  (struct sockaddr *)&this->SIS3316_sock_addr_in, &addr_len );
     //for (i=0;i<return_code;i++) {
@@ -781,7 +784,9 @@ int sis3316_ethb::udp_sis3316_register_write ( unsigned int nof_write_registers,
         this->udp_send_data[(8*i)+10]  = (unsigned char) ((reg_data >> 16) & 0xff) ; // reg_data(23 dwonto 16)
         this->udp_send_data[(8*i)+11] = (unsigned char) ((reg_data >> 24) & 0xff) ; // reg_data(31 dwonto 24)
     }
+
     return_code = sendto(this->udp_socket, udp_send_data, 4 + (8*nof_32bit_word), 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
 #ifdef old
     //printf("udp_sis3316_register_write: recvfrom\n");
     return_code = recvfrom(udp_socket, udp_recv_data, 512, 0,  (struct sockaddr *)&this->SIS3316_sock_addr_in, &addr_len );
@@ -809,6 +814,7 @@ int sis3316_ethb::udp_sis3316_register_write ( unsigned int nof_write_registers,
         }
     } while ((return_code == -1) && (retry_counter < 4)) ; // retry up to 3 times
     
+    //printf("Return code from recvfrom: %d\n", return_code);
     if(return_code == -1) { // timeout
         return_code = -1;
     }
@@ -859,7 +865,7 @@ int sis3316_ethb::udp_sis3316_register_write ( unsigned int nof_write_registers,
         return_code = -1;
     }
 #endif
-    
+    //printf("Return code int he end is %d\n", return_code);
     return return_code;
 }
 

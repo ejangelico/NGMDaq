@@ -447,7 +447,7 @@ int NGMPacketMergeSort::pushPacket(NGMBufferedPacket* packet){
       // the lists
       NGMTimeStamp earliestBufferTime = earliestTimeInNextBuffers();
       earliestBufferTime.IncrementNs(-_maxTimingCorrection);
-      /* Deleting these verbose mode printouts because they cause compiler error with C++17
+      /* Deleting these verbose mode printouts because they cause compiler error with c++17
       if(getVerbosity()>10)
       {
         std::cout<<" calling merge hits "<<earliestBufferTime.GetSec()<< " "<<earliestBufferTime.GetNanoSec()<<std::endl;
