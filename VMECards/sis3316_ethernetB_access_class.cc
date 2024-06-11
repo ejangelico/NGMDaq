@@ -394,6 +394,7 @@ int sis3316_ethb::udp_retransmit_cmd( int* receive_bytes, char* data_byte_ptr){
     // write Cmd
     this->udp_send_data[0] = 0xEE ; // transmit
     return_code = sendto(this->udp_socket, udp_send_data, 1, 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
     *receive_bytes = recvfrom(this->udp_socket, this->udp_recv_data, 9000, 0,   (struct sockaddr *)&this->SIS3316_sock_addr_in, &addr_len);
     if (*receive_bytes == -1) { // Timeout
         return -1 ;
@@ -467,6 +468,7 @@ int sis3316_ethb::udp_register_read (uint32_t addr, uint32_t* data)
     this->udp_send_data[5] = (unsigned char) ((addr >> 24) & 0xff) ; // address(31 dwonto 24)
     // send Request
     return_code = sendto(this->udp_socket, udp_send_data, send_len, 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
     
     int retry_counter;
     retry_counter = 0 ;
@@ -728,6 +730,7 @@ int sis3316_ethb::udp_register_write (uint32_t addr, uint32_t data)
     this->udp_send_data[7] = (unsigned char) ((data >> 16) & 0xff) ; // data(23 dwonto 16)
     this->udp_send_data[8] = (unsigned char) ((data >> 24) & 0xff) ; // data(31 dwonto 24)
     return_code = sendto(this->udp_socket, udp_send_data, 9, 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
 	return_code = 0;
 	return return_code;
 }
@@ -931,6 +934,7 @@ int sis3316_ethb::udp_sub_sis3316_fifo_read ( unsigned int nof_read_words, uint3
     send_length = 8 ;
     // send Read Req Cmd
     send_return_code = sendto(this->udp_socket, udp_send_data, send_length, 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
     if (send_return_code != send_length) {
         return -2 ;
     }
@@ -1245,6 +1249,7 @@ int sis3316_ethb::udp_sub_sis3316_fifo_write ( unsigned int nof_write_words, uin
     }
     
     return_code = sendto(this->udp_socket, udp_send_data, send_length, 0, (struct sockaddr *)&this->SIS3316_sock_addr_in, sizeof(struct sockaddr));
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
     if (return_code != send_length) {
         //printf("sendto: return_code = 0x%08x \n",return_code);
     }

@@ -1654,7 +1654,6 @@ double sis3316card::FetchDataSizeForChannel(int ichan)
     do {
 		//2576980377
 		//2576980377
-		std::cout << "Prev bank is  " << (prevRunningBank - 1) << " and prev bank ending address is " << ((previousBankEndingAddress[ichan] & 0x1000000) >> 24 ) << "with raw hex as " <<  previousBankEndingAddress[ichan]  << endl;
         return_code = vmei->vme_A32D32_read (prevBankEndingRegister, &previousBankEndingAddress[ichan]); //
         if(return_code < 0) {
             printf("%d Address: %08x %d\n",max_poll_counter,previousBankEndingAddress[ichan],prevRunningBank-1);
@@ -2095,7 +2094,7 @@ float sis3316card::ReadTemp()
         return 0.0;
     return_code = vmei->vme_A32D32_read ( baseaddress + SIS3316_INTERNAL_TEMPERATURE_REG, &data);
 	printf("Temperature reading comes out as 0x%08x", data); //7e04
-    return ((((data&0x03FF)))/4.0);
+    return ((((data&0x03FF)))/4.0); //898
 }
 
 unsigned int sis3316card::GetAcquisitionControl(){
