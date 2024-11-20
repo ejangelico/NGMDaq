@@ -57,3 +57,10 @@ cd build_ngm_daq/
 cmake -DCMAKE_INSTALL_PREFIX=/path/to/software/ngm_sw/install_ngm_daq /path/to/software/ngm_sw/NGMDaq
 make install
 ```
+
+Then on subsequent small changes, do 
+```
+make clean
+make install
+``` 
+or just ```make install```. 

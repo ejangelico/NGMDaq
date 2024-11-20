@@ -1061,11 +1061,11 @@ void sis3316card::SetClockChoice(int clck_choice, int sharing)
 	    case 1:
 			return_code = set_frequency(0, freqPreset125MHz);
 			//iob_delay_value = 0x48 ;
-			iob_delay_value   = 0x10 ;
+			iob_delay_value   = 0x20 ;
                         break;
 	    case 2:
 			return_code = set_frequency(0, freqPreset62_5MHz);
-			iob_delay_value = 0x10 ;
+			iob_delay_value = 0x20 ;
 			break;
 	    case 3:
 			return_code = set_frequency(0, freqPreset25MHz);
@@ -1079,11 +1079,13 @@ void sis3316card::SetClockChoice(int clck_choice, int sharing)
                         break;
 	    case 4:
 			return_code = set_frequency(0, freqPreset125MHz);
-			iob_delay_value = 0x48 ;
+			//iob_delay_value = 0x48 ;
+			iob_delay_value = 0x20 ;
 			break;
 	    case 5:
 			return_code = set_frequency(0, freqPreset125MHz);
-			iob_delay_value = 0x48 ;
+			//iob_delay_value = 0x48 ;
+			iob_delay_value = 0x20 ;
 			break;
 	}
     printf("clock set to %i \n",clock_source_choice); // AGS
